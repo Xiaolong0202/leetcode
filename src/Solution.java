@@ -1331,6 +1331,7 @@ public class Solution {
             }
             deque.offerLast(i);
         }
+        return maxHeight;
     }
 }
 
