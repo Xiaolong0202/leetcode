@@ -1315,23 +1315,30 @@ public class Solution {
      * @return
      */
     public int largestRectangleArea(int[] heights) {
-        int maxHeight = Integer.MIN_VALUE;
+        if (heights.length==1)return heights[0];
+        int maxS = Integer.MIN_VALUE;
         Deque<Integer> deque = new ArrayDeque<>();
-        for (int i = 0; i < heights.length; i++) {
-            int aa = heights[i];
+        for (int i = 0; i <= heights.length; i++) {
+            int aa = -1;
+            if (i<heights.length) aa = heights[i];
             while (!deque.isEmpty()){
                 int tt = deque.peekLast();
-                if (heights[tt]>=aa){
-                    //计算面积
-                    int hh = deque.peekFirst();
-
+                if (heights[tt]<=aa){
+                    break;
                 }else {
-
+                    deque.pollLast();
+                    int ll;
+                    if (deque.isEmpty())ll=-1;
+                    else ll = deque.peekLast();
+                    int width = i-ll-1;
+                    int height = heights[tt];
+                    int s = width*height;
+                    maxS = Integer.max(maxS,s);
                 }
             }
             deque.offerLast(i);
         }
-        return maxHeight;
+        return maxS;
     }
 }
 
