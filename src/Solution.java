@@ -1340,6 +1340,23 @@ public class Solution {
         }
         return maxS;
     }
+
+    /**
+     * 整数拆分
+     * @param n
+     * @return
+     */
+    int integerBreak(int n) {
+        int[] dp = new int[n+1];
+        for(int i = 1; i <= n ; i++) {
+            for (int j = 1; j <= i-1 ; j++) {
+                int currentMax = Math.max(j*(i-j),j*dp[i-j]);
+                dp[i] = Math.max(dp[i],currentMax);
+            }
+        }
+        return dp[n];
+    }
+
 }
 
 
