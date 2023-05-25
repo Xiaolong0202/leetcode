@@ -4,11 +4,8 @@ public class Solution {
 
 
     public static void main(String[] args) {
-//        int [] res = new int[]{12,45646,1321,465456,132};
-        int[][] ori = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
-
-
-        System.out.println(new Solution().canConstruct("bg", "efjbdfbdgfjhhaiigfhbaejahgfbbgbjagbddfgdiaigdadhcfcj"));
+        String a = new String("哈哈哈");
+        System.out.println(a+a.length());
     }
 
     Solution() {
@@ -1315,28 +1312,52 @@ public class Solution {
      * @return
      */
     public int largestRectangleArea(int[] heights) {
-        if (heights.length==1)return heights[0];
-        int maxS = Integer.MIN_VALUE;
+//        if (heights.length==1)return heights[0];
+//        int maxS = Integer.MIN_VALUE;
+//        Deque<Integer> deque = new ArrayDeque<>();
+//        for (int i = 0; i <= heights.length; i++) {
+//            int aa = -1;
+//            if (i<heights.length) aa = heights[i];
+//            while (!deque.isEmpty()){
+//                int tt = deque.peekLast();
+//                if (heights[tt]<=aa){
+//                    break;
+//                }else {
+//                    deque.pollLast();
+//                    int ll;
+//                    if (deque.isEmpty())ll=-1;
+//                    else ll = deque.peekLast();
+//                    int width = i-ll-1;
+//                    int height = heights[tt];
+//                    int s = width*height;
+//                    maxS = Integer.max(maxS,s);
+//                }
+//            }
+//            deque.offerLast(i);
+//        }
+//        return maxS;
+        int maxS = Integer.MAX_VALUE;
         Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i <= heights.length; i++) {
-            int aa = -1;
-            if (i<heights.length) aa = heights[i];
+            int a;
+            if (i==heights.length)a=-1;
+            else a = heights[i];
             while (!deque.isEmpty()){
-                int tt = deque.peekLast();
-                if (heights[tt]<=aa){
+                int t = deque.peekLast();
+                if (a>=heights[t]){
                     break;
                 }else {
                     deque.pollLast();
-                    int ll;
-                    if (deque.isEmpty())ll=-1;
-                    else ll = deque.peekLast();
-                    int width = i-ll-1;
-                    int height = heights[tt];
+                    int l;
+                    if (deque.isEmpty())l=-1;
+                    l = deque.peekLast();//左边的坐标
+                    int width = i - l - 1;
+                    int height = heights[t];
                     int s = width*height;
-                    maxS = Integer.max(maxS,s);
+                    maxS = Math.max(maxS,s);
                 }
             }
-            deque.offerLast(i);
+            deque.addLast(i);
         }
         return maxS;
     }
@@ -1357,7 +1378,56 @@ public class Solution {
         return dp[n];
     }
 
+    /**
+     * 416. 分割等和子集
+     * 输入：nums = [1,5,11,5]
+     * 输出：true
+     * 解释：数组可以分割成 [1, 5, 5] 和 [11]
+     * @param nums
+     * @return
+     */
+    public boolean canPartition(int[] nums) {
+        int len = nums.length;
+        if (len<2)return false;
+        int sum = Arrays.stream(nums).sum();
+        if (sum%2!=0)return false;
+        int target = sum/2;
+        int[] dp = new int[target+1];
+        for (int i = 0 ;i < nums.length; i++) {
+            int num = nums[i];
+            if (num>target)return false;
+            for (int j = 0; j <= target; j++) {
+                if (j>=num){
+                    dp[j] = Math.max(dp[j],dp[j-num]+num);
+                }
+            }
+        }
+        if (dp[target]==target)return true;
+        else return false;
+    }
+
+    /**
+     * 1049. 最后一块石头的重量 II
+     * @param stones
+     * @return
+     */
+    public int lastStoneWeightII(int[] stones) {
+        int len = stones.length;
+        int sum = Arrays.stream(stones).sum();
+        int target = sum>>1;
+        int [] dp = new int[target+1];
+        for (int i = 0; i < len; i++) {
+            int weight = stones[i];
+            for (int j = target; j >= weight; j--) {
+                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
+            }
+        }
+        return sum - dp[target] - dp[target];
+    }
+
+
 }
+
 
 
 
