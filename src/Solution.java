@@ -1425,6 +1425,25 @@ public class Solution {
         return sum - dp[target] - dp[target];
     }
 
+    /**
+     * 494.目标和
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = Arrays.stream(nums).sum();
+        int left=target+sum;
+        if (left%2!=0||left<0)return 0;
+        else left=target+sum>>1;
+        int[] dp = new int[left+1];
+        dp[0]=1;
+        int len = nums.length;
+        for (int i = 0; i < len; i++) {
+            int num = nums[i];
+            for (int j = left; j >= num ; j--) {
+                dp[j]+=dp[j-num];
+            }
+        }
+        return dp[left];
+    }
 
 }
 
