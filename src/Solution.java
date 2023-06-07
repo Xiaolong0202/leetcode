@@ -1,4 +1,8 @@
+import com.sun.deploy.util.StringUtils;
+
 import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Solution {
 
@@ -304,6 +308,11 @@ public class Solution {
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+
+        @Override
+        public String toString() {
+            return ""+val;
         }
     }
 
@@ -1445,9 +1454,120 @@ public class Solution {
         return dp[left];
     }
 
+    /**
+     * 474.一和零
+     * @param strs
+     * @param m
+     * @param n
+     * @return
+     */
+    //m个0,n个1
+    public int findMaxForm(String[] strs, int m, int n) {
+        int[][]dp =new int[m+1][n+1];
+        int len = strs.length;
+        for (int i = 0; i < len; i++) {
+            String str = strs[i];
+            char[] charArray = str.toCharArray();
+            int count0= 0;
+            int count1= 0;
+            for (char c : charArray) {
+                if (c=='0')count0++;
+                if (c=='1')count1++;
+            }
+            for (int j = m; j >= count0; j--) {
+                for (int k = n; k >= count1 ; k--) {
+                    dp[j][k] = Math.max(dp[j][k],dp[j-count0][k-count1]+1);
+                }
+            }
+
+        }
+        return dp[m][n];
+    }
+
+    /**
+     * 144. 二叉树的前序遍历
+     * 迭代
+     * @param root
+     * @return
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> list = new LinkedList<>();
+        if (root==null)return list;
+        Deque<TreeNode> treeNodeDeque = new ArrayDeque<>();
+        treeNodeDeque.offerLast(root);
+        while (!treeNodeDeque.isEmpty()){
+            System.out.println(treeNodeDeque);
+            TreeNode treeNode = treeNodeDeque.pollFirst();
+            TreeNode l = treeNode.left;
+            TreeNode r = treeNode.right;
+            if (r!=null)treeNodeDeque.offerLast(r);
+            if (l!=null)treeNodeDeque.offerLast(l);
+            list.add(treeNode.val);
+        }
+        return list;
+    }
+
+    /**
+     * 94.二叉树的中序遍历
+     * @param root
+     * @return
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+            List<Integer> list = new LinkedList<>();
+            Deque<TreeNode> deque = new ArrayDeque<>();
+            while (root!=null||!deque.isEmpty()){
+               while (root!=null){
+                   deque.offerLast(root);
+                   root=root.left;
+               }
+               root = deque.pollLast();
+               list.add(root.val);
+               root=root.right;
+            }
+            return list;
+    }
+
+    /**
+     * 226. 翻转二叉树
+     * @param root
+     * @return
+     */
+    public TreeNode InvertTree(TreeNode root) {
+        if (root==null)return root;
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        TreeNode temp = root.right;
+        root.right = root.left;
+        root.left = temp;
+        InvertTree(left);
+        InvertTree(right);
+        return root;
+    }
+
+    /**
+     * 222. 完全二叉树的节点个数
+     * @param root
+     * @return
+     */
+    public int countNodes(TreeNode root) {
+        //返回倒数第二行的深度
+        if (root==null)return 0;
+        TreeNode l = root.left;
+        TreeNode r = root.right;
+        int countl = 0;
+        int countr = 0;
+        while (l!=null){
+            l=l.left;
+            countl++;
+        }
+        while (r!=null){
+            r=r.right;
+            countr++;
+        }
+        if (countl==countr)return (2<<countl)-1;
+        return countNodes(root.left)+countNodes(root.right)+1;
+    }
+
+
+
 }
-
-
-
-
-
