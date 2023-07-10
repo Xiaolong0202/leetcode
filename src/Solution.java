@@ -4,8 +4,10 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        String a = new String("哈哈哈");
-        System.out.println(a+a.length());
+        String a =  "你好傻都没打算";
+        char[] a1 = a.toCharArray();
+        Arrays.sort(a1);
+        System.out.println(a1);
     }
 
     Solution() {
@@ -1425,7 +1427,49 @@ public class Solution {
         return sum - dp[target] - dp[target];
     }
 
-
+    /**
+     * 49. 字母异位词分组
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String,List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String strKey = String.valueOf(chars);
+            List<String> orDefault = map.getOrDefault(strKey, new ArrayList<String>());
+            orDefault.add(str);
+            map.put(strKey,orDefault);
+        }
+        List<List<String>> res = new ArrayList<>();
+        map.forEach((key,value)->{
+            res.add(value);
+        });
+        return res;
+    }
+    /**
+     * 47. 全排列 II
+     */
+    public List<List<Integer>> quanpaixu2List = new ArrayList<>();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        permuteUnique(nums,0,new ArrayList<>(),new boolean[nums.length]);
+        return quanpaixu2List;
+    }
+    public void permuteUnique(int[] nums,int n, List<Integer> list,boolean[] booleans) {
+        if (n==nums.length){
+            quanpaixu2List.add(new ArrayList<>(list));
+        }else {
+            for (int i = 0; i < nums.length; i++) {
+                if (booleans[i]||(i>0&&nums[i-1]==nums[i])&&!booleans[i-1])continue;
+                //没有被操作
+                booleans[i]=!booleans[i];
+                list.add(nums[i]);
+                permuteUnique(nums,n+1,list,booleans);
+                booleans[i]=!booleans[i];
+                list.remove(list.size()-1);
+            }
+        }
+    }
 }
 
 
