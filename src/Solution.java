@@ -1470,6 +1470,24 @@ public class Solution {
             }
         }
     }
+
+    /**
+     * 226. 翻转二叉树
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if(root==null)return root;
+        TreeNode l = root.left;
+        TreeNode r = root.right;
+        TreeNode t = l;
+        l = r;
+        r = t;
+        invertTree(l);
+        invertTree(r);
+        root.left = l;
+        root.right = r;
+        return root;
+    }
+
 }
 
 
