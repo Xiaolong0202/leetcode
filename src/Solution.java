@@ -1488,6 +1488,32 @@ public class Solution {
         return root;
     }
 
+    /**
+     * 474. 一和零
+     * @param strs
+     * @param m
+     * @param n
+     * @return
+     */
+    public int findMaxForm(String[] strs, int m, int n) {
+        int [][] dp = new int[m+1][n+1];
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            int zero = 0;
+            int one = 0;
+            for (char aChar : chars) {
+                if (aChar-'0'==0)zero++;
+                else one++;
+            }
+            for (int i = m; i >= zero; i--) {
+                for (int j = n; j >= one; j--) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - zero][j - one] + 1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
 }
 
 
