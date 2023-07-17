@@ -1514,6 +1514,27 @@ public class Solution {
         return dp[m][n];
     }
 
+    /**
+     * 494. 目标和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = Arrays.stream(nums).sum();
+        int a = sum-target;
+        if(a%2!=0||a<0)return 0;
+        a=a>>1;
+        int[] dp = new int[a+1];
+        dp[0]=1;
+        for (int num : nums) {
+            for(int j = a; j>=num ;j--){
+                dp[j] = dp[j]+dp[j-num];
+            }
+        }
+        return dp[a];
+    }
+
 }
 
 
