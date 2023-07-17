@@ -1413,19 +1413,19 @@ public class Solution {
      * @param stones
      * @return
      */
-    public int lastStoneWeightII(int[] stones) {
-        int len = stones.length;
-        int sum = Arrays.stream(stones).sum();
-        int target = sum>>1;
-        int [] dp = new int[target+1];
-        for (int i = 0; i < len; i++) {
-            int weight = stones[i];
-            for (int j = target; j >= weight; j--) {
-                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
-            }
-        }
-        return sum - dp[target] - dp[target];
-    }
+//    public int lastStoneWeightII(int[] stones) {
+//        int len = stones.length;
+//        int sum = Arrays.stream(stones).sum();
+//        int target = sum>>1;
+//        int [] dp = new int[target+1];
+//        for (int i = 0; i < len; i++) {
+//            int weight = stones[i];
+//            for (int j = target; j >= weight; j--) {
+//                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
+//            }
+//        }
+//        return sum - dp[target] - dp[target];
+//    }
 
     /**
      * 49. 字母异位词分组
@@ -1534,6 +1534,38 @@ public class Solution {
         }
         return dp[a];
     }
+
+
+    /**
+     * 1049. 最后一块石头的重量 II
+     * @param stones
+     * @return
+     */
+    public int lastStoneWeightII(int[] stones) {
+        int sum = Arrays.stream(stones).sum();
+        int target = sum+1>>1;
+        int[] dp = new int[target+1];
+        for (int stone : stones) {
+            for (int i = target; i >= stone ; i--) {
+                dp[i] = Math.max(dp[i],dp[i-stone]+stone);
+            }
+        }
+        return sum-dp[target]*2;
+    }
+    //下面是之前做的
+//    public int lastStoneWeightII(int[] stones) {
+//        int len = stones.length;
+//        int sum = Arrays.stream(stones).sum();
+//        int target = sum>>1;
+//        int [] dp = new int[target+1];
+//        for (int i = 0; i < len; i++) {
+//            int weight = stones[i];
+//            for (int j = target; j >= weight; j--) {
+//                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
+//            }
+//        }
+//        return sum - dp[target] - dp[target];
+//    }
 
 }
 
