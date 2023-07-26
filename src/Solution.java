@@ -1567,6 +1567,50 @@ public class Solution {
 //        return sum - dp[target] - dp[target];
 //    }
 
+    /**
+     *
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return buildTree(preorder, inorder,0,preorder.length-1,0,preorder.length-1);
+    }
+    public TreeNode buildTree(int[] preorder, int[] inorder,int prebegin,int preend,int inbegin, int inend) {
+        if (prebegin>preend)return null;
+        TreeNode treeNode = new TreeNode(preorder[prebegin]);
+        int targetNum = 0;
+        for (int i = 0; i < preorder.length; i++) {
+            targetNum = i;
+            if (preorder[prebegin]==inorder[i]){
+                break;
+            }
+        }
+        System.out.println(targetNum);
+        treeNode.left = buildTree(preorder, inorder,prebegin+1,prebegin+targetNum-inbegin,inbegin,targetNum-1);
+        treeNode.right = buildTree(preorder, inorder,prebegin+targetNum-inbegin+1,preend, targetNum+1, inend);
+        return treeNode;
+    }
+    /**
+     *279. 完全平方数
+     */
+    public int numSquares(int n) {
+        int a = (int)Math.pow(n,0.5);
+        List<Integer> nums = new ArrayList();
+        for(int i=a;i>=1;i--){
+            nums.add(i*i);
+        }
+        int []dp = new int[n+1];
+        Arrays.fill(dp,Integer.MAX_VALUE-1);
+        dp[0]=0;
+        for(Integer num:nums){
+            for(int i=num ; i<=n;i++){
+                dp[i]=Math.min(dp[i],dp[i-num]+1);
+
+            }
+        }
+        return dp[n];
+    }
 }
 
 
