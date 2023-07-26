@@ -1611,6 +1611,37 @@ public class Solution {
         }
         return dp[n];
     }
+
+    /**
+     * 322. 零钱兑换
+     */
+    public int coinChange(int[] coins, int amount) {
+        int dp[] = new int[amount+1];
+        Arrays.fill(dp,Integer.MAX_VALUE-1);
+        dp[0]=0;
+        for(int c : coins){
+            for(int i = c; i<= amount;i++){
+                dp[i]=Math.min(dp[i],dp[i-c]+1);
+            }
+        }
+        return dp[amount]==Integer.MAX_VALUE-1?-1:dp[amount];
+    }
+
+    /**
+     * 377. 组合总和 Ⅳ
+     */
+    public int combinationSum4(int[] nums, int target) {
+        int [] dp =  new int[target+1];
+        dp[0]=1;
+
+        for(int i=0 ;i<=target;i++){
+
+            for(int num:nums){
+                if(num<=i)dp[i]=dp[i]+dp[i-num];
+            }
+        }
+        return dp[target];
+    }
 }
 
 
