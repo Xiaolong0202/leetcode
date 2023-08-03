@@ -1680,6 +1680,27 @@ public class Solution {
         }
         return dp[end];
     }
+
+    /**
+     * 337. 打家劫舍 III
+     * @param root
+     * @return
+     */
+    public int rob(TreeNode root) {
+        int[] res = robChild(root);
+        return Math.max(res[0],res[1]);
+    }
+
+    public int[] robChild(TreeNode root){
+        if (root==null)return new int[]{0,0};
+        int[] child1 = robChild(root.left);
+        int[] child2 = robChild(root.right);
+        System.out.println(root.val+Arrays.toString(child1));
+        System.out.println(root.val+Arrays.toString(child2));
+        int res1 = Math.max(child1[0],child1[1])+Math.max(child2[0],child2[1]);
+        int res2 = root.val + child1[1] + child2[1];
+        return new int[]{res2, Math.max(res1,child2[1]+child1[1])};
+    }
 }
 
 
