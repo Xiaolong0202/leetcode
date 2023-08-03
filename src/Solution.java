@@ -404,25 +404,25 @@ public class Solution {
     }
 
 
-    private int nums[];
+    private int pricese[];
     private Random random;
 
     public Solution(int[] nums) {
-        this.nums = nums;
+        this.pricese = nums;
         random = new Random();
     }
 
     public int[] reset() {
-        return nums;
+        return pricese;
     }
 
     public int[] shuffle() {
-        int[] res = nums.clone();
-        for (int i = 0; i < nums.length; i++) {
+        int[] res = pricese.clone();
+        for (int i = 0; i < pricese.length; i++) {
             int a = random.nextInt(i + 1);
-            int temp = nums[a];
-            nums[a] = nums[i];
-            nums[i] = temp;
+            int temp = pricese[a];
+            pricese[a] = pricese[i];
+            pricese[i] = temp;
         }
         return res;
     }
@@ -1700,6 +1700,24 @@ public class Solution {
         int res1 = Math.max(child1[0],child1[1])+Math.max(child2[0],child2[1]);
         int res2 = root.val + child1[1] + child2[1];
         return new int[]{res2, Math.max(res1,child2[1]+child1[1])};
+    }
+
+    /**
+     *121. 买卖股票的最佳时机
+     */
+    public int maxProfit(int[] prices) {
+        if (prices.length<=1)return 0;
+        int dp[] = new int[prices.length];
+        for (int i = 1; i < prices.length; i++) {
+            int minus = prices[i] - prices[i - 1];
+            dp[i]=minus+dp[i-1];
+            if (dp[i]<0)dp[i]=0;
+        }
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < dp.length; i++) {
+            res = Math.max(dp[i],res);
+        }
+        return  res;
     }
 }
 
