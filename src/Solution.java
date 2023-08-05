@@ -1735,6 +1735,36 @@ public class Solution {
         }
         return sell2;
     }
+
+    /**
+     *188. 买卖股票的最佳时机 IV
+     * @param k
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int k, int[] prices) {
+        if (prices.length<=1)return 0;
+        int dp[] = new int[k*2+1];
+        //初始化
+        for (int i = 1; i < dp.length; i++) {
+            if (i%2!=0){
+                dp[i] = -prices[0];
+            }else {
+                dp[i] = 0;
+            }
+        }
+        for (int i = 1; i < prices.length; i++) {
+            int price = prices[i];
+            for (int j = 1; j < dp.length; j++) {
+                if (j%2!=0){
+                    dp[j]=Math.max(dp[j-1]-price,dp[j]);//第二个下标为偶数的时候就表示为买入
+                }else {
+                    dp[j]=Math.max(dp[j-1]+price,dp[j]);//奇数的时候就表示为卖出
+                }
+            }
+        }
+        return dp[k*2];
+    }
 }
 
 
