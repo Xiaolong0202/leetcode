@@ -290,24 +290,7 @@ public class Solution {
         return false;
     }
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
 
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
 
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
@@ -1569,29 +1552,29 @@ public class Solution {
 //    }
 
     /**
-     *
+     *从全序与中序节点构造二叉树
      * @param preorder
      * @param inorder
      * @return
      */
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        return buildTree(preorder, inorder,0,preorder.length-1,0,preorder.length-1);
-    }
-    public TreeNode buildTree(int[] preorder, int[] inorder,int prebegin,int preend,int inbegin, int inend) {
-        if (prebegin>preend)return null;
-        TreeNode treeNode = new TreeNode(preorder[prebegin]);
-        int targetNum = 0;
-        for (int i = 0; i < preorder.length; i++) {
-            targetNum = i;
-            if (preorder[prebegin]==inorder[i]){
-                break;
-            }
-        }
-        System.out.println(targetNum);
-        treeNode.left = buildTree(preorder, inorder,prebegin+1,prebegin+targetNum-inbegin,inbegin,targetNum-1);
-        treeNode.right = buildTree(preorder, inorder,prebegin+targetNum-inbegin+1,preend, targetNum+1, inend);
-        return treeNode;
-    }
+//    public TreeNode buildTree(int[] preorder, int[] inorder) {
+//        return buildTree(preorder, inorder,0,preorder.length-1,0,preorder.length-1);
+//    }
+//    public TreeNode buildTree(int[] preorder, int[] inorder,int prebegin,int preend,int inbegin, int inend) {
+//        if (prebegin>preend)return null;
+//        TreeNode treeNode = new TreeNode(preorder[prebegin]);
+//        int targetNum = 0;
+//        for (int i = 0; i < preorder.length; i++) {
+//            targetNum = i;
+//            if (preorder[prebegin]==inorder[i]){
+//                break;
+//            }
+//        }
+//        System.out.println(targetNum);
+//        treeNode.left = buildTree(preorder, inorder,prebegin+1,prebegin+targetNum-inbegin,inbegin,targetNum-1);
+//        treeNode.right = buildTree(preorder, inorder,prebegin+targetNum-inbegin+1,preend, targetNum+1, inend);
+//        return treeNode;
+//    }
     /**
      *279. 完全平方数
      */
@@ -1772,15 +1755,39 @@ public class Solution {
      * @return
      */
     public int maxProfit(int[] prices) {
-        int dpBuy[] = new int[prices.length];
-        int dpSell[] = new int[prices.length];
-        dpBuy[0] = -prices[0];
-        dpSell[0] = 0;
+        int dpBuy[] = new int[prices.length];//第i天的最大的买入后的余额
+        int dpSell[] = new int[prices.length];//第i天的最大的卖出后的余额
+        dpBuy[0] = -prices[0];//第0天买入就是第一天价格的负数
+        dpSell[0] = 0;//第0天卖出就是0
         for (int i = 1; i < prices.length; i++) {
-            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[Math.max(i - 2, 0)]-prices[i]);
+            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[Math.max(i - 2, 0)]-prices[i]);//由于卖了之后的一天内不能买，所以只能从前天推导出dpBuy,Math.max(i - 2, 0)是防止i-2<0导致数组越界
             dpSell[i] = Math.max(dpSell[i-1],dpBuy[i]+prices[i]);
         }
         return dpSell[prices.length-1];
+    }
+
+    /**
+     * 106. 从中序与后序遍历序列构造二叉树
+     * @param inorder
+     * @param postorder
+     * @return
+     */
+    private HashMap<Integer,Integer> nodeValIndexMap=  new HashMap<>();
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        for (int i = 0; i < inorder.length; i++) {
+            nodeValIndexMap.put(inorder[i],i);
+        }
+       return buildTree(inorder,postorder,0,inorder.length-1,0,postorder.length-1);
+    }
+
+    public TreeNode buildTree(int[] inorder, int[] postorder,int instart,int inend,int poststart,int postend){
+        if (postend<poststart)return null;
+        TreeNode root = new TreeNode(postorder[postend]);
+        int aimIndex = nodeValIndexMap.get(postorder[postend]);
+        int leftLen = aimIndex-instart;
+        root.left=buildTree(inorder,postorder,instart,aimIndex-1,poststart,poststart+leftLen-1);
+        root.right=buildTree(inorder,postorder,aimIndex+1,inend,poststart+leftLen,postend-1);
+        return root;
     }
 
 
