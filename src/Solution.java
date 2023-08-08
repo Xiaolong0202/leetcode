@@ -1791,7 +1791,22 @@ public class Solution {
     }
 
 
-
+    /**
+     * 714. 买卖股票的最佳时机含手续费
+     * @param prices
+     * @param fee
+     * @return
+     */
+    public int maxProfit(int[] prices, int fee) {
+        int [] dpBuy = new int[prices.length];
+        int [] dpSell = new int[prices.length];
+        dpBuy[0] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[i-1]-prices[i]);
+            dpSell[i] =Math.max(dpSell[i-1],dpBuy[i]+prices[i]-fee);
+        }
+        return dpSell[prices.length-1];
+    }
 
 }
 
