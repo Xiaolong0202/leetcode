@@ -1808,6 +1808,47 @@ public class Solution {
         return dpSell[prices.length-1];
     }
 
+    /**
+     * 718. 最长重复子数组
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    //动态规划
+    public int findLength(int[] nums1, int[] nums2) {
+        int res = Integer.MIN_VALUE;
+        int dp[][] = new int[nums1.length+1][nums2.length+1];
+        for (int i = 1; i <= nums2.length; i++) {
+            for (int j = 1; j <= nums1.length; j++) {
+                if (nums2[i-1]==nums1[j-1]){
+                    dp[j][i]=dp[j-1][i-1]+1;
+                }
+                res = Math.max(res,dp[j][i]);
+            }
+        }
+        return res;
+    }
+    /**
+     *1143. 最长公共子序列
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        char[] charArr1 = text1.toCharArray();
+        char[] charArr2 = text2.toCharArray();
+
+        int dp[][] = new int[charArr1.length+1][charArr2.length+1];
+        for (int i = 1; i <= charArr1.length; i++) {
+            for (int j = 1; j <= charArr2.length; j++) {
+                if (charArr1[i-1]==charArr2[j-1]){
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }else{
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+                //    dp[i][j]=Math.max(dp[i][j],Math.max(dp[i-1][j],dp[i][j-1]));
+            }
+        }
+        return dp[charArr1.length][charArr2.length];
+    }
+
 }
 
 
