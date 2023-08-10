@@ -1869,6 +1869,52 @@ public class Solution {
         return dp[nums1.length][nums2.length];
     }
 
+    /**
+     * 392. 判断子序列
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isSubsequence(String s, String t) {
+        char[] charArrays = s.toCharArray();
+        char[] charArrayt = t.toCharArray();
+        int i = 0;
+        int j = 0;
+        while (i<charArrayt.length&&j<charArrays.length){
+                if (charArrays[j]==charArrayt[i]) {
+                    j++;
+                    i++;
+                }
+                else i++;
+        }
+        if (j==charArrays.length)return true;
+        else return false;
+    }
+
+    /**
+     * 115. 不同的子序列
+     * @param s
+     * @param t
+     * @return
+     */
+    public int numDistinct(String s, String t) {
+        char[] sCharArray = s.toCharArray();
+        char[] tCharArray = t.toCharArray();
+        int dp[][] = new int[sCharArray.length+1][tCharArray.length+1];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i <= sCharArray.length; i++) {
+            for (int j = 1; j <= tCharArray.length; j++) {
+                if (sCharArray[i-1]==tCharArray[j-1]){
+                    dp[i][j] = dp[i-1][j]+dp[i-1][j-1];
+                }else {
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[sCharArray.length][tCharArray.length];
+    }
 }
 
 
