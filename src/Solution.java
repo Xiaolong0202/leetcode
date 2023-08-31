@@ -4,7 +4,7 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        String a =  "你好傻都没打算";
+        String a = "你好傻都没打算";
         char[] a1 = a.toCharArray();
         Arrays.sort(a1);
         System.out.println(a1);
@@ -289,7 +289,6 @@ public class Solution {
         }
         return false;
     }
-
 
 
     public int maxDepth(TreeNode root) {
@@ -719,25 +718,25 @@ public class Solution {
         if (nums.length == 1 || nums.length == 0) return true;
         int k = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (k<i)return false;
-            k = Math.max(k,nums[i]+i);
+            if (k < i) return false;
+            k = Math.max(k, nums[i] + i);
         }
         return true;
     }
 
     public int jump(int[] nums) {
-        if (nums.length==1)return 0;
+        if (nums.length == 1) return 0;
         int count = 0;
-        int nextMaxWay= 0;
+        int nextMaxWay = 0;
         int currentMaxWay = nums[0];
         for (int i = 1; i < nums.length; i++) {
-            nextMaxWay = Math.max(nextMaxWay,nums[i]+i);
-            if (i==currentMaxWay){
+            nextMaxWay = Math.max(nextMaxWay, nums[i] + i);
+            if (i == currentMaxWay) {
                 count++;
-                currentMaxWay=nextMaxWay;
+                currentMaxWay = nextMaxWay;
             }
         }
-        return  count;
+        return count;
     }
 
     public int largestSumAfterKNegations(int[] nums, int k) {
@@ -745,36 +744,38 @@ public class Solution {
         int i;
         int sum = 0;
         for (i = 0; i < nums.length; i++) {
-            if (nums[i]<0&&k>0){
-                nums[i]=-nums[i];
+            if (nums[i] < 0 && k > 0) {
+                nums[i] = -nums[i];
                 k--;
-                }
-            sum+=nums[i];
-        }
-            if (k!=0&&k%2!=0){
-                Arrays.sort(nums);
-                sum-=nums[0]*2;
             }
+            sum += nums[i];
+        }
+        if (k != 0 && k % 2 != 0) {
+            Arrays.sort(nums);
+            sum -= nums[0] * 2;
+        }
         return sum;
     }
+
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int len = gas.length;
         int qidian = 0;
         int youliang = 0;
-        int i=0;
-        boolean flag =true;
-        while (true){
-            if (flag) youliang+=gas[i]-cost[i];
+        int i = 0;
+        boolean flag = true;
+        while (true) {
+            if (flag) youliang += gas[i] - cost[i];
             //当前位置为负数，下一步不能走
-            if (youliang<0){
-                qidian=(qidian+len-1)%len;
-                youliang+=gas[qidian]-cost[qidian];;
-                flag=false;
-                if (qidian==i)return -1;
-            }else {
-                flag=true;
-                i=(i+1)%len;
-                if (i==qidian)return qidian;
+            if (youliang < 0) {
+                qidian = (qidian + len - 1) % len;
+                youliang += gas[qidian] - cost[qidian];
+                ;
+                flag = false;
+                if (qidian == i) return -1;
+            } else {
+                flag = true;
+                i = (i + 1) % len;
+                if (i == qidian) return qidian;
             }
         }
     }
@@ -782,23 +783,23 @@ public class Solution {
     //分糖果
     public int candy(int[] ratings) {
         int len = ratings.length;
-        int [] res = new int[len];//表示每个孩子分到的糖果数
-        res[0] =  1;
+        int[] res = new int[len];//表示每个孩子分到的糖果数
+        res[0] = 1;
         for (int i = 1; i < len; i++) {
-            if (ratings[i] > ratings[i-1]){
-                res[i] = res[i-1]+1;
-            }else {
+            if (ratings[i] > ratings[i - 1]) {
+                res[i] = res[i - 1] + 1;
+            } else {
                 res[i] = 1;
             }
         }
-        res[len-1] = res[len-1];
-        for (int i = len-2; i >= 0 ; i--) {
-            if (ratings[i] > ratings[i+1])res[i] = Math.max(res[i],res[i+1]+1);
+        res[len - 1] = res[len - 1];
+        for (int i = len - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) res[i] = Math.max(res[i], res[i + 1] + 1);
         }
         System.out.println(Arrays.toString(res));
         int sum = 0;
         for (int i = 0; i < len; i++) {
-            sum+=res[i];
+            sum += res[i];
         }
         return sum;
     }
@@ -832,68 +833,68 @@ public class Solution {
         Arrays.sort(people, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
-                if (o1[0] != o2[0]){
+                if (o1[0] != o2[0]) {
                     return o2[0] - o1[0];
-                }else {
-                    return o1[1]-o2[1];
+                } else {
+                    return o1[1] - o2[1];
                 }
             }
         });
         List<int[]> list = new ArrayList<>();
         for (int i = 0; i < people.length; i++) {
-            list.add(people[i][1],people[i]);
+            list.add(people[i][1], people[i]);
         }
         return list.toArray(new int[people.length][2]);
     }
 
 
     public int removeElement(int[] nums, int val) {
-        if (nums.length==1&&nums[0]!=val) return 1;
-        if (nums.length==0)return 0;
+        if (nums.length == 1 && nums[0] != val) return 1;
+        if (nums.length == 0) return 0;
         int i = 0;
         int j = nums.length - 1;
         int count = 0;
-        while (i<j){
-            if (nums[i] == val){
-                while (nums[j]==val&&i<j){
+        while (i < j) {
+            if (nums[i] == val) {
+                while (nums[j] == val && i < j) {
                     j--;
                 }
-                if (nums[j]==val)break;
+                if (nums[j] == val) break;
                 int temp = nums[i];
                 nums[i] = nums[j];
                 nums[j] = temp;
             }
             i++;
         }
-        if (j== nums.length-1&&nums[j]!=val)i++;
+        if (j == nums.length - 1 && nums[j] != val) i++;
         return i;
     }
 
     public int[] sortedSquares(int[] nums) {
-        int [] result = new int[nums.length];
+        int[] result = new int[nums.length];
         int i;
-        for ( i = 0; i < nums.length; i++) {
-            if (nums[i]>0)break;
+        for (i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) break;
         }
-        int l = i-1;
+        int l = i - 1;
         int r = i;
         int j = 0;
-        while (l>=0&&r<=nums.length-1){
-            if (Math.abs(nums[l])<=Math.abs(nums[r])){
-                result[j++]=nums[l]*nums[l];
+        while (l >= 0 && r <= nums.length - 1) {
+            if (Math.abs(nums[l]) <= Math.abs(nums[r])) {
+                result[j++] = nums[l] * nums[l];
                 l--;
-            }else {
-                result[j++]=nums[r]*nums[r];
+            } else {
+                result[j++] = nums[r] * nums[r];
                 r++;
             }
         }
 
-        while (l>=0){
-            result[j++]=nums[l]*nums[l];
+        while (l >= 0) {
+            result[j++] = nums[l] * nums[l];
             l--;
         }
-        while (r<=nums.length-1){
-            result[j++]=nums[r]*nums[r];
+        while (r <= nums.length - 1) {
+            result[j++] = nums[r] * nums[r];
             r++;
         }
         return result;
@@ -901,26 +902,26 @@ public class Solution {
 
 
     public String replaceSpace(String s) {
-        return s.replaceAll(" ","%20");
+        return s.replaceAll(" ", "%20");
     }
 
     public String reverseWords(String s) {
-        s=s.trim();
-        StringBuilder sb  = new StringBuilder();
+        s = s.trim();
+        StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         int len = chars.length;
-        int i  = len -1 ;
-        int j =  len;
-        while (i>=0){
-            if (chars[i]==' '){
-                if ((i!=len-1)&&chars[i+1]==' '){
-                }else {
-                    sb.append(s.substring(i+1,j));
+        int i = len - 1;
+        int j = len;
+        while (i >= 0) {
+            if (chars[i] == ' ') {
+                if ((i != len - 1) && chars[i + 1] == ' ') {
+                } else {
+                    sb.append(s.substring(i + 1, j));
                     sb.append(' ');
                 }
-                j=i;
-            }else if (i==0){
-                sb.append(s.substring(i,j));
+                j = i;
+            } else if (i == 0) {
+                sb.append(s.substring(i, j));
             }
             i--;
         }
@@ -929,32 +930,33 @@ public class Solution {
     }
 
 
-        List<List<Integer>> combineList = new ArrayList<>();
-        public List<List<Integer>> combine(int n, int k) {
-            for (int i = 1; i <= n ; i++) {
-                combine(1,i,n,k,new ArrayList<>());
-            }
-            return combineList;
-        }
+    List<List<Integer>> combineList = new ArrayList<>();
 
-        public void combine(int floor,int addNum,int n,int k,List<Integer> list){
-            list.add(addNum);
-            if (floor==k){
-                List<Integer> nList = new ArrayList<Integer>(list);
-                combineList.add(nList);
-                return;
-            }
-            for (int i = addNum+1; i <= n; i++) {
-                combine(floor+1,i,n,k,list);
-                list.remove(list.size()-1);
-            }
+    public List<List<Integer>> combine(int n, int k) {
+        for (int i = 1; i <= n; i++) {
+            combine(1, i, n, k, new ArrayList<>());
         }
+        return combineList;
+    }
+
+    public void combine(int floor, int addNum, int n, int k, List<Integer> list) {
+        list.add(addNum);
+        if (floor == k) {
+            List<Integer> nList = new ArrayList<Integer>(list);
+            combineList.add(nList);
+            return;
+        }
+        for (int i = addNum + 1; i <= n; i++) {
+            combine(floor + 1, i, n, k, list);
+            list.remove(list.size() - 1);
+        }
+    }
 
     public int findMinArrowShots(int[][] points) {
         Arrays.sort(points, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
-                return Integer.compare(o1[0],o2[0]);
+                return Integer.compare(o1[0], o2[0]);
             }
         });
 
@@ -962,9 +964,9 @@ public class Solution {
         int count = 1;
 
         for (int i = 1; i < points.length; i++) {
-            if (points[i][0] <= right){
-                right = Math.min(points[i][1],right);
-            }else {
+            if (points[i][0] <= right) {
+                right = Math.min(points[i][1], right);
+            } else {
                 right = points[i][1];
                 count++;
             }
@@ -976,20 +978,20 @@ public class Solution {
         Arrays.sort(intervals, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
-                if (o1[0]==o2[0])return Integer.compare(o1[1],o2[1]);
-                else return Integer.compare(o1[0],o2[0]);
+                if (o1[0] == o2[0]) return Integer.compare(o1[1], o2[1]);
+                else return Integer.compare(o1[0], o2[0]);
             }
         });
 
         int right = intervals[0][1];
         int count = 0;
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0]>=right){
+            if (intervals[i][0] >= right) {
                 // System.out.println(right+" "+intervals[i][1]);
-                right=intervals[i][1];
-            }else {
+                right = intervals[i][1];
+            } else {
                 count++;
-                right = Math.min(right,intervals[i][1]);
+                right = Math.min(right, intervals[i][1]);
             }
         }
         return count;
@@ -998,47 +1000,47 @@ public class Solution {
     public List<Integer> partitionLabels(String s) {
         char[] chars = s.toCharArray();
         List<Integer> list = new ArrayList<>();
-        HashMap<Character,Integer> map = new HashMap<>();
+        HashMap<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < chars.length; i++) {
-            map.put(chars[i],i);
+            map.put(chars[i], i);
         }
         int preR = -1;
         int right = map.get(chars[0]);
         for (int i = 1; i < chars.length; i++) {
             int temp = map.get(chars[i]);
-            if (i>right){
-                list.add(right-preR);
+            if (i > right) {
+                list.add(right - preR);
                 preR = right;
             }
-            right = Math.max(right,temp);
+            right = Math.max(right, temp);
         }
-        list.add(right-preR);
+        list.add(right - preR);
         return list;
     }
 
     public int[][] merge(int[][] intervals) {
-            Arrays.sort(intervals, new Comparator<int[]>() {
-                @Override
-                public int compare(int[] o1, int[] o2) {
-                    if (o1[0]!=o2[0]) return Integer.compare(o1[0],o2[0]);
-                    else return Integer.compare(o1[1],o2[1]);
-                }
-            });
-            List<int[]> list = new ArrayList<>();
-            int left = intervals[0][0];
-            int right = intervals[0][1];
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] != o2[0]) return Integer.compare(o1[0], o2[0]);
+                else return Integer.compare(o1[1], o2[1]);
+            }
+        });
+        List<int[]> list = new ArrayList<>();
+        int left = intervals[0][0];
+        int right = intervals[0][1];
 
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0]<=right){
-                right = Math.max(intervals[i][1],right);
-            }else {
-                int[] a = new int[]{left,right};
+            if (intervals[i][0] <= right) {
+                right = Math.max(intervals[i][1], right);
+            } else {
+                int[] a = new int[]{left, right};
                 list.add(a);
                 left = intervals[i][0];
                 right = intervals[i][1];
             }
         }
-        list.add(new int[]{left,right});
+        list.add(new int[]{left, right});
         int[][] ints = list.toArray(new int[list.size()][2]);
         return ints;
     }
@@ -1046,173 +1048,181 @@ public class Solution {
     public int monotoneIncreasingDigits(int n) {
         String string = Integer.toString(n);
         char[] num = string.toCharArray();
-        for (int i = 0; i < num.length-1; i++) {
-            if (num[i]>num[i+1]){
-                while (i>0&&num[i]==num[i-1]){
+        for (int i = 0; i < num.length - 1; i++) {
+            if (num[i] > num[i + 1]) {
+                while (i > 0 && num[i] == num[i - 1]) {
                     i--;
                 }
                 num[i++]++;
-            while (i<num.length){
-                num[i++]='9';
-            }
-            StringBuilder stringBuilder = new StringBuilder();
+                while (i < num.length) {
+                    num[i++] = '9';
+                }
+                StringBuilder stringBuilder = new StringBuilder();
                 for (char c : num) {
                     stringBuilder.append(c);
                 }
-            return Integer.parseInt(stringBuilder.toString());
+                return Integer.parseInt(stringBuilder.toString());
             }
         }
         return n;
     }
 
     List<List<Integer>> combinationListSum3 = new ArrayList<>();
+
     public List<List<Integer>> combinationSum3(int k, int n) {
-        combinationSum3(k,n,0,0,0,new ArrayList<>());
+        combinationSum3(k, n, 0, 0, 0, new ArrayList<>());
         return combinationListSum3;
     }
 
-    public void combinationSum3(int k, int n,int floor,int currentNum,int sum,List<Integer> list) {
-        if (sum>n)return;
-        else if (sum==n&&k<floor)return;
-        else if (k==floor){
-            if (sum==n) combinationListSum3.add(new ArrayList<>(list));
+    public void combinationSum3(int k, int n, int floor, int currentNum, int sum, List<Integer> list) {
+        if (sum > n) return;
+        else if (sum == n && k < floor) return;
+        else if (k == floor) {
+            if (sum == n) combinationListSum3.add(new ArrayList<>(list));
             return;
-        }else {
-                int maxI = n>9?9:n-1;
-                for (int i = currentNum+1; i <= maxI; i++) {
-                    list.add(i);
-                    combinationSum3(k,n,floor+1,i,i+sum,list);
-                    list.remove(list.size()-1);
-                }
+        } else {
+            int maxI = n > 9 ? 9 : n - 1;
+            for (int i = currentNum + 1; i <= maxI; i++) {
+                list.add(i);
+                combinationSum3(k, n, floor + 1, i, i + sum, list);
+                list.remove(list.size() - 1);
             }
+        }
     }
 
     List<List<Integer>> subsetDupList = new ArrayList<>();
+
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-            Arrays.sort(nums);
-            boolean [][] subsetArr = new boolean[11][21];
-            List<Integer> list = new ArrayList<>();
-            subsetDupList.add(list);
-            subsetsWithDup(nums,list,-1,0,subsetArr);
-            return subsetDupList;
+        Arrays.sort(nums);
+        boolean[][] subsetArr = new boolean[11][21];
+        List<Integer> list = new ArrayList<>();
+        subsetDupList.add(list);
+        subsetsWithDup(nums, list, -1, 0, subsetArr);
+        return subsetDupList;
     }
 
-    public void subsetsWithDup(int[] nums,List<Integer> list,int i,int floor,boolean[][] subsetArr) {
-        if (floor==nums.length)return;
-        for (int j = i+1; j < nums.length; j++) {
-            if (!subsetArr[floor][nums[j]+10]){
+    public void subsetsWithDup(int[] nums, List<Integer> list, int i, int floor, boolean[][] subsetArr) {
+        if (floor == nums.length) return;
+        for (int j = i + 1; j < nums.length; j++) {
+            if (!subsetArr[floor][nums[j] + 10]) {
                 list.add(nums[j]);
                 subsetDupList.add(new ArrayList<>(list));
-                subsetArr[floor][nums[j]+10]=true;
-                subsetsWithDup(nums,list,j,floor+1,subsetArr);
-                list.remove(list.size()-1);
+                subsetArr[floor][nums[j] + 10] = true;
+                subsetsWithDup(nums, list, j, floor + 1, subsetArr);
+                list.remove(list.size() - 1);
 //                subsetArr[floor][nums[j]]=false;
             }
         }
-        Arrays.fill(subsetArr[floor],false);
+        Arrays.fill(subsetArr[floor], false);
     }
 
     List<List<Integer>> combinationList = new ArrayList<>();
+
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
-        combinationSum(candidates,target,-1,0,0,new ArrayList<>());
+        combinationSum(candidates, target, -1, 0, 0, new ArrayList<>());
         return combinationList;
     }
-    public void combinationSum(int[] candidates, int target,int i,int floor,int currentSum,List<Integer> list) {
-        if (currentSum>target)return;
-        if (currentSum==target){
+
+    public void combinationSum(int[] candidates, int target, int i, int floor, int currentSum, List<Integer> list) {
+        if (currentSum > target) return;
+        if (currentSum == target) {
             combinationList.add(new ArrayList<>(list));
             return;
         }
-        for (int j = i+1; j < candidates.length; j++) {
+        for (int j = i + 1; j < candidates.length; j++) {
             int countPlusTime = 0;
-            int a = candidates[j]+currentSum;
-            while (a<=target){
+            int a = candidates[j] + currentSum;
+            while (a <= target) {
                 list.add(candidates[j]);
-                combinationSum(candidates,target,j,floor+1,a,list);
+                combinationSum(candidates, target, j, floor + 1, a, list);
                 countPlusTime++;
-                a+=candidates[j];
+                a += candidates[j];
             }
             for (int k = 0; k < countPlusTime; k++) {
-                list.remove(list.size()-1);
+                list.remove(list.size() - 1);
             }
         }
     }
 
     public int[][] generateMatrix(int n) {
         int[][] res = new int[n][n];
-        generateMatrix(0,n,res,1);
+        generateMatrix(0, n, res, 1);
         return res;
     }
 
-    public void generateMatrix(int m,int n,int[][] res,int currentNum) {
-        for (int i = m; i < n-m; i++) {
-            res[m][i]=currentNum++;
+    public void generateMatrix(int m, int n, int[][] res, int currentNum) {
+        for (int i = m; i < n - m; i++) {
+            res[m][i] = currentNum++;
         }
 
-        for (int i = m+1; i < n-m; i++) {
-            res[i][n-m-1]=currentNum++;
+        for (int i = m + 1; i < n - m; i++) {
+            res[i][n - m - 1] = currentNum++;
         }
 
-        for (int i = n-m-2 ; i >= m; i--) {
-            res[n-m-1][i]=currentNum++;
+        for (int i = n - m - 2; i >= m; i--) {
+            res[n - m - 1][i] = currentNum++;
         }
 
-        for (int i = n-m-2; i > m; i--) {
+        for (int i = n - m - 2; i > m; i--) {
             res[i][m] = currentNum++;
         }
-        if (currentNum==n*n+1)return;
-        generateMatrix(m+1,n,res,currentNum);
+        if (currentNum == n * n + 1) return;
+        generateMatrix(m + 1, n, res, currentNum);
     }
 
     List<List<String>> partitionlist = new ArrayList<>();
+
     public List<List<String>> partition(String s) {
-        partition(s,new ArrayList<>(),0);
+        partition(s, new ArrayList<>(), 0);
         return partitionlist;
     }
-    public void partition(String s,List<String> list,int currentI) {
-        if (currentI==s.length()){
+
+    public void partition(String s, List<String> list, int currentI) {
+        if (currentI == s.length()) {
             partitionlist.add(new ArrayList<>(list));
             return;
         }
-        for (int i = currentI+1; i <= s.length(); i++) {
-            String  candidate = s.substring(currentI,i);
+        for (int i = currentI + 1; i <= s.length(); i++) {
+            String candidate = s.substring(currentI, i);
             System.out.println(candidate);
-            if (isHuiWen(candidate)){
+            if (isHuiWen(candidate)) {
                 list.add(candidate);
-                partition(s,list,i);
-                list.remove(list.size()-1);
+                partition(s, list, i);
+                list.remove(list.size() - 1);
             }
         }
     }
-    public boolean isHuiWen(String s){
+
+    public boolean isHuiWen(String s) {
         char[] charArray = s.toCharArray();
-        int l=0;
-        int r = charArray.length-1;
-        while (l<r){
-            if (charArray[l++]!=charArray[r--])return false;
+        int l = 0;
+        int r = charArray.length - 1;
+        while (l < r) {
+            if (charArray[l++] != charArray[r--]) return false;
         }
         return true;
     }
 
     /**
      * 用单调栈
+     *
      * @param temperatures
      * @return
      */
     public int[] dailyTemperatures(int[] temperatures) {
-            int[] res = new int[temperatures.length];
+        int[] res = new int[temperatures.length];
 
-            Deque<Integer> deque = new ArrayDeque<>();
+        Deque<Integer> deque = new ArrayDeque<>();
 
         for (int i = 0; i < temperatures.length; i++) {
             int a = temperatures[i];
-            while (!deque.isEmpty()){
+            while (!deque.isEmpty()) {
                 int topNum = deque.peekLast();
-                if (a>temperatures[topNum]){
+                if (a > temperatures[topNum]) {
                     deque.pollLast();
-                    res[topNum] = i-topNum;
-                }else {
+                    res[topNum] = i - topNum;
+                } else {
                     break;
                 }
             }
@@ -1223,23 +1233,23 @@ public class Solution {
 
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
         Deque<Integer> deque = new ArrayDeque<Integer>();
-        HashMap<Integer,Integer> map = new HashMap<>();
-        int [] res = new int[nums1.length];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[nums1.length];
         for (int i = 0; i < nums2.length; i++) {
             int a = nums2[i];
-            while (!deque.isEmpty()){
+            while (!deque.isEmpty()) {
                 int topNum = deque.peekLast();
-                if (topNum<a){
+                if (topNum < a) {
                     deque.pollLast();
-                    map.put(topNum,a);
-                }else {
+                    map.put(topNum, a);
+                } else {
                     break;
                 }
             }
             deque.offerLast(a);
         }
         for (int i = 0; i < res.length; i++) {
-            res[i] = map.getOrDefault(nums1[i],-1);
+            res[i] = map.getOrDefault(nums1[i], -1);
         }
         return res;
     }
@@ -1247,24 +1257,25 @@ public class Solution {
 
     public int[] nextGreaterElements(int[] nums) {
         int[] res = new int[nums.length];
-        Arrays.fill(res,-1);
+        Arrays.fill(res, -1);
         ArrayDeque<Integer> deque = new ArrayDeque<>();
-        for (int i = 0; i < nums.length*2; i++) {
-            int a = nums[i%nums.length];
-            while (!deque.isEmpty()){
+        for (int i = 0; i < nums.length * 2; i++) {
+            int a = nums[i % nums.length];
+            while (!deque.isEmpty()) {
                 int topIndex = deque.peekLast();
-                if (nums[topIndex]<a){
+                if (nums[topIndex] < a) {
                     deque.pollLast();
                     res[topIndex] = a;
-                }else break;
+                } else break;
             }
-            deque.offerLast(i%nums.length);
+            deque.offerLast(i % nums.length);
         }
         return res;
     }
 
     /**
      * 42. 接雨水
+     *
      * @param height
      * @return
      */
@@ -1273,18 +1284,18 @@ public class Solution {
         Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < height.length; i++) {
             int a = height[i];
-            while (!deque.isEmpty()){
+            while (!deque.isEmpty()) {
                 int mid = deque.peekLast();
-                if (height[mid]>=a){
-                 break;
-                }else {
+                if (height[mid] >= a) {
+                    break;
+                } else {
                     deque.pollLast();
-                    if (deque.isEmpty())continue;
+                    if (deque.isEmpty()) continue;
                     int ll = deque.peekLast();
-                    int h = Math.min(a,height[ll])-height[mid];
-                    int d = i-ll;
-                    int s = d*h;
-                    sumOfYuShui+=s;
+                    int h = Math.min(a, height[ll]) - height[mid];
+                    int d = i - ll;
+                    int s = d * h;
+                    sumOfYuShui += s;
                 }
             }
             deque.offerLast(i);
@@ -1293,7 +1304,8 @@ public class Solution {
     }
 
     /**
-     *84. 柱状图中最大的矩形
+     * 84. 柱状图中最大的矩形
+     *
      * @param heights
      * @return
      */
@@ -1326,21 +1338,21 @@ public class Solution {
         Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i <= heights.length; i++) {
             int a;
-            if (i==heights.length)a=-1;
+            if (i == heights.length) a = -1;
             else a = heights[i];
-            while (!deque.isEmpty()){
+            while (!deque.isEmpty()) {
                 int t = deque.peekLast();
-                if (a>=heights[t]){
+                if (a >= heights[t]) {
                     break;
-                }else {
+                } else {
                     deque.pollLast();
                     int l;
-                    if (deque.isEmpty())l=-1;
+                    if (deque.isEmpty()) l = -1;
                     l = deque.peekLast();//左边的坐标
                     int width = i - l - 1;
                     int height = heights[t];
-                    int s = width*height;
-                    maxS = Math.max(maxS,s);
+                    int s = width * height;
+                    maxS = Math.max(maxS, s);
                 }
             }
             deque.addLast(i);
@@ -1350,15 +1362,16 @@ public class Solution {
 
     /**
      * 整数拆分
+     *
      * @param n
      * @return
      */
     int integerBreak(int n) {
-        int[] dp = new int[n+1];
-        for(int i = 1; i <= n ; i++) {
-            for (int j = 1; j <= i-1 ; j++) {
-                int currentMax = Math.max(j*(i-j),j*dp[i-j]);
-                dp[i] = Math.max(dp[i],currentMax);
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i - 1; j++) {
+                int currentMax = Math.max(j * (i - j), j * dp[i - j]);
+                dp[i] = Math.max(dp[i], currentMax);
             }
         }
         return dp[n];
@@ -1369,26 +1382,27 @@ public class Solution {
      * 输入：nums = [1,5,11,5]
      * 输出：true
      * 解释：数组可以分割成 [1, 5, 5] 和 [11]
+     *
      * @param nums
      * @return
      */
     public boolean canPartition(int[] nums) {
         int len = nums.length;
-        if (len<2)return false;
+        if (len < 2) return false;
         int sum = Arrays.stream(nums).sum();
-        if (sum%2!=0)return false;
-        int target = sum/2;
-        int[] dp = new int[target+1];
-        for (int i = 0 ;i < nums.length; i++) {
+        if (sum % 2 != 0) return false;
+        int target = sum / 2;
+        int[] dp = new int[target + 1];
+        for (int i = 0; i < nums.length; i++) {
             int num = nums[i];
-            if (num>target)return false;
+            if (num > target) return false;
             for (int j = 0; j <= target; j++) {
-                if (j>=num){
-                    dp[j] = Math.max(dp[j],dp[j-num]+num);
+                if (j >= num) {
+                    dp[j] = Math.max(dp[j], dp[j - num] + num);
                 }
             }
         }
-        if (dp[target]==target)return true;
+        if (dp[target] == target) return true;
         else return false;
     }
 
@@ -1415,42 +1429,45 @@ public class Solution {
      * 49. 字母异位词分组
      */
     public List<List<String>> groupAnagrams(String[] strs) {
-        HashMap<String,List<String>> map = new HashMap<>();
+        HashMap<String, List<String>> map = new HashMap<>();
         for (String str : strs) {
             char[] chars = str.toCharArray();
             Arrays.sort(chars);
             String strKey = String.valueOf(chars);
             List<String> orDefault = map.getOrDefault(strKey, new ArrayList<String>());
             orDefault.add(str);
-            map.put(strKey,orDefault);
+            map.put(strKey, orDefault);
         }
         List<List<String>> res = new ArrayList<>();
-        map.forEach((key,value)->{
+        map.forEach((key, value) -> {
             res.add(value);
         });
         return res;
     }
+
     /**
      * 47. 全排列 II
      */
     public List<List<Integer>> quanpaixu2List = new ArrayList<>();
+
     public List<List<Integer>> permuteUnique(int[] nums) {
         Arrays.sort(nums);
-        permuteUnique(nums,0,new ArrayList<>(),new boolean[nums.length]);
+        permuteUnique(nums, 0, new ArrayList<>(), new boolean[nums.length]);
         return quanpaixu2List;
     }
-    public void permuteUnique(int[] nums,int n, List<Integer> list,boolean[] booleans) {
-        if (n==nums.length){
+
+    public void permuteUnique(int[] nums, int n, List<Integer> list, boolean[] booleans) {
+        if (n == nums.length) {
             quanpaixu2List.add(new ArrayList<>(list));
-        }else {
+        } else {
             for (int i = 0; i < nums.length; i++) {
-                if (booleans[i]||(i>0&&nums[i-1]==nums[i])&&!booleans[i-1])continue;
+                if (booleans[i] || (i > 0 && nums[i - 1] == nums[i]) && !booleans[i - 1]) continue;
                 //没有被操作
-                booleans[i]=!booleans[i];
+                booleans[i] = !booleans[i];
                 list.add(nums[i]);
-                permuteUnique(nums,n+1,list,booleans);
-                booleans[i]=!booleans[i];
-                list.remove(list.size()-1);
+                permuteUnique(nums, n + 1, list, booleans);
+                booleans[i] = !booleans[i];
+                list.remove(list.size() - 1);
             }
         }
     }
@@ -1459,7 +1476,7 @@ public class Solution {
      * 226. 翻转二叉树
      */
     public TreeNode invertTree(TreeNode root) {
-        if(root==null)return root;
+        if (root == null) return root;
         TreeNode l = root.left;
         TreeNode r = root.right;
         TreeNode t = l;
@@ -1474,19 +1491,20 @@ public class Solution {
 
     /**
      * 474. 一和零
+     *
      * @param strs
      * @param m
      * @param n
      * @return
      */
     public int findMaxForm(String[] strs, int m, int n) {
-        int [][] dp = new int[m+1][n+1];
+        int[][] dp = new int[m + 1][n + 1];
         for (String str : strs) {
             char[] chars = str.toCharArray();
             int zero = 0;
             int one = 0;
             for (char aChar : chars) {
-                if (aChar-'0'==0)zero++;
+                if (aChar - '0' == 0) zero++;
                 else one++;
             }
             for (int i = m; i >= zero; i--) {
@@ -1500,20 +1518,21 @@ public class Solution {
 
     /**
      * 494. 目标和
+     *
      * @param nums
      * @param target
      * @return
      */
     public int findTargetSumWays(int[] nums, int target) {
         int sum = Arrays.stream(nums).sum();
-        int a = sum-target;
-        if(a%2!=0||a<0)return 0;
-        a=a>>1;
-        int[] dp = new int[a+1];
-        dp[0]=1;
+        int a = sum - target;
+        if (a % 2 != 0 || a < 0) return 0;
+        a = a >> 1;
+        int[] dp = new int[a + 1];
+        dp[0] = 1;
         for (int num : nums) {
-            for(int j = a; j>=num ;j--){
-                dp[j] = dp[j]+dp[j-num];
+            for (int j = a; j >= num; j--) {
+                dp[j] = dp[j] + dp[j - num];
             }
         }
         return dp[a];
@@ -1522,19 +1541,20 @@ public class Solution {
 
     /**
      * 1049. 最后一块石头的重量 II
+     *
      * @param stones
      * @return
      */
     public int lastStoneWeightII(int[] stones) {
         int sum = Arrays.stream(stones).sum();
-        int target = sum+1>>1;
-        int[] dp = new int[target+1];
+        int target = sum + 1 >> 1;
+        int[] dp = new int[target + 1];
         for (int stone : stones) {
-            for (int i = target; i >= stone ; i--) {
-                dp[i] = Math.max(dp[i],dp[i-stone]+stone);
+            for (int i = target; i >= stone; i--) {
+                dp[i] = Math.max(dp[i], dp[i - stone] + stone);
             }
         }
-        return sum-dp[target]*2;
+        return sum - dp[target] * 2;
     }
     //下面是之前做的
 //    public int lastStoneWeightII(int[] stones) {
@@ -1575,21 +1595,22 @@ public class Solution {
 //        treeNode.right = buildTree(preorder, inorder,prebegin+targetNum-inbegin+1,preend, targetNum+1, inend);
 //        return treeNode;
 //    }
+
     /**
-     *279. 完全平方数
+     * 279. 完全平方数
      */
     public int numSquares(int n) {
-        int a = (int)Math.pow(n,0.5);
+        int a = (int) Math.pow(n, 0.5);
         List<Integer> nums = new ArrayList();
-        for(int i=a;i>=1;i--){
-            nums.add(i*i);
+        for (int i = a; i >= 1; i--) {
+            nums.add(i * i);
         }
-        int []dp = new int[n+1];
-        Arrays.fill(dp,Integer.MAX_VALUE-1);
-        dp[0]=0;
-        for(Integer num:nums){
-            for(int i=num ; i<=n;i++){
-                dp[i]=Math.min(dp[i],dp[i-num]+1);
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;
+        for (Integer num : nums) {
+            for (int i = num; i <= n; i++) {
+                dp[i] = Math.min(dp[i], dp[i - num] + 1);
 
             }
         }
@@ -1600,28 +1621,28 @@ public class Solution {
      * 322. 零钱兑换
      */
     public int coinChange(int[] coins, int amount) {
-        int dp[] = new int[amount+1];
-        Arrays.fill(dp,Integer.MAX_VALUE-1);
-        dp[0]=0;
-        for(int c : coins){
-            for(int i = c; i<= amount;i++){
-                dp[i]=Math.min(dp[i],dp[i-c]+1);
+        int dp[] = new int[amount + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;
+        for (int c : coins) {
+            for (int i = c; i <= amount; i++) {
+                dp[i] = Math.min(dp[i], dp[i - c] + 1);
             }
         }
-        return dp[amount]==Integer.MAX_VALUE-1?-1:dp[amount];
+        return dp[amount] == Integer.MAX_VALUE - 1 ? -1 : dp[amount];
     }
 
     /**
      * 377. 组合总和 Ⅳ
      */
     public int combinationSum4(int[] nums, int target) {
-        int [] dp =  new int[target+1];
-        dp[0]=1;
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
 
-        for(int i=0 ;i<=target;i++){
+        for (int i = 0; i <= target; i++) {
 
-            for(int num:nums){
-                if(num<=i)dp[i]=dp[i]+dp[i-num];
+            for (int num : nums) {
+                if (num <= i) dp[i] = dp[i] + dp[i - num];
             }
         }
         return dp[target];
@@ -1630,77 +1651,80 @@ public class Solution {
     /**
      * 139. 单词拆分
      */
-        public boolean wordBreak(String s, List<String> wordDict) {
-            int length = s.length();
-            boolean[] dp = new boolean[length +1];
-            dp[0]=true;
-            HashSet<String> dic = new HashSet<>(wordDict);
-            for (int i = 1; i <= length; i++) {
-                for (int j = 0; j < i ; j++) {
-                    if (dic.contains(s.substring(j,i))&&dp[j])dp[i]=true;
-                }
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int length = s.length();
+        boolean[] dp = new boolean[length + 1];
+        dp[0] = true;
+        HashSet<String> dic = new HashSet<>(wordDict);
+        for (int i = 1; i <= length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dic.contains(s.substring(j, i)) && dp[j]) dp[i] = true;
             }
-            return dp[length];
         }
+        return dp[length];
+    }
 
     /**
      * 213. 打家劫舍 II
+     *
      * @param nums
      * @return
      */
     public int rob(int[] nums) {
-        if(nums.length==0)return 0;
-        if (nums.length==1)return nums[0];
-        return Math.max(rob(nums,0,nums.length-2),rob(nums,1,nums.length-1));
+        if (nums.length == 0) return 0;
+        if (nums.length == 1) return nums[0];
+        return Math.max(rob(nums, 0, nums.length - 2), rob(nums, 1, nums.length - 1));
     }
-    int rob(int[] nums,int start,int end){
-        if (start==end)return nums[start];
+
+    int rob(int[] nums, int start, int end) {
+        if (start == end) return nums[start];
         int dp[] = new int[nums.length];
         dp[start] = nums[start];
-        dp[start+1] = Math.max(dp[start],nums[start+1]);
-        for (int i = start+2; i <= end; i++) {
-            dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+        dp[start + 1] = Math.max(dp[start], nums[start + 1]);
+        for (int i = start + 2; i <= end; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
         }
         return dp[end];
     }
 
     /**
      * 337. 打家劫舍 III
+     *
      * @param root
      * @return
      */
     public int rob(TreeNode root) {
         int[] res = robChild(root);
-        return Math.max(res[0],res[1]);
+        return Math.max(res[0], res[1]);
     }
 
-    public int[] robChild(TreeNode root){
-        if (root==null)return new int[]{0,0};
+    public int[] robChild(TreeNode root) {
+        if (root == null) return new int[]{0, 0};
         int[] child1 = robChild(root.left);
         int[] child2 = robChild(root.right);
-        System.out.println(root.val+Arrays.toString(child1));
-        System.out.println(root.val+Arrays.toString(child2));
-        int res1 = Math.max(child1[0],child1[1])+Math.max(child2[0],child2[1]);
+        System.out.println(root.val + Arrays.toString(child1));
+        System.out.println(root.val + Arrays.toString(child2));
+        int res1 = Math.max(child1[0], child1[1]) + Math.max(child2[0], child2[1]);
         int res2 = root.val + child1[1] + child2[1];
-        return new int[]{res2, Math.max(res1,child2[1]+child1[1])};
+        return new int[]{res2, Math.max(res1, child2[1] + child1[1])};
     }
 
     /**
-     *121. 买卖股票的最佳时机
+     * 121. 买卖股票的最佳时机
      */
     public int maxProfit1(int[] prices) {
-        if (prices.length<=1)return 0;
+        if (prices.length <= 1) return 0;
         int dp[] = new int[prices.length];
         for (int i = 1; i < prices.length; i++) {
             int minus = prices[i] - prices[i - 1];
-            dp[i]=minus+dp[i-1];
-            if (dp[i]<0)dp[i]=0;
+            dp[i] = minus + dp[i - 1];
+            if (dp[i] < 0) dp[i] = 0;
         }
         int res = Integer.MIN_VALUE;
         for (int i = 0; i < dp.length; i++) {
-            res = Math.max(dp[i],res);
+            res = Math.max(dp[i], res);
         }
-        return  res;
+        return res;
     }
 
     /**
@@ -1720,37 +1744,39 @@ public class Solution {
 //    }
 
     /**
-     *188. 买卖股票的最佳时机 IV
+     * 188. 买卖股票的最佳时机 IV
+     *
      * @param k
      * @param prices
      * @return
      */
     public int maxProfit(int k, int[] prices) {
-        if (prices.length<=1)return 0;
-        int dp[] = new int[k*2+1];
+        if (prices.length <= 1) return 0;
+        int dp[] = new int[k * 2 + 1];
         //初始化
         for (int i = 1; i < dp.length; i++) {
-            if (i%2!=0){
+            if (i % 2 != 0) {
                 dp[i] = -prices[0];
-            }else {
+            } else {
                 dp[i] = 0;
             }
         }
         for (int i = 1; i < prices.length; i++) {
             int price = prices[i];
             for (int j = 1; j < dp.length; j++) {
-                if (j%2!=0){
-                    dp[j]=Math.max(dp[j-1]-price,dp[j]);//第二个下标为偶数的时候就表示为买入
-                }else {
-                    dp[j]=Math.max(dp[j-1]+price,dp[j]);//奇数的时候就表示为卖出
+                if (j % 2 != 0) {
+                    dp[j] = Math.max(dp[j - 1] - price, dp[j]);//第二个下标为偶数的时候就表示为买入
+                } else {
+                    dp[j] = Math.max(dp[j - 1] + price, dp[j]);//奇数的时候就表示为卖出
                 }
             }
         }
-        return dp[k*2];
+        return dp[k * 2];
     }
 
     /**
      * 309. 买卖股票的最佳时机含冷冻期
+     *
      * @param prices
      * @return
      */
@@ -1760,56 +1786,60 @@ public class Solution {
         dpBuy[0] = -prices[0];//第0天买入就是第一天价格的负数
         dpSell[0] = 0;//第0天卖出就是0
         for (int i = 1; i < prices.length; i++) {
-            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[Math.max(i - 2, 0)]-prices[i]);//由于卖了之后的一天内不能买，所以只能从前天推导出dpBuy,Math.max(i - 2, 0)是防止i-2<0导致数组越界
-            dpSell[i] = Math.max(dpSell[i-1],dpBuy[i]+prices[i]);
+            dpBuy[i] = Math.max(dpBuy[i - 1], dpSell[Math.max(i - 2, 0)] - prices[i]);//由于卖了之后的一天内不能买，所以只能从前天推导出dpBuy,Math.max(i - 2, 0)是防止i-2<0导致数组越界
+            dpSell[i] = Math.max(dpSell[i - 1], dpBuy[i] + prices[i]);
         }
-        return dpSell[prices.length-1];
+        return dpSell[prices.length - 1];
     }
 
     /**
      * 106. 从中序与后序遍历序列构造二叉树
+     *
      * @param inorder
      * @param postorder
      * @return
      */
-    private HashMap<Integer,Integer> nodeValIndexMap=  new HashMap<>();
+    private HashMap<Integer, Integer> nodeValIndexMap = new HashMap<>();
+
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         for (int i = 0; i < inorder.length; i++) {
-            nodeValIndexMap.put(inorder[i],i);
+            nodeValIndexMap.put(inorder[i], i);
         }
-       return buildTree(inorder,postorder,0,inorder.length-1,0,postorder.length-1);
+        return buildTree(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1);
     }
 
-    public TreeNode buildTree(int[] inorder, int[] postorder,int instart,int inend,int poststart,int postend){
-        if (postend<poststart)return null;
+    public TreeNode buildTree(int[] inorder, int[] postorder, int instart, int inend, int poststart, int postend) {
+        if (postend < poststart) return null;
         TreeNode root = new TreeNode(postorder[postend]);
         int aimIndex = nodeValIndexMap.get(postorder[postend]);
-        int leftLen = aimIndex-instart;
-        root.left=buildTree(inorder,postorder,instart,aimIndex-1,poststart,poststart+leftLen-1);
-        root.right=buildTree(inorder,postorder,aimIndex+1,inend,poststart+leftLen,postend-1);
+        int leftLen = aimIndex - instart;
+        root.left = buildTree(inorder, postorder, instart, aimIndex - 1, poststart, poststart + leftLen - 1);
+        root.right = buildTree(inorder, postorder, aimIndex + 1, inend, poststart + leftLen, postend - 1);
         return root;
     }
 
 
     /**
      * 714. 买卖股票的最佳时机含手续费
+     *
      * @param prices
      * @param fee
      * @return
      */
     public int maxProfit(int[] prices, int fee) {
-        int [] dpBuy = new int[prices.length];
-        int [] dpSell = new int[prices.length];
+        int[] dpBuy = new int[prices.length];
+        int[] dpSell = new int[prices.length];
         dpBuy[0] = -prices[0];
         for (int i = 1; i < prices.length; i++) {
-            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[i-1]-prices[i]);
-            dpSell[i] =Math.max(dpSell[i-1],dpBuy[i]+prices[i]-fee);
+            dpBuy[i] = Math.max(dpBuy[i - 1], dpSell[i - 1] - prices[i]);
+            dpSell[i] = Math.max(dpSell[i - 1], dpBuy[i] + prices[i] - fee);
         }
-        return dpSell[prices.length-1];
+        return dpSell[prices.length - 1];
     }
 
     /**
      * 718. 最长重复子数组
+     *
      * @param nums1
      * @param nums2
      * @return
@@ -1817,31 +1847,32 @@ public class Solution {
     //动态规划
     public int findLength(int[] nums1, int[] nums2) {
         int res = Integer.MIN_VALUE;
-        int dp[][] = new int[nums1.length+1][nums2.length+1];
+        int dp[][] = new int[nums1.length + 1][nums2.length + 1];
         for (int i = 1; i <= nums2.length; i++) {
             for (int j = 1; j <= nums1.length; j++) {
-                if (nums2[i-1]==nums1[j-1]){
-                    dp[j][i]=dp[j-1][i-1]+1;
+                if (nums2[i - 1] == nums1[j - 1]) {
+                    dp[j][i] = dp[j - 1][i - 1] + 1;
                 }
-                res = Math.max(res,dp[j][i]);
+                res = Math.max(res, dp[j][i]);
             }
         }
         return res;
     }
+
     /**
-     *1143. 最长公共子序列
+     * 1143. 最长公共子序列
      */
     public int longestCommonSubsequence(String text1, String text2) {
         char[] charArr1 = text1.toCharArray();
         char[] charArr2 = text2.toCharArray();
 
-        int dp[][] = new int[charArr1.length+1][charArr2.length+1];
+        int dp[][] = new int[charArr1.length + 1][charArr2.length + 1];
         for (int i = 1; i <= charArr1.length; i++) {
             for (int j = 1; j <= charArr2.length; j++) {
-                if (charArr1[i-1]==charArr2[j-1]){
-                    dp[i][j] = dp[i-1][j-1]+1;
-                }else{
-                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                if (charArr1[i - 1] == charArr2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
                 //    dp[i][j]=Math.max(dp[i][j],Math.max(dp[i-1][j],dp[i][j-1]));
             }
@@ -1851,18 +1882,19 @@ public class Solution {
 
     /**
      * 1035. 不相交的线
+     *
      * @param nums1
      * @param nums2
      * @return
      */
     public int maxUncrossedLines(int[] nums1, int[] nums2) {
-        int [][] dp = new int[nums1.length+1][nums2.length+1];
-        for (int i = 1; i <= nums1.length ; i++) {
+        int[][] dp = new int[nums1.length + 1][nums2.length + 1];
+        for (int i = 1; i <= nums1.length; i++) {
             for (int j = 1; j <= nums2.length; j++) {
-                if (nums1[i-1]==nums2[j-1]){
-                    dp[i][j]=dp[i-1][j-1]+1;
-                }else {
-                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
         }
@@ -1871,6 +1903,7 @@ public class Solution {
 
     /**
      * 392. 判断子序列
+     *
      * @param s
      * @param t
      * @return
@@ -1880,19 +1913,19 @@ public class Solution {
         char[] charArrayt = t.toCharArray();
         int i = 0;
         int j = 0;
-        while (i<charArrayt.length&&j<charArrays.length){
-                if (charArrays[j]==charArrayt[i]) {
-                    j++;
-                    i++;
-                }
-                else i++;
+        while (i < charArrayt.length && j < charArrays.length) {
+            if (charArrays[j] == charArrayt[i]) {
+                j++;
+                i++;
+            } else i++;
         }
-        if (j==charArrays.length)return true;
+        if (j == charArrays.length) return true;
         else return false;
     }
 
     /**
      * 115. 不同的子序列
+     *
      * @param s
      * @param t
      * @return
@@ -1900,22 +1933,53 @@ public class Solution {
     public int numDistinct(String s, String t) {
         char[] sCharArray = s.toCharArray();
         char[] tCharArray = t.toCharArray();
-        int dp[][] = new int[sCharArray.length+1][tCharArray.length+1];
+        int dp[][] = new int[sCharArray.length + 1][tCharArray.length + 1];
         for (int i = 0; i < dp.length; i++) {
             dp[i][0] = 1;
         }
         for (int i = 1; i <= sCharArray.length; i++) {
             for (int j = 1; j <= tCharArray.length; j++) {
-                if (sCharArray[i-1]==tCharArray[j-1]){
-                    dp[i][j] = dp[i-1][j]+dp[i-1][j-1];
-                }else {
-                    dp[i][j] = dp[i-1][j];
+                if (sCharArray[i - 1] == tCharArray[j - 1]) {
+                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
                 }
             }
         }
         return dp[sCharArray.length][tCharArray.length];
     }
+
+    /**
+     * 617. 合并二叉树
+     *
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null){
+            return root2;
+        }
+        if (root2 == null){
+            return root1;
+        }
+        TreeNode treeNode = new TreeNode();
+        treeNode.val = root1.val + root2.val;
+        treeNode.left = mergeTrees(root1.left,root2.left);
+        treeNode.right = mergeTrees(root1.right,root2.right);
+        return treeNode;
+    }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
