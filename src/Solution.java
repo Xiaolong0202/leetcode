@@ -2042,13 +2042,33 @@ public class Solution {
       }
     }
 
+    /**
+     * 78. 子集
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> container = new ArrayList<>();
+        container.add(new ArrayList<>());
+        subsets(nums,-1,0,new ArrayList<>(),container);
+        return container;
+    }
 
+    public void subsets(int[] nums,int i,int n,List<Integer> list,List<List<Integer>> container) {
+        if (n>=nums.length)return;
+        for (int j = i+1; j < nums.length; j++) {
+            list.add(nums[j]);
+            container.add(new ArrayList<>(list));
+            subsets(nums,j,n+1,list,container);
+            list.remove(list.size()-1);
+        }
+    }
 
 
 
     public static void main(String[] args) {
-       Deque<Integer> deque = new ArrayDeque<>();
-       deque.offerLast(null);
+        List<List<Integer>> subsets = new Solution().subsets(new int[]{1, 2, 3});
+        System.out.println();
     }
 
 }
