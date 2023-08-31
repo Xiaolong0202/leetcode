@@ -1,15 +1,13 @@
-import com.sun.deploy.util.StringUtils;
-
 import java.util.*;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Solution {
 
 
     public static void main(String[] args) {
-        String a = new String("哈哈哈");
-        System.out.println(a+a.length());
+        String a =  "你好傻都没打算";
+        char[] a1 = a.toCharArray();
+        Arrays.sort(a1);
+        System.out.println(a1);
     }
 
     Solution() {
@@ -292,29 +290,7 @@ public class Solution {
         return false;
     }
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
 
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        public String toString() {
-            return ""+val;
-        }
-    }
 
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
@@ -395,7 +371,8 @@ public class Solution {
         return reslut;
     }
 
-    public int rob(int[] nums) {
+    //大家解设1
+    public int rob1(int[] nums) {
         if (nums.length == 1) return nums[0];
 
         int[] dp = new int[nums.length];
@@ -410,25 +387,25 @@ public class Solution {
     }
 
 
-    private int nums[];
+    private int pricese[];
     private Random random;
 
     public Solution(int[] nums) {
-        this.nums = nums;
+        this.pricese = nums;
         random = new Random();
     }
 
     public int[] reset() {
-        return nums;
+        return pricese;
     }
 
     public int[] shuffle() {
-        int[] res = nums.clone();
-        for (int i = 0; i < nums.length; i++) {
+        int[] res = pricese.clone();
+        for (int i = 0; i < pricese.length; i++) {
             int a = random.nextInt(i + 1);
-            int temp = nums[a];
-            nums[a] = nums[i];
-            nums[i] = temp;
+            int temp = pricese[a];
+            pricese[a] = pricese[i];
+            pricese[i] = temp;
         }
         return res;
     }
@@ -1420,154 +1397,530 @@ public class Solution {
      * @param stones
      * @return
      */
-    public int lastStoneWeightII(int[] stones) {
-        int len = stones.length;
-        int sum = Arrays.stream(stones).sum();
-        int target = sum>>1;
-        int [] dp = new int[target+1];
-        for (int i = 0; i < len; i++) {
-            int weight = stones[i];
-            for (int j = target; j >= weight; j--) {
-                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
-            }
-        }
-        return sum - dp[target] - dp[target];
-    }
+//    public int lastStoneWeightII(int[] stones) {
+//        int len = stones.length;
+//        int sum = Arrays.stream(stones).sum();
+//        int target = sum>>1;
+//        int [] dp = new int[target+1];
+//        for (int i = 0; i < len; i++) {
+//            int weight = stones[i];
+//            for (int j = target; j >= weight; j--) {
+//                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
+//            }
+//        }
+//        return sum - dp[target] - dp[target];
+//    }
 
     /**
-     * 494.目标和
+     * 49. 字母异位词分组
      */
-    public int findTargetSumWays(int[] nums, int target) {
-        int sum = Arrays.stream(nums).sum();
-        int left=target+sum;
-        if (left%2!=0||left<0)return 0;
-        else left=target+sum>>1;
-        int[] dp = new int[left+1];
-        dp[0]=1;
-        int len = nums.length;
-        for (int i = 0; i < len; i++) {
-            int num = nums[i];
-            for (int j = left; j >= num ; j--) {
-                dp[j]+=dp[j-num];
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String,List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String strKey = String.valueOf(chars);
+            List<String> orDefault = map.getOrDefault(strKey, new ArrayList<String>());
+            orDefault.add(str);
+            map.put(strKey,orDefault);
+        }
+        List<List<String>> res = new ArrayList<>();
+        map.forEach((key,value)->{
+            res.add(value);
+        });
+        return res;
+    }
+    /**
+     * 47. 全排列 II
+     */
+    public List<List<Integer>> quanpaixu2List = new ArrayList<>();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        permuteUnique(nums,0,new ArrayList<>(),new boolean[nums.length]);
+        return quanpaixu2List;
+    }
+    public void permuteUnique(int[] nums,int n, List<Integer> list,boolean[] booleans) {
+        if (n==nums.length){
+            quanpaixu2List.add(new ArrayList<>(list));
+        }else {
+            for (int i = 0; i < nums.length; i++) {
+                if (booleans[i]||(i>0&&nums[i-1]==nums[i])&&!booleans[i-1])continue;
+                //没有被操作
+                booleans[i]=!booleans[i];
+                list.add(nums[i]);
+                permuteUnique(nums,n+1,list,booleans);
+                booleans[i]=!booleans[i];
+                list.remove(list.size()-1);
             }
         }
-        return dp[left];
     }
 
     /**
-     * 474.一和零
+     * 226. 翻转二叉树
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if(root==null)return root;
+        TreeNode l = root.left;
+        TreeNode r = root.right;
+        TreeNode t = l;
+        l = r;
+        r = t;
+        invertTree(l);
+        invertTree(r);
+        root.left = l;
+        root.right = r;
+        return root;
+    }
+
+    /**
+     * 474. 一和零
      * @param strs
      * @param m
      * @param n
      * @return
      */
-    //m个0,n个1
     public int findMaxForm(String[] strs, int m, int n) {
-        int[][]dp =new int[m+1][n+1];
-        int len = strs.length;
-        for (int i = 0; i < len; i++) {
-            String str = strs[i];
-            char[] charArray = str.toCharArray();
-            int count0= 0;
-            int count1= 0;
-            for (char c : charArray) {
-                if (c=='0')count0++;
-                if (c=='1')count1++;
+        int [][] dp = new int[m+1][n+1];
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            int zero = 0;
+            int one = 0;
+            for (char aChar : chars) {
+                if (aChar-'0'==0)zero++;
+                else one++;
             }
-            for (int j = m; j >= count0; j--) {
-                for (int k = n; k >= count1 ; k--) {
-                    dp[j][k] = Math.max(dp[j][k],dp[j-count0][k-count1]+1);
+            for (int i = m; i >= zero; i--) {
+                for (int j = n; j >= one; j--) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - zero][j - one] + 1);
                 }
             }
-
         }
         return dp[m][n];
     }
 
     /**
-     * 144. 二叉树的前序遍历
-     * 迭代
-     * @param root
+     * 494. 目标和
+     * @param nums
+     * @param target
      * @return
      */
-    public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> list = new LinkedList<>();
-        if (root==null)return list;
-        Deque<TreeNode> treeNodeDeque = new ArrayDeque<>();
-        treeNodeDeque.offerLast(root);
-        while (!treeNodeDeque.isEmpty()){
-            System.out.println(treeNodeDeque);
-            TreeNode treeNode = treeNodeDeque.pollFirst();
-            TreeNode l = treeNode.left;
-            TreeNode r = treeNode.right;
-            if (r!=null)treeNodeDeque.offerLast(r);
-            if (l!=null)treeNodeDeque.offerLast(l);
-            list.add(treeNode.val);
-        }
-        return list;
-    }
-
-    /**
-     * 94.二叉树的中序遍历
-     * @param root
-     * @return
-     */
-    public List<Integer> inorderTraversal(TreeNode root) {
-            List<Integer> list = new LinkedList<>();
-            Deque<TreeNode> deque = new ArrayDeque<>();
-            while (root!=null||!deque.isEmpty()){
-               while (root!=null){
-                   deque.offerLast(root);
-                   root=root.left;
-               }
-               root = deque.pollLast();
-               list.add(root.val);
-               root=root.right;
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = Arrays.stream(nums).sum();
+        int a = sum-target;
+        if(a%2!=0||a<0)return 0;
+        a=a>>1;
+        int[] dp = new int[a+1];
+        dp[0]=1;
+        for (int num : nums) {
+            for(int j = a; j>=num ;j--){
+                dp[j] = dp[j]+dp[j-num];
             }
-            return list;
+        }
+        return dp[a];
+    }
+
+
+    /**
+     * 1049. 最后一块石头的重量 II
+     * @param stones
+     * @return
+     */
+    public int lastStoneWeightII(int[] stones) {
+        int sum = Arrays.stream(stones).sum();
+        int target = sum+1>>1;
+        int[] dp = new int[target+1];
+        for (int stone : stones) {
+            for (int i = target; i >= stone ; i--) {
+                dp[i] = Math.max(dp[i],dp[i-stone]+stone);
+            }
+        }
+        return sum-dp[target]*2;
+    }
+    //下面是之前做的
+//    public int lastStoneWeightII(int[] stones) {
+//        int len = stones.length;
+//        int sum = Arrays.stream(stones).sum();
+//        int target = sum>>1;
+//        int [] dp = new int[target+1];
+//        for (int i = 0; i < len; i++) {
+//            int weight = stones[i];
+//            for (int j = target; j >= weight; j--) {
+//                dp[j] = Math.max(dp[j],dp[j-weight]+weight);
+//            }
+//        }
+//        return sum - dp[target] - dp[target];
+//    }
+
+    /**
+     *从全序与中序节点构造二叉树
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+//    public TreeNode buildTree(int[] preorder, int[] inorder) {
+//        return buildTree(preorder, inorder,0,preorder.length-1,0,preorder.length-1);
+//    }
+//    public TreeNode buildTree(int[] preorder, int[] inorder,int prebegin,int preend,int inbegin, int inend) {
+//        if (prebegin>preend)return null;
+//        TreeNode treeNode = new TreeNode(preorder[prebegin]);
+//        int targetNum = 0;
+//        for (int i = 0; i < preorder.length; i++) {
+//            targetNum = i;
+//            if (preorder[prebegin]==inorder[i]){
+//                break;
+//            }
+//        }
+//        System.out.println(targetNum);
+//        treeNode.left = buildTree(preorder, inorder,prebegin+1,prebegin+targetNum-inbegin,inbegin,targetNum-1);
+//        treeNode.right = buildTree(preorder, inorder,prebegin+targetNum-inbegin+1,preend, targetNum+1, inend);
+//        return treeNode;
+//    }
+    /**
+     *279. 完全平方数
+     */
+    public int numSquares(int n) {
+        int a = (int)Math.pow(n,0.5);
+        List<Integer> nums = new ArrayList();
+        for(int i=a;i>=1;i--){
+            nums.add(i*i);
+        }
+        int []dp = new int[n+1];
+        Arrays.fill(dp,Integer.MAX_VALUE-1);
+        dp[0]=0;
+        for(Integer num:nums){
+            for(int i=num ; i<=n;i++){
+                dp[i]=Math.min(dp[i],dp[i-num]+1);
+
+            }
+        }
+        return dp[n];
     }
 
     /**
-     * 226. 翻转二叉树
+     * 322. 零钱兑换
+     */
+    public int coinChange(int[] coins, int amount) {
+        int dp[] = new int[amount+1];
+        Arrays.fill(dp,Integer.MAX_VALUE-1);
+        dp[0]=0;
+        for(int c : coins){
+            for(int i = c; i<= amount;i++){
+                dp[i]=Math.min(dp[i],dp[i-c]+1);
+            }
+        }
+        return dp[amount]==Integer.MAX_VALUE-1?-1:dp[amount];
+    }
+
+    /**
+     * 377. 组合总和 Ⅳ
+     */
+    public int combinationSum4(int[] nums, int target) {
+        int [] dp =  new int[target+1];
+        dp[0]=1;
+
+        for(int i=0 ;i<=target;i++){
+
+            for(int num:nums){
+                if(num<=i)dp[i]=dp[i]+dp[i-num];
+            }
+        }
+        return dp[target];
+    }
+
+    /**
+     * 139. 单词拆分
+     */
+        public boolean wordBreak(String s, List<String> wordDict) {
+            int length = s.length();
+            boolean[] dp = new boolean[length +1];
+            dp[0]=true;
+            HashSet<String> dic = new HashSet<>(wordDict);
+            for (int i = 1; i <= length; i++) {
+                for (int j = 0; j < i ; j++) {
+                    if (dic.contains(s.substring(j,i))&&dp[j])dp[i]=true;
+                }
+            }
+            return dp[length];
+        }
+
+    /**
+     * 213. 打家劫舍 II
+     * @param nums
+     * @return
+     */
+    public int rob(int[] nums) {
+        if(nums.length==0)return 0;
+        if (nums.length==1)return nums[0];
+        return Math.max(rob(nums,0,nums.length-2),rob(nums,1,nums.length-1));
+    }
+    int rob(int[] nums,int start,int end){
+        if (start==end)return nums[start];
+        int dp[] = new int[nums.length];
+        dp[start] = nums[start];
+        dp[start+1] = Math.max(dp[start],nums[start+1]);
+        for (int i = start+2; i <= end; i++) {
+            dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+        }
+        return dp[end];
+    }
+
+    /**
+     * 337. 打家劫舍 III
      * @param root
      * @return
      */
-    public TreeNode InvertTree(TreeNode root) {
-        if (root==null)return root;
-        TreeNode left = root.left;
-        TreeNode right = root.right;
-        TreeNode temp = root.right;
-        root.right = root.left;
-        root.left = temp;
-        InvertTree(left);
-        InvertTree(right);
+    public int rob(TreeNode root) {
+        int[] res = robChild(root);
+        return Math.max(res[0],res[1]);
+    }
+
+    public int[] robChild(TreeNode root){
+        if (root==null)return new int[]{0,0};
+        int[] child1 = robChild(root.left);
+        int[] child2 = robChild(root.right);
+        System.out.println(root.val+Arrays.toString(child1));
+        System.out.println(root.val+Arrays.toString(child2));
+        int res1 = Math.max(child1[0],child1[1])+Math.max(child2[0],child2[1]);
+        int res2 = root.val + child1[1] + child2[1];
+        return new int[]{res2, Math.max(res1,child2[1]+child1[1])};
+    }
+
+    /**
+     *121. 买卖股票的最佳时机
+     */
+    public int maxProfit1(int[] prices) {
+        if (prices.length<=1)return 0;
+        int dp[] = new int[prices.length];
+        for (int i = 1; i < prices.length; i++) {
+            int minus = prices[i] - prices[i - 1];
+            dp[i]=minus+dp[i-1];
+            if (dp[i]<0)dp[i]=0;
+        }
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < dp.length; i++) {
+            res = Math.max(dp[i],res);
+        }
+        return  res;
+    }
+
+    /**
+     * 123. 买卖股票的最佳时机 III
+     */
+//    public int maxProfit(int[] prices) {
+//        if(prices.length<=1)return 0;
+//        int buy1 = -prices[0], sell1 = 0;
+//        int buy2 = -prices[0], sell2 = 0;
+//        for (int i = 1; i < prices.length; i++) {
+//            buy1 = Math.max(buy1,-prices[i]);
+//            sell1 = Math.max(sell1,buy1+prices[i]);
+//            buy2 = Math.max(buy2,sell1-prices[i]);
+//            sell2 = Math.max(sell2,buy2+prices[i]);
+//        }
+//        return sell2;
+//    }
+
+    /**
+     *188. 买卖股票的最佳时机 IV
+     * @param k
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int k, int[] prices) {
+        if (prices.length<=1)return 0;
+        int dp[] = new int[k*2+1];
+        //初始化
+        for (int i = 1; i < dp.length; i++) {
+            if (i%2!=0){
+                dp[i] = -prices[0];
+            }else {
+                dp[i] = 0;
+            }
+        }
+        for (int i = 1; i < prices.length; i++) {
+            int price = prices[i];
+            for (int j = 1; j < dp.length; j++) {
+                if (j%2!=0){
+                    dp[j]=Math.max(dp[j-1]-price,dp[j]);//第二个下标为偶数的时候就表示为买入
+                }else {
+                    dp[j]=Math.max(dp[j-1]+price,dp[j]);//奇数的时候就表示为卖出
+                }
+            }
+        }
+        return dp[k*2];
+    }
+
+    /**
+     * 309. 买卖股票的最佳时机含冷冻期
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
+        int dpBuy[] = new int[prices.length];//第i天的最大的买入后的余额
+        int dpSell[] = new int[prices.length];//第i天的最大的卖出后的余额
+        dpBuy[0] = -prices[0];//第0天买入就是第一天价格的负数
+        dpSell[0] = 0;//第0天卖出就是0
+        for (int i = 1; i < prices.length; i++) {
+            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[Math.max(i - 2, 0)]-prices[i]);//由于卖了之后的一天内不能买，所以只能从前天推导出dpBuy,Math.max(i - 2, 0)是防止i-2<0导致数组越界
+            dpSell[i] = Math.max(dpSell[i-1],dpBuy[i]+prices[i]);
+        }
+        return dpSell[prices.length-1];
+    }
+
+    /**
+     * 106. 从中序与后序遍历序列构造二叉树
+     * @param inorder
+     * @param postorder
+     * @return
+     */
+    private HashMap<Integer,Integer> nodeValIndexMap=  new HashMap<>();
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        for (int i = 0; i < inorder.length; i++) {
+            nodeValIndexMap.put(inorder[i],i);
+        }
+       return buildTree(inorder,postorder,0,inorder.length-1,0,postorder.length-1);
+    }
+
+    public TreeNode buildTree(int[] inorder, int[] postorder,int instart,int inend,int poststart,int postend){
+        if (postend<poststart)return null;
+        TreeNode root = new TreeNode(postorder[postend]);
+        int aimIndex = nodeValIndexMap.get(postorder[postend]);
+        int leftLen = aimIndex-instart;
+        root.left=buildTree(inorder,postorder,instart,aimIndex-1,poststart,poststart+leftLen-1);
+        root.right=buildTree(inorder,postorder,aimIndex+1,inend,poststart+leftLen,postend-1);
         return root;
     }
 
+
     /**
-     * 222. 完全二叉树的节点个数
-     * @param root
+     * 714. 买卖股票的最佳时机含手续费
+     * @param prices
+     * @param fee
      * @return
      */
-    public int countNodes(TreeNode root) {
-        //返回倒数第二行的深度
-        if (root==null)return 0;
-        TreeNode l = root.left;
-        TreeNode r = root.right;
-        int countl = 0;
-        int countr = 0;
-        while (l!=null){
-            l=l.left;
-            countl++;
+    public int maxProfit(int[] prices, int fee) {
+        int [] dpBuy = new int[prices.length];
+        int [] dpSell = new int[prices.length];
+        dpBuy[0] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dpBuy[i] = Math.max(dpBuy[i-1],dpSell[i-1]-prices[i]);
+            dpSell[i] =Math.max(dpSell[i-1],dpBuy[i]+prices[i]-fee);
         }
-        while (r!=null){
-            r=r.right;
-            countr++;
-        }
-        if (countl==countr)return (2<<countl)-1;
-        return countNodes(root.left)+countNodes(root.right)+1;
+        return dpSell[prices.length-1];
     }
 
+    /**
+     * 718. 最长重复子数组
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    //动态规划
+    public int findLength(int[] nums1, int[] nums2) {
+        int res = Integer.MIN_VALUE;
+        int dp[][] = new int[nums1.length+1][nums2.length+1];
+        for (int i = 1; i <= nums2.length; i++) {
+            for (int j = 1; j <= nums1.length; j++) {
+                if (nums2[i-1]==nums1[j-1]){
+                    dp[j][i]=dp[j-1][i-1]+1;
+                }
+                res = Math.max(res,dp[j][i]);
+            }
+        }
+        return res;
+    }
+    /**
+     *1143. 最长公共子序列
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        char[] charArr1 = text1.toCharArray();
+        char[] charArr2 = text2.toCharArray();
 
+        int dp[][] = new int[charArr1.length+1][charArr2.length+1];
+        for (int i = 1; i <= charArr1.length; i++) {
+            for (int j = 1; j <= charArr2.length; j++) {
+                if (charArr1[i-1]==charArr2[j-1]){
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }else{
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+                //    dp[i][j]=Math.max(dp[i][j],Math.max(dp[i-1][j],dp[i][j-1]));
+            }
+        }
+        return dp[charArr1.length][charArr2.length];
+    }
 
+    /**
+     * 1035. 不相交的线
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int maxUncrossedLines(int[] nums1, int[] nums2) {
+        int [][] dp = new int[nums1.length+1][nums2.length+1];
+        for (int i = 1; i <= nums1.length ; i++) {
+            for (int j = 1; j <= nums2.length; j++) {
+                if (nums1[i-1]==nums2[j-1]){
+                    dp[i][j]=dp[i-1][j-1]+1;
+                }else {
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        return dp[nums1.length][nums2.length];
+    }
+
+    /**
+     * 392. 判断子序列
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isSubsequence(String s, String t) {
+        char[] charArrays = s.toCharArray();
+        char[] charArrayt = t.toCharArray();
+        int i = 0;
+        int j = 0;
+        while (i<charArrayt.length&&j<charArrays.length){
+                if (charArrays[j]==charArrayt[i]) {
+                    j++;
+                    i++;
+                }
+                else i++;
+        }
+        if (j==charArrays.length)return true;
+        else return false;
+    }
+
+    /**
+     * 115. 不同的子序列
+     * @param s
+     * @param t
+     * @return
+     */
+    public int numDistinct(String s, String t) {
+        char[] sCharArray = s.toCharArray();
+        char[] tCharArray = t.toCharArray();
+        int dp[][] = new int[sCharArray.length+1][tCharArray.length+1];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i <= sCharArray.length; i++) {
+            for (int j = 1; j <= tCharArray.length; j++) {
+                if (sCharArray[i-1]==tCharArray[j-1]){
+                    dp[i][j] = dp[i-1][j]+dp[i-1][j-1];
+                }else {
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[sCharArray.length][tCharArray.length];
+    }
 }
+
+
+
+
+
+
+
+
