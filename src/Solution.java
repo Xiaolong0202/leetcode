@@ -3,13 +3,6 @@ import java.util.*;
 public class Solution {
 
 
-    public static void main(String[] args) {
-        String a = "你好傻都没打算";
-        char[] a1 = a.toCharArray();
-        Arrays.sort(a1);
-        System.out.println(a1);
-    }
-
     Solution() {
     }
 
@@ -1968,6 +1961,27 @@ public class Solution {
         treeNode.left = mergeTrees(root1.left,root2.left);
         treeNode.right = mergeTrees(root1.right,root2.right);
         return treeNode;
+    }
+
+
+    /**
+     * 96. 不同的二叉搜索树
+     * @param n
+     * @return
+     */
+    public int numTrees(int n) {
+        int[] dp = new int[n+1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 0; j <= i-1; j++) {
+                    dp[i]+=dp[j]*dp[i-1-j];
+            }
+        }
+        return dp[n];
+    }
+    public static void main(String[] args) {
+        System.out.println("new Solution().numTrees(3) = " + new Solution().numTrees(3));
     }
 }
 
