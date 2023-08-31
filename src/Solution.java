@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -1980,9 +1981,76 @@ public class Solution {
         }
         return dp[n];
     }
-    public static void main(String[] args) {
-        System.out.println("new Solution().numTrees(3) = " + new Solution().numTrees(3));
+
+    public int longestConsecutive(int[] nums) {
+        if (nums.length==0)return 0;
+        Arrays.sort(nums);
+        int maxLen = 1;
+        int len = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i]-1==nums[i-1]){
+                len++;
+            }else if (nums[i]==nums[i-1]){
+
+            } else {
+                len = 1;
+            }
+            maxLen = Math.max(len,maxLen);
+        }
+        return maxLen;
     }
+
+    /**
+     * 114. 二叉树展开为链表
+     * @param root
+     */
+    public void flatten(TreeNode root) {
+        //迭代法
+//        if (root == null) return;
+//        TreeNode head = new TreeNode();
+//        TreeNode p = head;
+//        Deque<TreeNode> deque = new ArrayDeque<>();
+//        deque.offerLast(root);
+//        while (!deque.isEmpty()){
+//            TreeNode node = deque.pollLast();
+//            //将结点添加至链表当中
+//            TreeNode listNode = new TreeNode();
+//            System.out.println("node.val = " + node.val);
+//            listNode.val = node.val;
+//            p.right = listNode;
+//            p = p.right;
+//            //
+//            if (node.right!=null)deque.offerLast(node.right);
+//            if (node.left!=null)deque.offerLast(node.left);
+//        }
+//            head = head.right;
+//            root.left = null;
+//            root.val = head.val;
+//            root.right = head.right;
+        //方法2
+      while (root!=null){
+          if (root.left!=null){
+              TreeNode left = root.left;
+              while (left.right!=null){
+                  left = left.right;
+              }
+              left.right = root.right;
+              root.right = root.left;
+          }
+          root.left = null;
+          root = root.right;
+      }
+    }
+
+
+
+
+
+    public static void main(String[] args) {
+       Deque<Integer> deque = new ArrayDeque<>();
+       deque.offerLast(null);
+    }
+
 }
 
 
