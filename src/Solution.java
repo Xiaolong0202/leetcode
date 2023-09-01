@@ -2065,12 +2065,12 @@ public class Solution {
         ListNode res = head;
         PriorityQueue<ListNode> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
         for (ListNode node : lists) {
-            while (node!=null){
+            while (node != null) {
                 priorityQueue.add(node);
                 node = node.next;
             }
         }
-        while (!priorityQueue.isEmpty()){
+        while (!priorityQueue.isEmpty()) {
             ListNode poll = priorityQueue.poll();
             head.next = poll;
             head = head.next;
@@ -2119,11 +2119,40 @@ public class Solution {
 
     /**
      * 148. 排序链表
+     *
      * @param head
      * @return
      */
     public ListNode sortList(ListNode head) {
-
+        if (head == null||head.next==null)return head;
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode right = sortList(slow.next);
+        slow.next = null;
+        ListNode left = sortList(head);
+        ListNode res = new ListNode();
+        ListNode R = res;
+        while (left!=null&&right!=null){
+            if (left.val< right.val){
+                res.next = left;
+                left = left.next;
+            }else {
+                res.next = right;
+                right = right.next;
+            }
+            res = res.next;
+            res.next = null;
+        }
+        if (left!=null){
+            res.next = left;
+        }else if (right!=null){
+            res.next = right;
+        }
+        return R.next;
     }
 
     public static void main(String[] args) {
