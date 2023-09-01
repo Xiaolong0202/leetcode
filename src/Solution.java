@@ -2124,7 +2124,7 @@ public class Solution {
      * @return
      */
     public ListNode sortList(ListNode head) {
-        if (head == null||head.next==null)return head;
+        if (head == null || head.next == null) return head;
         ListNode slow = head;
         ListNode fast = head.next;
         while (fast != null && fast.next != null) {
@@ -2136,28 +2136,43 @@ public class Solution {
         ListNode left = sortList(head);
         ListNode res = new ListNode();
         ListNode R = res;
-        while (left!=null&&right!=null){
-            if (left.val< right.val){
+        while (left != null && right != null) {
+            if (left.val < right.val) {
                 res.next = left;
                 left = left.next;
-            }else {
+            } else {
                 res.next = right;
                 right = right.next;
             }
             res = res.next;
             res.next = null;
         }
-        if (left!=null){
+        if (left != null) {
             res.next = left;
-        }else if (right!=null){
+        } else if (right != null) {
             res.next = right;
         }
         return R.next;
     }
 
+    /**
+     * 160. 相交链表
+     *
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode a = headA;
+        ListNode b = headB;
+        while (a != b) {
+            a = a == null ? headB : a.next;
+            b = b == null ? headA : b.next;
+        }
+        return a;
+    }
+
     public static void main(String[] args) {
-        List<List<Integer>> subsets = new Solution().subsets(new int[]{1, 2, 3});
-        System.out.println();
     }
 
 }
