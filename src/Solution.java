@@ -221,19 +221,6 @@ public class Solution {
         return result;
     }
 
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
 
     public void deleteNode(ListNode node) {
         node.val = node.next.val;
@@ -1951,57 +1938,59 @@ public class Solution {
      * @return
      */
     public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-        if (root1 == null){
+        if (root1 == null) {
             return root2;
         }
-        if (root2 == null){
+        if (root2 == null) {
             return root1;
         }
         TreeNode treeNode = new TreeNode();
         treeNode.val = root1.val + root2.val;
-        treeNode.left = mergeTrees(root1.left,root2.left);
-        treeNode.right = mergeTrees(root1.right,root2.right);
+        treeNode.left = mergeTrees(root1.left, root2.left);
+        treeNode.right = mergeTrees(root1.right, root2.right);
         return treeNode;
     }
 
 
     /**
      * 96. 不同的二叉搜索树
+     *
      * @param n
      * @return
      */
     public int numTrees(int n) {
-        int[] dp = new int[n+1];
+        int[] dp = new int[n + 1];
         dp[0] = 1;
         dp[1] = 1;
         for (int i = 2; i <= n; i++) {
-            for (int j = 0; j <= i-1; j++) {
-                    dp[i]+=dp[j]*dp[i-1-j];
+            for (int j = 0; j <= i - 1; j++) {
+                dp[i] += dp[j] * dp[i - 1 - j];
             }
         }
         return dp[n];
     }
 
     public int longestConsecutive(int[] nums) {
-        if (nums.length==0)return 0;
+        if (nums.length == 0) return 0;
         Arrays.sort(nums);
         int maxLen = 1;
         int len = 1;
         for (int i = 1; i < nums.length; i++) {
-            if (nums[i]-1==nums[i-1]){
+            if (nums[i] - 1 == nums[i - 1]) {
                 len++;
-            }else if (nums[i]==nums[i-1]){
+            } else if (nums[i] == nums[i - 1]) {
 
             } else {
                 len = 1;
             }
-            maxLen = Math.max(len,maxLen);
+            maxLen = Math.max(len, maxLen);
         }
         return maxLen;
     }
 
     /**
      * 114. 二叉树展开为链表
+     *
      * @param root
      */
     public void flatten(TreeNode root) {
@@ -2028,43 +2017,114 @@ public class Solution {
 //            root.val = head.val;
 //            root.right = head.right;
         //方法2
-      while (root!=null){
-          if (root.left!=null){
-              TreeNode left = root.left;
-              while (left.right!=null){
-                  left = left.right;
-              }
-              left.right = root.right;
-              root.right = root.left;
-          }
-          root.left = null;
-          root = root.right;
-      }
+        while (root != null) {
+            if (root.left != null) {
+                TreeNode left = root.left;
+                while (left.right != null) {
+                    left = left.right;
+                }
+                left.right = root.right;
+                root.right = root.left;
+            }
+            root.left = null;
+            root = root.right;
+        }
     }
 
     /**
      * 78. 子集
+     *
      * @param nums
      * @return
      */
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> container = new ArrayList<>();
         container.add(new ArrayList<>());
-        subsets(nums,-1,0,new ArrayList<>(),container);
+        subsets(nums, -1, 0, new ArrayList<>(), container);
         return container;
     }
 
-    public void subsets(int[] nums,int i,int n,List<Integer> list,List<List<Integer>> container) {
-        if (n>=nums.length)return;
-        for (int j = i+1; j < nums.length; j++) {
+    public void subsets(int[] nums, int i, int n, List<Integer> list, List<List<Integer>> container) {
+        if (n >= nums.length) return;
+        for (int j = i + 1; j < nums.length; j++) {
             list.add(nums[j]);
             container.add(new ArrayList<>(list));
-            subsets(nums,j,n+1,list,container);
-            list.remove(list.size()-1);
+            subsets(nums, j, n + 1, list, container);
+            list.remove(list.size() - 1);
         }
     }
 
+    /**
+     * 23. 合并 K 个升序链表
+     *
+     * @param lists
+     * @return
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode head = new ListNode();
+        ListNode res = head;
+        PriorityQueue<ListNode> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
+        for (ListNode node : lists) {
+            while (node!=null){
+                priorityQueue.add(node);
+                node = node.next;
+            }
+        }
+        while (!priorityQueue.isEmpty()){
+            ListNode poll = priorityQueue.poll();
+            head.next = poll;
+            head = head.next;
+            head.next = null;
+        }
+        return res.next;
+//        if(lists.length<=0)return null;
+//
+//        ListNode head = new ListNode();
+//        ListNode returnHead = head;
+//        int endCount = 0;
+//
+//        while (true) {
+//            int p = 0;
+////            int shangyige = 0;
+//            //选出最小的结点
+//            for (int i = 0; i < lists.length; i++) {
+//                if (lists[i] == null) continue;
+//                if (lists[p]==null){
+//                    p = i;
+//                }
+//                if (lists[p].val >= lists[i].val) {
+////                    shangyige = p;
+//                    p = i;
+//                }
+//            }
+//            if (lists[p]!=null){
+//                ListNode addedNode = new ListNode();
+//                addedNode.val =  lists[p].val;
+//                //将addedNode添加
+//                head.next = addedNode;
+//                head = head.next;
+//                //
+//                lists[p] = lists[p].next;
+//            }
+//            //如果被添加的结点为最后一个结点
+//            if (lists[p]==null){
+//                endCount++;
+////                p = shangyige;
+//            }
+//
+//            if (endCount >= lists.length) break;
+//        }
+//        return returnHead.next;
+    }
 
+    /**
+     * 148. 排序链表
+     * @param head
+     * @return
+     */
+    public ListNode sortList(ListNode head) {
+
+    }
 
     public static void main(String[] args) {
         List<List<Integer>> subsets = new Solution().subsets(new int[]{1, 2, 3});
