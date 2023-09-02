@@ -2196,6 +2196,33 @@ public class Solution {
         return fast;
     }
 
+    /**
+     *46. 全排列
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        permute(nums,new int[nums.length],res,new ArrayList<>());
+        return res;
+    }
+
+
+    public void permute(int[] nums,int [] visited,List<List<Integer>> res,List<Integer> list) {
+        if (list.size()>=nums.length){
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        for (int j = 0; j < nums.length; j++) {
+            if (visited[j]==0){
+                visited[j] = 1;
+                list.add(nums[j]);
+                permute(nums,visited,res,list);
+                visited[j] = 0;
+                list.remove(list.size()-1);
+            }
+        }
+    }
 
     public static void main(String[] args) {
     }
