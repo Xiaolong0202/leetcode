@@ -2357,6 +2357,7 @@ public class Solution {
 
     /**
      * 13. 罗马数字转整数
+     *
      * @param s
      * @return
      */
@@ -2374,18 +2375,18 @@ public class Solution {
         int res = 0;
         int tempSum = 0;
         for (int i = 0; i < charArray.length; i++) {
-            if (i+1>=charArray.length){
-                res+=map.get(charArray[i]);
+            if (i + 1 >= charArray.length) {
+                res += map.get(charArray[i]);
                 break;
             }
             char currentC = charArray[i];
-            char nextC = charArray[i+1];
+            char nextC = charArray[i + 1];
             Integer currentV = map.get(currentC);
             Integer nextV = map.get(nextC);
-            if (currentV>=nextV){
-                res+=currentV;
-            }else {
-                res-=currentV;
+            if (currentV >= nextV) {
+                res += currentV;
+            } else {
+                res -= currentV;
             }
         }
         return res;
