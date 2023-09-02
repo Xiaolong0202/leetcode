@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -2175,6 +2174,7 @@ public class Solution {
 
     /**
      * 142. 环形链表 II
+     *
      * @param head
      * @return
      */
@@ -2183,13 +2183,13 @@ public class Solution {
         ListNode slow = head;
         ListNode fast = head;
         while (true) {
-            if (fast == null || fast.next == null)return null;
+            if (fast == null || fast.next == null) return null;
             fast = fast.next.next;
             slow = slow.next;
             if (fast == slow) break;
         }
         fast = head;
-        while (fast!=slow){
+        while (fast != slow) {
             fast = fast.next;
             slow = slow.next;
         }
@@ -2197,35 +2197,37 @@ public class Solution {
     }
 
     /**
-     *46. 全排列
+     * 46. 全排列
+     *
      * @param nums
      * @return
      */
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        permute(nums,new int[nums.length],res,new ArrayList<>());
+        permute(nums, new int[nums.length], res, new ArrayList<>());
         return res;
     }
 
 
-    public void permute(int[] nums,int [] visited,List<List<Integer>> res,List<Integer> list) {
-        if (list.size()>=nums.length){
+    public void permute(int[] nums, int[] visited, List<List<Integer>> res, List<Integer> list) {
+        if (list.size() >= nums.length) {
             res.add(new ArrayList<>(list));
             return;
         }
         for (int j = 0; j < nums.length; j++) {
-            if (visited[j]==0){
+            if (visited[j] == 0) {
                 visited[j] = 1;
                 list.add(nums[j]);
-                permute(nums,visited,res,list);
+                permute(nums, visited, res, list);
                 visited[j] = 0;
-                list.remove(list.size()-1);
+                list.remove(list.size() - 1);
             }
         }
     }
 
     /**
-     *169. 多数元素 投票法求质数
+     * 169. 多数元素 投票法求质数
+     *
      * @param nums
      * @return
      */
@@ -2233,13 +2235,67 @@ public class Solution {
         int count = 0;
         int candidate = 0;
         for (int num : nums) {
-            if (count==0)candidate = num;
-            if (num!=candidate)count--;
+            if (count == 0) candidate = num;
+            if (num != candidate) count--;
             else count++;
         }
         return candidate;
     }
 
+    /**
+     * 200. 岛屿数量
+     * @param grid
+     * @return
+     */
+    public int numIslands(char[][] grid) {
+        if (grid.length <= 0) return 0;
+        boolean[][] flag = new boolean[grid.length][grid[0].length];
+        int res = 0;
+        int[] count = new int[]{0};
+        int total = grid.length * grid[0].length;
+        ok:
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (!flag[i][j]) {
+                    if (grid[i][j] == '1') {
+                        bfsNumsIsland(grid, flag, i, j, count);
+                        res++;
+                    } else {
+                        flag[i][j] = true;
+                        count[0]++;
+                    }
+                }
+                if (count[0] >= total) break ok;
+            }
+        }
+        return res;
+    }
+
+    private void bfsNumsIsland(char[][] grid, boolean[][] flag, int i, int j, int[] count) {
+        Deque<int[]> deque = new ArrayDeque<>();
+        deque.offerLast(new int[]{i, j});
+        while (!deque.isEmpty()) {
+            int[] location = deque.pollFirst();
+            int x = location[0];
+            int y = location[1];
+            if (!flag[x][y] && grid[x][y] == '1') {
+                flag[x][y] = true;//标记
+                count[0]++;
+                if (x + 1 < grid.length) {
+                    deque.offerLast(new int[]{x + 1, y});
+                }
+                if (y + 1 < grid[0].length) {
+                    deque.offerLast(new int[]{x, y + 1});
+                }
+                if (x - 1 >= 0) {
+                    deque.offerLast(new int[]{x - 1, y});
+                }
+                if (y - 1 >= 0) {
+                    deque.offerLast(new int[]{x, y - 1});
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
     }
