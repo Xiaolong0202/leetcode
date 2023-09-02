@@ -2244,6 +2244,7 @@ public class Solution {
 
     /**
      * 200. 岛屿数量
+     *
      * @param grid
      * @return
      */
@@ -2297,7 +2298,63 @@ public class Solution {
         }
     }
 
+    /**
+     * 208. 实现 Trie (前缀树)
+     */
+    class Trie {
+
+         class TrieNode{
+            Character c;//value
+            Map<Character,TrieNode> trieNodeMap;
+
+            public TrieNode(Character c) {
+                // System.out.println("System.getProperty(\"java.version\") = " + System.getProperty("java.version"));
+                this.c = c;
+                trieNodeMap = new HashMap<>();
+            }
+
+            public void insert(char[] chars,int index){
+                if (index>=chars.length)return;
+                char aChar = chars[index];
+                if (!trieNodeMap.containsKey(aChar)){
+                    trieNodeMap.put(aChar,new TrieNode(aChar));
+                }
+                trieNodeMap.get(aChar).insert(chars,index+1);
+            }
+
+            public boolean find(char[] chars,int index){
+                if (index>=chars.length)return true;
+                char aChar = chars[index];
+                if (trieNodeMap.containsKey(aChar)){
+                    return trieNodeMap.get(aChar).find(chars,index+1);
+                }else {
+                    return false;
+                }
+            }
+        }
+        private TrieNode root;
+        private HashSet<String> set;
+        public Trie() {
+            root = new TrieNode(null);
+            set = new HashSet<>();
+        }
+
+        public void insert(String word) {
+            set.add(word);
+            root.insert(word.toCharArray(),0);
+        }
+
+        public boolean search(String word) {
+            return set.contains(word);
+        }
+
+        public boolean startsWith(String prefix) {
+            return root.find(prefix.toCharArray(),0);
+        }
+    }
+
     public static void main(String[] args) {
+        System.out.println("System.getProperty(\"java.version\") = " + System.getProperty("java.version"));
     }
 
 }
