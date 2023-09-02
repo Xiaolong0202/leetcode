@@ -2303,9 +2303,9 @@ public class Solution {
      */
     class Trie {
 
-         class TrieNode{
+        class TrieNode {
             Character c;//value
-            Map<Character,TrieNode> trieNodeMap;
+            Map<Character, TrieNode> trieNodeMap;
 
             public TrieNode(Character c) {
                 // System.out.println("System.getProperty(\"java.version\") = " + System.getProperty("java.version"));
@@ -2313,27 +2313,29 @@ public class Solution {
                 trieNodeMap = new HashMap<>();
             }
 
-            public void insert(char[] chars,int index){
-                if (index>=chars.length)return;
+            public void insert(char[] chars, int index) {
+                if (index >= chars.length) return;
                 char aChar = chars[index];
-                if (!trieNodeMap.containsKey(aChar)){
-                    trieNodeMap.put(aChar,new TrieNode(aChar));
+                if (!trieNodeMap.containsKey(aChar)) {
+                    trieNodeMap.put(aChar, new TrieNode(aChar));
                 }
-                trieNodeMap.get(aChar).insert(chars,index+1);
+                trieNodeMap.get(aChar).insert(chars, index + 1);
             }
 
-            public boolean find(char[] chars,int index){
-                if (index>=chars.length)return true;
+            public boolean find(char[] chars, int index) {
+                if (index >= chars.length) return true;
                 char aChar = chars[index];
-                if (trieNodeMap.containsKey(aChar)){
-                    return trieNodeMap.get(aChar).find(chars,index+1);
-                }else {
+                if (trieNodeMap.containsKey(aChar)) {
+                    return trieNodeMap.get(aChar).find(chars, index + 1);
+                } else {
                     return false;
                 }
             }
         }
+
         private TrieNode root;
         private HashSet<String> set;
+
         public Trie() {
             root = new TrieNode(null);
             set = new HashSet<>();
@@ -2341,7 +2343,7 @@ public class Solution {
 
         public void insert(String word) {
             set.add(word);
-            root.insert(word.toCharArray(),0);
+            root.insert(word.toCharArray(), 0);
         }
 
         public boolean search(String word) {
@@ -2349,8 +2351,44 @@ public class Solution {
         }
 
         public boolean startsWith(String prefix) {
-            return root.find(prefix.toCharArray(),0);
+            return root.find(prefix.toCharArray(), 0);
         }
+    }
+
+    /**
+     * 13. 罗马数字转整数
+     * @param s
+     * @return
+     */
+    public int romanToInt(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        char[] charArray = s.toCharArray();
+        int res = 0;
+        int tempSum = 0;
+        for (int i = 0; i < charArray.length; i++) {
+            if (i+1>=charArray.length){
+                res+=map.get(charArray[i]);
+                break;
+            }
+            char currentC = charArray[i];
+            char nextC = charArray[i+1];
+            Integer currentV = map.get(currentC);
+            Integer nextV = map.get(nextC);
+            if (currentV>=nextV){
+                res+=currentV;
+            }else {
+                res-=currentV;
+            }
+        }
+        return res;
     }
 
     public static void main(String[] args) {
