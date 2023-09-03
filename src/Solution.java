@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.Function;
 
 public class Solution {
 
@@ -2391,6 +2392,57 @@ public class Solution {
         }
         return res;
     }
+
+    /**
+     * 543. 二叉树的直径
+     *
+     * @param root
+     * @return
+     */
+    private int diameterOfBinaryTreeRes = Integer.MIN_VALUE;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        maxBinaryTreeDepth(root);
+        return diameterOfBinaryTreeRes;
+    }
+
+    public int maxBinaryTreeDepth(TreeNode root) {
+        if (root == null) return -1;
+        else {
+            int leftMaxLen = maxBinaryTreeDepth(root.left);
+            int rightMaxLen = maxBinaryTreeDepth(root.right);
+            leftMaxLen++;
+            rightMaxLen++;
+            //看该结点的哪两个腿最长
+            diameterOfBinaryTreeRes = Math.max(diameterOfBinaryTreeRes, leftMaxLen + rightMaxLen);
+            return Math.max(leftMaxLen, rightMaxLen);
+        }
+    }
+
+
+    /**
+     * 199. 二叉树的右视图
+     * @param root
+     * @return
+     */
+    public List<Integer> rightSideView(TreeNode root) {
+        int[] rightSideViewFloorVisited = new int[101];
+        List<Integer> list = new ArrayList<>();
+        rightSideView(root, 0, rightSideViewFloorVisited, list);
+        return list;
+    }
+
+    public void rightSideView(TreeNode root, int floor, int[] rightSideViewFloorVisited, List<Integer> res) {
+        if (root == null) return;
+        //某一层之前没有被访问过，就直接放入List当中
+        if (rightSideViewFloorVisited[floor] == 0) {
+            res.add(root.val);
+            rightSideViewFloorVisited[floor] = 1;
+        }
+        rightSideView(root.right, floor + 1, rightSideViewFloorVisited, res);
+        rightSideView(root.left, floor + 1, rightSideViewFloorVisited, res);
+    }
+
 
     public static void main(String[] args) {
         System.out.println("System.getProperty(\"java.version\") = " + System.getProperty("java.version"));
