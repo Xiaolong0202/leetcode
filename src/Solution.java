@@ -2569,6 +2569,60 @@ public class Solution {
     }
 
 
+    /**
+     * 236. 二叉树的最近公共祖先
+     */
+    private HashMap<TreeNode,List<TreeNode>> aimAndParents =new HashMap<>();
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null)return null;
+        findNode(root,p);
+        findNode(root,q);
+        List<TreeNode> plist = aimAndParents.get(p);
+        List<TreeNode> qlist = aimAndParents.get(q);
+        if (plist==null)plist = new ArrayList<>();
+        if (qlist==null)plist = new ArrayList<>();
+        HashSet<TreeNode> set = new HashSet<>();
+        for (TreeNode node : plist) {
+            set.add(node);
+        }
+        for (TreeNode node : qlist) {
+            if (set.contains(node))return node;
+        }
+        return null;
+    }
+
+    public TreeNode findNode(TreeNode root,TreeNode aim){
+        if (root==null)return null;
+        if (root==aim){
+            ArrayList<TreeNode> nodes = new ArrayList<>();
+            nodes.add(root);
+            aimAndParents.put(aim, nodes);
+            return root;
+        }
+        TreeNode leftRes = findNode(root.left, aim);
+        if (leftRes!=null){
+            List<TreeNode> list = aimAndParents.get(aim);
+            if (list==null){
+                list = new ArrayList<>();
+                aimAndParents.put(aim,list);
+            }
+            list.add(root);
+            return leftRes;
+        }
+        TreeNode rightRes = findNode(root.right, aim);
+        if (rightRes!=null){
+            List<TreeNode> list = aimAndParents.get(aim);
+            if (list==null){
+                list = new ArrayList<>();
+                aimAndParents.put(aim,list);
+            }
+            list.add(root);
+            return rightRes;
+        }
+        return null;
+    }
+
+
 
     public static void main(String[] args) {
         new Solution().exist(new char[][]{
