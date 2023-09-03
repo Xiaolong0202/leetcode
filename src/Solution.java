@@ -2422,6 +2422,7 @@ public class Solution {
 
     /**
      * 199. 二叉树的右视图
+     *
      * @param root
      * @return
      */
