@@ -2482,7 +2482,6 @@ public class Solution {
         }
         return false;
     }
-
     private boolean dfsExist(int x, int y, int count, char[][] board, char[] charArray, int[][] visited) {
         if (visited[x][y] == 0 && board[x][y] == charArray[count]) {
             visited[x][y] = 1;
@@ -2504,6 +2503,71 @@ public class Solution {
         }
         return false;
     }
+
+    /**
+     * 437. 路径总和 III
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return 0;
+        }
+
+        int ret = rootSum(root, (long) targetSum);
+        ret += pathSum(root.left, targetSum);
+        ret += pathSum(root.right, targetSum);
+        return ret;
+    }
+
+    public int rootSum(TreeNode root, Long targetSum) {
+        int ret = 0;
+
+        if (root == null) {
+            return 0;
+        }
+        int val = root.val;
+        if (val == targetSum) {
+            ret++;
+        }
+
+        ret += rootSum(root.left, targetSum - val);
+        ret += rootSum(root.right, targetSum - val);
+        return ret;
+    }
+
+    /**
+     * 347. 前 K 个高频元素
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+        }
+        List<Integer>[] lists = new List[nums.length+1];
+        map.forEach((key,value)->{
+            if (lists[value]==null){
+                lists[value] = new ArrayList<>();
+            }
+            lists[value].add(key);
+        });
+        int count = 0;
+        int[] res = new int[k];
+        for (int i = lists.length-1; i >=0 ; i--) {
+            if (lists[i]==null)continue;
+
+            for (Integer integer : lists[i]) {
+                res[count++] = integer;
+                if (count==k)return res;
+            }
+        }
+        return res;
+    }
+
 
 
     public static void main(String[] args) {
