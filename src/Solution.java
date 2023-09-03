@@ -2446,6 +2446,7 @@ public class Solution {
 
     /**
      * 230. 二叉搜索树中第K小的元素
+     *
      * @param root
      * @param k
      * @return
@@ -2458,14 +2459,57 @@ public class Solution {
                 root = root.left;
             }
             root = deque.pollLast();
-            if (--k<=0)return root.val;
+            if (--k <= 0) return root.val;
             root = root.right;
         }
         return -1;
     }
 
+    /**
+     * 79. 单词搜索
+     * @param board
+     * @param word
+     * @return
+     */
+    public boolean exist(char[][] board, String word) {
+        char[] charArray = word.toCharArray();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == charArray[0]) {
+                    if (dfsExist(i,j,0,board,charArray,new int[board.length][board[0].length]))return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfsExist(int x, int y, int count, char[][] board, char[] charArray, int[][] visited) {
+        if (visited[x][y] == 0 && board[x][y] == charArray[count]) {
+            visited[x][y] = 1;
+            count++;
+            if (count == charArray.length) return true;
+            if (x + 1 < board.length) {
+                if(dfsExist(x + 1, y, count, board, charArray, visited))return true;
+            }
+            if (y + 1 < board[0].length) {
+                if (dfsExist(x, y + 1, count, board, charArray, visited))return true;
+            }
+            if (x - 1 >= 0) {
+                if (dfsExist(x - 1, y, count, board, charArray, visited))return true;
+            }
+            if (y - 1 >= 0) {
+                if (dfsExist(x, y - 1, count, board, charArray, visited)) return true;
+            }
+            visited[x][y] = 0;
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println("System.getProperty(\"java.version\") = " + System.getProperty("java.version"));
+        new Solution().exist(new char[][]{
+                new char[]{'A', 'B', 'C', 'E'}, new char[]{'S', 'F', 'C', 'S'}, new char[]{'A', 'D', 'E', 'E'}
+        }, "ABCCED");
     }
 
 }
