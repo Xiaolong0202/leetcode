@@ -2444,6 +2444,25 @@ public class Solution {
         rightSideView(root.left, floor + 1, rightSideViewFloorVisited, res);
     }
 
+    /**
+     * 230. 二叉搜索树中第K小的元素
+     * @param root
+     * @param k
+     * @return
+     */
+    public int kthSmallest(TreeNode root, int k) {
+        Deque<TreeNode> deque = new ArrayDeque();
+        while (!deque.isEmpty() || root != null) {
+            while (root != null) {
+                deque.offerLast(root);
+                root = root.left;
+            }
+            root = deque.pollLast();
+            if (--k<=0)return root.val;
+            root = root.right;
+        }
+        return -1;
+    }
 
     public static void main(String[] args) {
         System.out.println("System.getProperty(\"java.version\") = " + System.getProperty("java.version"));
