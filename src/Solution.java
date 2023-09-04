@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.function.Function;
 
 public class Solution {
 
@@ -2636,41 +2635,69 @@ public class Solution {
     public int findDuplicate(int[] nums) {
         int slow = 0;
         int fast = 0;
-        while (true){
+        while (true) {
             slow = nums[slow];
             fast = nums[nums[fast]];
-            if (slow==fast)break;
+            if (slow == fast) break;
         }
         fast = 0;
-        while (true){
+        while (true) {
             slow = nums[slow];
             fast = nums[fast];
-            if (slow == fast)break;
+            if (slow == fast) break;
         }
         return fast;
     }
 
     /**
-     *461. 汉明距离
+     * 461. 汉明距离
+     *
      * @param x
      * @param y
      * @return
      */
     public int hammingDistance(int x, int y) {
-        int i = x ^ y;
-        char[] charArray = Integer.toBinaryString(i).toCharArray();
-        int count = 0;
-        for (int j = 0; j < charArray.length; j++) {
-            if (charArray[j]=='1')count++;
+        return Integer.bitCount(x ^ y);
+    }
+
+    /**
+     * 394. 字符串解码
+     *
+     * @param s
+     * @return
+     */
+    public String decodeString(String s) {
+        s = s + ']';
+        return decodekuohaoString(s.toCharArray());
+    }
+    private int decodeStringIndex;
+    public String decodekuohaoString(char[] chars) {
+        StringBuilder stringBuilder = new StringBuilder();
+        while (true) {
+            if (Character.isDigit(chars[decodeStringIndex])) {
+                int k = 0;
+                while (Character.isDigit(chars[decodeStringIndex])) {
+                    k = k * 10 + Integer.parseInt(String.valueOf(chars[decodeStringIndex++]));
+                }
+                decodeStringIndex += 1;
+                String s = decodekuohaoString(chars);
+                for (int j = 0; j < k; j++) {
+                    stringBuilder.append(s);
+                }
+            } else if (Character.isLetter(chars[decodeStringIndex])) {
+                stringBuilder.append(chars[decodeStringIndex]);
+                decodeStringIndex++;
+            } else if (chars[decodeStringIndex] == ']') {
+                decodeStringIndex++;
+                break;
+            }
         }
-        return count;
+        return stringBuilder.toString();
     }
 
 
     public static void main(String[] args) {
-        new Solution().exist(new char[][]{
-                new char[]{'A', 'B', 'C', 'E'}, new char[]{'S', 'F', 'C', 'S'}, new char[]{'A', 'D', 'E', 'E'}
-        }, "ABCCED");
+        System.out.println("new Solution().decodeString(\"3[a]2[bc]\") = " + new Solution().decodeString("3[a]2[bc]"));
     }
 
 }
