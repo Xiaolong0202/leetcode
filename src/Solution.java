@@ -2467,6 +2467,7 @@ public class Solution {
 
     /**
      * 79. 单词搜索
+     *
      * @param board
      * @param word
      * @return
@@ -2476,25 +2477,26 @@ public class Solution {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == charArray[0]) {
-                    if (dfsExist(i,j,0,board,charArray,new int[board.length][board[0].length]))return true;
+                    if (dfsExist(i, j, 0, board, charArray, new int[board.length][board[0].length])) return true;
                 }
             }
         }
         return false;
     }
+
     private boolean dfsExist(int x, int y, int count, char[][] board, char[] charArray, int[][] visited) {
         if (visited[x][y] == 0 && board[x][y] == charArray[count]) {
             visited[x][y] = 1;
             count++;
             if (count == charArray.length) return true;
             if (x + 1 < board.length) {
-                if(dfsExist(x + 1, y, count, board, charArray, visited))return true;
+                if (dfsExist(x + 1, y, count, board, charArray, visited)) return true;
             }
             if (y + 1 < board[0].length) {
-                if (dfsExist(x, y + 1, count, board, charArray, visited))return true;
+                if (dfsExist(x, y + 1, count, board, charArray, visited)) return true;
             }
             if (x - 1 >= 0) {
-                if (dfsExist(x - 1, y, count, board, charArray, visited))return true;
+                if (dfsExist(x - 1, y, count, board, charArray, visited)) return true;
             }
             if (y - 1 >= 0) {
                 if (dfsExist(x, y - 1, count, board, charArray, visited)) return true;
@@ -2506,6 +2508,7 @@ public class Solution {
 
     /**
      * 437. 路径总和 III
+     *
      * @param root
      * @param targetSum
      * @return
@@ -2539,30 +2542,31 @@ public class Solution {
 
     /**
      * 347. 前 K 个高频元素
+     *
      * @param nums
      * @param k
      * @return
      */
     public int[] topKFrequent(int[] nums, int k) {
-        HashMap<Integer,Integer> map = new HashMap<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
         }
-        List<Integer>[] lists = new List[nums.length+1];
-        map.forEach((key,value)->{
-            if (lists[value]==null){
+        List<Integer>[] lists = new List[nums.length + 1];
+        map.forEach((key, value) -> {
+            if (lists[value] == null) {
                 lists[value] = new ArrayList<>();
             }
             lists[value].add(key);
         });
         int count = 0;
         int[] res = new int[k];
-        for (int i = lists.length-1; i >=0 ; i--) {
-            if (lists[i]==null)continue;
+        for (int i = lists.length - 1; i >= 0; i--) {
+            if (lists[i] == null) continue;
 
             for (Integer integer : lists[i]) {
                 res[count++] = integer;
-                if (count==k)return res;
+                if (count == k) return res;
             }
         }
         return res;
@@ -2572,49 +2576,50 @@ public class Solution {
     /**
      * 236. 二叉树的最近公共祖先
      */
-    private HashMap<TreeNode,List<TreeNode>> aimAndParents =new HashMap<>();
+    private HashMap<TreeNode, List<TreeNode>> aimAndParents = new HashMap<>();
+
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null)return null;
-        findNode(root,p);
-        findNode(root,q);
+        if (root == null) return null;
+        findNode(root, p);
+        findNode(root, q);
         List<TreeNode> plist = aimAndParents.get(p);
         List<TreeNode> qlist = aimAndParents.get(q);
-        if (plist==null)plist = new ArrayList<>();
-        if (qlist==null)plist = new ArrayList<>();
+        if (plist == null) plist = new ArrayList<>();
+        if (qlist == null) plist = new ArrayList<>();
         HashSet<TreeNode> set = new HashSet<>();
         for (TreeNode node : plist) {
             set.add(node);
         }
         for (TreeNode node : qlist) {
-            if (set.contains(node))return node;
+            if (set.contains(node)) return node;
         }
         return null;
     }
 
-    public TreeNode findNode(TreeNode root,TreeNode aim){
-        if (root==null)return null;
-        if (root==aim){
+    public TreeNode findNode(TreeNode root, TreeNode aim) {
+        if (root == null) return null;
+        if (root == aim) {
             ArrayList<TreeNode> nodes = new ArrayList<>();
             nodes.add(root);
             aimAndParents.put(aim, nodes);
             return root;
         }
         TreeNode leftRes = findNode(root.left, aim);
-        if (leftRes!=null){
+        if (leftRes != null) {
             List<TreeNode> list = aimAndParents.get(aim);
-            if (list==null){
+            if (list == null) {
                 list = new ArrayList<>();
-                aimAndParents.put(aim,list);
+                aimAndParents.put(aim, list);
             }
             list.add(root);
             return leftRes;
         }
         TreeNode rightRes = findNode(root.right, aim);
-        if (rightRes!=null){
+        if (rightRes != null) {
             List<TreeNode> list = aimAndParents.get(aim);
-            if (list==null){
+            if (list == null) {
                 list = new ArrayList<>();
-                aimAndParents.put(aim,list);
+                aimAndParents.put(aim, list);
             }
             list.add(root);
             return rightRes;
@@ -2622,6 +2627,28 @@ public class Solution {
         return null;
     }
 
+    /**
+     * 287. 寻找重复数(可以使用环形链表来解决)
+     *
+     * @param nums
+     * @return
+     */
+    public int findDuplicate(int[] nums) {
+        int slow = 0;
+        int fast = 0;
+        while (true){
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow==fast)break;
+        }
+        fast = 0;
+        while (true){
+            slow = nums[slow];
+            fast = nums[fast];
+            if (slow == fast)break;
+        }
+        return fast;
+    }
 
 
     public static void main(String[] args) {
