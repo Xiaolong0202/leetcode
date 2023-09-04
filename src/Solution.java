@@ -2670,7 +2670,9 @@ public class Solution {
         s = s + ']';
         return decodekuohaoString(s.toCharArray());
     }
+
     private int decodeStringIndex;
+
     public String decodekuohaoString(char[] chars) {
         StringBuilder stringBuilder = new StringBuilder();
         while (true) {
@@ -2695,9 +2697,43 @@ public class Solution {
         return stringBuilder.toString();
     }
 
+    /**
+     * 215. 数组中的第K个最大元素
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int findKthLargest(int[] nums, int k) {
+        return quickSortfindKthLargest(nums,0,nums.length-1,k);
+    }
+
+    public int quickSortfindKthLargest(int[] nums, int start, int end,int k) {
+        if (start>=end)return nums[k];
+        int l = start-1;
+        int r = end+1;
+        int p = nums[l+r>>1];
+        while (l<r){
+            do {
+                l++;
+            }while (nums[l]<p);
+            do {
+                r--;
+            }while (nums[r]>p);
+            if (l<r){
+                int temp =  nums[l];
+                nums[l] = nums[r];
+                nums[r] = temp;
+            }
+        }
+        if (k<=r)return quickSortfindKthLargest(nums,start,r,k);
+        else return quickSortfindKthLargest(nums,r+1,end,k);
+    }
+
 
     public static void main(String[] args) {
-        System.out.println("new Solution().decodeString(\"3[a]2[bc]\") = " + new Solution().decodeString("3[a]2[bc]"));
+
+
     }
 
 }
