@@ -2650,6 +2650,22 @@ public class Solution {
         return fast;
     }
 
+    /**
+     *461. 汉明距离
+     * @param x
+     * @param y
+     * @return
+     */
+    public int hammingDistance(int x, int y) {
+        int i = x ^ y;
+        char[] charArray = Integer.toBinaryString(i).toCharArray();
+        int count = 0;
+        for (int j = 0; j < charArray.length; j++) {
+            if (charArray[j]=='1')count++;
+        }
+        return count;
+    }
+
 
     public static void main(String[] args) {
         new Solution().exist(new char[][]{
