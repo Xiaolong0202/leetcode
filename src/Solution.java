@@ -2705,34 +2705,64 @@ public class Solution {
      * @return
      */
     public int findKthLargest(int[] nums, int k) {
-        return quickSortfindKthLargest(nums,0,nums.length-1,k);
+        return quickSortfindKthLargest(nums, 0, nums.length - 1, k);
     }
 
-    public int quickSortfindKthLargest(int[] nums, int start, int end,int k) {
-        if (start>=end)return nums[k];
-        int l = start-1;
-        int r = end+1;
-        int p = nums[l+r>>1];
-        while (l<r){
+    public int quickSortfindKthLargest(int[] nums, int start, int end, int k) {
+        if (start >= end) return nums[k];
+        int l = start - 1;
+        int r = end + 1;
+        int p = nums[l + r >> 1];
+        while (l < r) {
             do {
                 l++;
-            }while (nums[l]<p);
+            } while (nums[l] < p);
             do {
                 r--;
-            }while (nums[r]>p);
-            if (l<r){
-                int temp =  nums[l];
+            } while (nums[r] > p);
+            if (l < r) {
+                int temp = nums[l];
                 nums[l] = nums[r];
                 nums[r] = temp;
             }
         }
-        if (k<=r)return quickSortfindKthLargest(nums,start,r,k);
-        else return quickSortfindKthLargest(nums,r+1,end,k);
+        if (k <= r) return quickSortfindKthLargest(nums, start, r, k);
+        else return quickSortfindKthLargest(nums, r + 1, end, k);
+    }
+
+    /**
+     * 240. 搜索二维矩阵 II
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+       int x = 0;
+       int y = matrix[0].length-1;
+       while (x<matrix.length&&y>=0){
+           if (matrix[x][y]==target)return true;
+           else if (matrix[x][y]>target)y--;
+           else x++;
+       }
+       return false;
+    }
+    public int erfen(int[] nums, int aim) {
+        int l = 0;
+        int r = nums.length-1;
+        while (l < r) {
+            int mid = l + r +1>> 1;
+            if (nums[mid] <= aim) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l;
     }
 
 
     public static void main(String[] args) {
-
+        System.out.println("new Solution().erfen(new int[]{1,4,7,11,15},4) = " + new Solution().erfen(new int[]{1, 4, 7, 11, 15}, 5));
 
     }
 
