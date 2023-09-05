@@ -2912,6 +2912,55 @@ public class Solution {
         }
     }
 
+    /**
+     * 647. 回文子串
+     * @param s
+     * @return
+     */
+    public int countSubstrings(String s) {
+        int count = 0;
+        char[] charArray = s.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            for (int j = 0; j <= 1; j++) {
+                int l = i;
+                int r = i+j;
+                while (l>=0&&r<charArray.length&&charArray[l]==charArray[r]){
+                    count++;
+                    l--;
+                    r++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 5. 最长回文子串
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s) {
+        int maxLen = -1;
+        String res = "";
+        char[] charArray = s.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            for (int j = 0; j <= 1; j++) {
+                int l = i;
+                int r = i+j;
+                while (l>=0&&r<charArray.length&&charArray[l]==charArray[r]){
+                    l--;
+                    r++;
+                }
+                l++;
+                r--;
+                if (r - l>maxLen){
+                    maxLen = r- l;
+                    res = s.substring(l,r+1);
+                }
+            }
+        }
+        return  res;
+    }
 
     public static void main(String[] args) {
         System.out.println("new Solution().canFinish(2,new int[][]{new int[]{1,0}}) = " + new Solution().canFinish(2, new int[][]{new int[]{1, 0}}));
