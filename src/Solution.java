@@ -739,24 +739,25 @@ public class Solution {
 
     /**
      * 134. 加油站
+     *
      * @param gas
      * @param cost
      * @return
      */
-        public int canCompleteCircuit(int[] gas, int[] cost) {
-            int start = 0;
-            int totalOil = 0;
-            int currentOil = 0;
-            for(int i = 0;i<gas.length;i++){
-                totalOil  +=gas[i]-cost[i];
-                currentOil +=gas[i]-cost[i];
-                if(currentOil<0){
-                    currentOil = 0;
-                    start = i+1;
-                }
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int start = 0;
+        int totalOil = 0;
+        int currentOil = 0;
+        for (int i = 0; i < gas.length; i++) {
+            totalOil += gas[i] - cost[i];
+            currentOil += gas[i] - cost[i];
+            if (currentOil < 0) {
+                currentOil = 0;
+                start = i + 1;
             }
-            return totalOil >= 0 ? start : -1;
         }
+        return totalOil >= 0 ? start : -1;
+    }
 
     //分糖果
     public int candy(int[] ratings) {
@@ -2763,73 +2764,157 @@ public class Solution {
 
     /**
      * 207. 课程表(使用拓扑排序)
+     *
      * @param numCourses
      * @param prerequisites
      * @return
      */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        int [] rudu=  new int[numCourses];
-        HashMap<Integer,List<Integer>> map = new HashMap<>();
+        int[] rudu = new int[numCourses];
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
         for (int[] prerequisite : prerequisites) {
-            if (!map.containsKey(prerequisite[1]))map.put(prerequisite[1],new ArrayList<>());
+            if (!map.containsKey(prerequisite[1])) map.put(prerequisite[1], new ArrayList<>());
             map.get(prerequisite[1]).add(prerequisite[0]);//构建图之间的关系
             rudu[prerequisite[0]]++;//入度加一
         }
         Deque<Integer> deque = new ArrayDeque();
         for (int i = 0; i < rudu.length; i++) {
             //将所有入度为0的结点入栈
-            if (rudu[i] == 0){
+            if (rudu[i] == 0) {
                 deque.offerLast(i);
             }
         }
         int count = 0;
-        while (!deque.isEmpty()){
+        while (!deque.isEmpty()) {
             Integer last = deque.pollLast();
             //将该结点从图中去除,并将各个节点入度减一，如果入度被减为0就入栈
             count++;
             List<Integer> list = map.get(last);
-            if (list==null)continue;
+            if (list == null) continue;
             for (Integer item : list) {
                 rudu[item]--;
-                if (rudu[item]==0){
+                if (rudu[item] == 0) {
                     deque.offerLast(item);
                 }
             }
         }
-        if (count<numCourses)return false;
+        if (count < numCourses) return false;
         else return true;
     }
 
     /**
      * 338. 比特位计数
+     *
      * @param n
      * @return
      */
     public int[] countBits(int n) {
-        if (n==0)return new int[0];
-        if (n==1)return new int[]{0,1};
-        int[] res = new int[n+1];
+        if (n == 0) return new int[0];
+        if (n == 1) return new int[]{0, 1};
+        int[] res = new int[n + 1];
         res[0] = 0;
         res[1] = 1;
         for (int i = 2; i < res.length; i++) {
-            if (i%2 == 0){
-                res[i] = res[i>>1];
-            }else {
-                res[i] = res[i-1]+1;
+            if (i % 2 == 0) {
+                res[i] = res[i >> 1];
+            } else {
+                res[i] = res[i - 1] + 1;
             }
         }
         return res;
     }
 
+    /**
+     * 146. LRU 缓存
+     */
+    class LRUCache {
 
+        class Node {
+            Integer val;
+            Integer key;
+            Node next;
+            Node pre;
 
+            public Node(Integer key, Integer val) {
+                this.val = val;
+                this.key = key;
+            }
+//            void show() {
+//                Node temp = this;
+//                while (temp != null) {
+//
+//                    System.out.print(" key: " + temp.key + " ");
+//                    System.out.print("val: " + temp.val + " ->");
+//
+//                    temp = temp.next;
+//                }
+//                System.out.println();
+//            }
+        }
 
+        HashMap<Integer, Node> map = new HashMap<>();
+        int capacity;
+        int count = 0;
+        Node head;
+        Node tail;
 
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            head = new Node(null, null);
+            tail = new Node(null, null);
+            head.next = tail;
+            tail.pre = head;
+        }
+
+        public int get(int key) {
+            Node node = map.get(key);
+            if (node == null) {
+                return -1;
+            } else {
+                removeNode(node);
+                addToHead(node);
+                return node.val;
+            }
+        }
+
+        public void put(int key, int value) {
+            if (map.containsKey(key)) {
+                Node node = map.get(key);
+                node.val = value;
+                removeNode(node);
+                addToHead(node);
+            } else {
+                if (count >= capacity) {
+                    Node delelteNode = tail.pre;
+                    removeNode(delelteNode);
+                    map.remove(delelteNode.key);
+                } else {
+                    count++;
+                }
+                Node addNode = new Node(key, value);
+                addToHead(addNode);
+                map.put(key, addNode);
+            }
+        }
+
+        void addToHead(Node node) {
+            node.pre = head;
+            node.next = head.next;
+            head.next = node;
+            node.next.pre = node;
+        }
+
+        void removeNode(Node node) {
+            Node pre = node.pre;
+            Node next = node.next;
+            next.pre = pre;
+            pre.next = next;
+        }
+    }
 
 
     public static void main(String[] args) {
         System.out.println("new Solution().canFinish(2,new int[][]{new int[]{1,0}}) = " + new Solution().canFinish(2, new int[][]{new int[]{1, 0}}));
-
     }
 
 }
