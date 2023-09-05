@@ -737,28 +737,26 @@ public class Solution {
         return sum;
     }
 
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        int len = gas.length;
-        int qidian = 0;
-        int youliang = 0;
-        int i = 0;
-        boolean flag = true;
-        while (true) {
-            if (flag) youliang += gas[i] - cost[i];
-            //当前位置为负数，下一步不能走
-            if (youliang < 0) {
-                qidian = (qidian + len - 1) % len;
-                youliang += gas[qidian] - cost[qidian];
-                ;
-                flag = false;
-                if (qidian == i) return -1;
-            } else {
-                flag = true;
-                i = (i + 1) % len;
-                if (i == qidian) return qidian;
+    /**
+     * 134. 加油站
+     * @param gas
+     * @param cost
+     * @return
+     */
+        public int canCompleteCircuit(int[] gas, int[] cost) {
+            int start = 0;
+            int totalOil = 0;
+            int currentOil = 0;
+            for(int i = 0;i<gas.length;i++){
+                totalOil  +=gas[i]-cost[i];
+                currentOil +=gas[i]-cost[i];
+                if(currentOil<0){
+                    currentOil = 0;
+                    start = i+1;
+                }
             }
+            return totalOil >= 0 ? start : -1;
         }
-    }
 
     //分糖果
     public int candy(int[] ratings) {
@@ -2732,25 +2730,27 @@ public class Solution {
 
     /**
      * 240. 搜索二维矩阵 II
+     *
      * @param matrix
      * @param target
      * @return
      */
     public boolean searchMatrix(int[][] matrix, int target) {
-       int x = 0;
-       int y = matrix[0].length-1;
-       while (x<matrix.length&&y>=0){
-           if (matrix[x][y]==target)return true;
-           else if (matrix[x][y]>target)y--;
-           else x++;
-       }
-       return false;
+        int x = 0;
+        int y = matrix[0].length - 1;
+        while (x < matrix.length && y >= 0) {
+            if (matrix[x][y] == target) return true;
+            else if (matrix[x][y] > target) y--;
+            else x++;
+        }
+        return false;
     }
+
     public int erfen(int[] nums, int aim) {
         int l = 0;
-        int r = nums.length-1;
+        int r = nums.length - 1;
         while (l < r) {
-            int mid = l + r +1>> 1;
+            int mid = l + r + 1 >> 1;
             if (nums[mid] <= aim) {
                 l = mid;
             } else {
@@ -2762,7 +2762,7 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        System.out.println("new Solution().erfen(new int[]{1,4,7,11,15},4) = " + new Solution().erfen(new int[]{1, 4, 7, 11, 15}, 5));
+       new Solution().canCompleteCircuit(new int[]{2,3,4},new int[]{3,4,3});
 
     }
 
