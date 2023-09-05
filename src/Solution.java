@@ -2914,6 +2914,7 @@ public class Solution {
 
     /**
      * 647. 回文子串
+     *
      * @param s
      * @return
      */
@@ -2923,8 +2924,8 @@ public class Solution {
         for (int i = 0; i < charArray.length; i++) {
             for (int j = 0; j <= 1; j++) {
                 int l = i;
-                int r = i+j;
-                while (l>=0&&r<charArray.length&&charArray[l]==charArray[r]){
+                int r = i + j;
+                while (l >= 0 && r < charArray.length && charArray[l] == charArray[r]) {
                     count++;
                     l--;
                     r++;
@@ -2936,6 +2937,7 @@ public class Solution {
 
     /**
      * 5. 最长回文子串
+     *
      * @param s
      * @return
      */
@@ -2946,21 +2948,47 @@ public class Solution {
         for (int i = 0; i < charArray.length; i++) {
             for (int j = 0; j <= 1; j++) {
                 int l = i;
-                int r = i+j;
-                while (l>=0&&r<charArray.length&&charArray[l]==charArray[r]){
+                int r = i + j;
+                while (l >= 0 && r < charArray.length && charArray[l] == charArray[r]) {
                     l--;
                     r++;
                 }
                 l++;
                 r--;
-                if (r - l>maxLen){
-                    maxLen = r- l;
-                    res = s.substring(l,r+1);
+                if (r - l > maxLen) {
+                    maxLen = r - l;
+                    res = s.substring(l, r + 1);
                 }
             }
         }
-        return  res;
+        return res;
     }
+
+    /**
+     * 152. 乘积最大子数组
+     * @param nums
+     * @return
+     */
+    public int maxProduct(int[] nums) {
+        int minDp[] = new int[nums.length];
+        int maxDp[] = new int[nums.length];
+        maxDp[0] = nums[0];
+        minDp[0] = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            //先处理maxDp
+            int currentMax = Math.max(Math.max(nums[i],nums[i]*nums[i-1]),Math.max(nums[i]*maxDp[i-1],nums[i]*minDp[i-1]));
+            int currentMin = Math.min(Math.min(nums[i],nums[i]*nums[i-1]),Math.min(nums[i]*maxDp[i-1],nums[i]*minDp[i-1]));
+
+
+            minDp[i] = currentMin;
+            maxDp[i] =currentMax;
+            max = Math.max(currentMax,max);
+        }
+        return max;
+    }
+
+
 
     public static void main(String[] args) {
         System.out.println("new Solution().canFinish(2,new int[][]{new int[]{1,0}}) = " + new Solution().canFinish(2, new int[][]{new int[]{1, 0}}));
