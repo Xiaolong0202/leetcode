@@ -2761,8 +2761,52 @@ public class Solution {
     }
 
 
+    /**
+     * 207. 课程表(使用拓扑排序)
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int [] rudu=  new int[numCourses];
+        HashMap<Integer,List<Integer>> map = new HashMap<>();
+        for (int[] prerequisite : prerequisites) {
+            if (!map.containsKey(prerequisite[1]))map.put(prerequisite[1],new ArrayList<>());
+            map.get(prerequisite[1]).add(prerequisite[0]);//构建图之间的关系
+            rudu[prerequisite[0]]++;//入度加一
+        }
+        Deque<Integer> deque = new ArrayDeque();
+        for (int i = 0; i < rudu.length; i++) {
+            //将所有入度为0的结点入栈
+            if (rudu[i] == 0){
+                deque.offerLast(i);
+            }
+        }
+        int count = 0;
+        while (!deque.isEmpty()){
+            Integer last = deque.pollLast();
+            //将该结点从图中去除,并将各个节点入度减一，如果入度被减为0就入栈
+            count++;
+            List<Integer> list = map.get(last);
+            if (list==null)continue;
+            for (Integer item : list) {
+                rudu[item]--;
+                if (rudu[item]==0){
+                    deque.offerLast(item);
+                }
+            }
+        }
+        if (count<numCourses)return false;
+        else return true;
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
-       new Solution().canCompleteCircuit(new int[]{2,3,4},new int[]{3,4,3});
+        System.out.println("new Solution().canFinish(2,new int[][]{new int[]{1,0}}) = " + new Solution().canFinish(2, new int[][]{new int[]{1, 0}}));
 
     }
 
