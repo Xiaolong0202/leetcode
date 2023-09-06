@@ -2989,24 +2989,89 @@ public class Solution {
      * 238. 除自身以外数组的乘积
      */
     public int[] productExceptSelf(int[] nums) {
-        if (nums.length<=1)return nums;
+        if (nums.length <= 1) return nums;
         int incre[] = new int[nums.length];
         int decre[] = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
-            if (i == 0)incre[i] = nums[i];
+            if (i == 0) incre[i] = nums[i];
             else incre[i] = incre[i - 1] * nums[i];
         }
-        for (int i = nums.length-1; i >= 0; i--) {
-            if (i==nums.length-1)decre[i] = nums[i];
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (i == nums.length - 1) decre[i] = nums[i];
             else decre[i] = decre[i + 1] * nums[i];
         }
-        int [] res = new int[nums.length];
+        int[] res = new int[nums.length];
         for (int i = 0; i < res.length; i++) {
-            if (i==0)res[i] = decre[i+1];
-            else if (i==res.length-1)res[i] = incre[i-1];
-            else res[i] = incre[i-1]*decre[i+1];
+            if (i == 0) res[i] = decre[i + 1];
+            else if (i == res.length - 1) res[i] = incre[i - 1];
+            else res[i] = incre[i - 1] * decre[i + 1];
         }
         return res;
+    }
+
+    /**
+     * 221. 最大正方形
+     *
+     * @param matrix
+     * @return
+     */
+    public int maximalSquare(char[][] matrix) {
+//        int maxS=  0;
+//        for (int i = 0; i < matrix.length; i++) {
+//            for (int j = 0; j < matrix[i].length; j++) {
+//                if (matrix[i][j] == '1') {
+//                    for (int k = 0; true; k++) {
+//                        int x = i + k;
+//                        int xj = j;
+//                        int y = j + k;
+//                        int yi = i;
+//                        if (x >= matrix.length || y >= matrix[0].length) break;
+//                        while (matrix[x][xj] == '1' && matrix[yi][y] == '1') {
+//                            if (x==yi&&xj==y){
+//                                break;
+//                            }
+//                            yi++;xj++;
+//                        }
+//                        if (x==yi&&xj==y&&matrix[x][xj] == '1' && matrix[yi][y] == '1'){
+//                            if (k>0){
+//                                System.out.println("k = " + k);
+//                                System.out.println("i = " + i);
+//                                System.out.println("j = " + j);
+//                                System.out.println( );
+//                            }
+//                            maxS = Math.max(maxS,(k+1)*(k+1));
+//                        }else {
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return maxS;
+        int maxS = 0;
+        int dp[][] = new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < dp[0].length; i++) {
+            if (matrix[0][i] == '0') dp[0][i] = -1;
+            else maxS = 1;
+        }
+        for (int i = 0; i < dp.length; i++) {
+            if (matrix[i][0] == '0') dp[i][0] = -1;
+            else maxS = 1;
+        }
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[i].length; j++) {
+                int currentMaxLen = 0;
+                while (i - currentMaxLen >= 0 && j - currentMaxLen >= 0 && matrix[i - currentMaxLen][j] == '1' && matrix[i][j - currentMaxLen] == '1') {
+                    currentMaxLen++;
+                }
+                currentMaxLen--;
+                currentMaxLen = Math.min(dp[i-1][j-1]+1,currentMaxLen);
+                dp[i][j] = currentMaxLen;
+                currentMaxLen++;
+                maxS = Math.max(currentMaxLen*currentMaxLen,maxS);
+            }
+        }
+        return maxS;
     }
 
 
