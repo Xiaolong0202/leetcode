@@ -33,13 +33,11 @@ public class Solution {
     }
 
     public void moveZeroes(int[] nums) {
-        if (nums == null || nums.length == 0)
-            return;
+        if (nums == null || nums.length == 0) return;
         int index = 0;
         //一次遍历，把非零的都往前挪
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != 0)
-                nums[index++] = nums[i];
+            if (nums[i] != 0) nums[index++] = nums[i];
         }
         //后面的都是0,
         while (index < nums.length) {
@@ -2966,6 +2964,7 @@ public class Solution {
 
     /**
      * 152. 乘积最大子数组
+     *
      * @param nums
      * @return
      */
@@ -2977,17 +2976,38 @@ public class Solution {
         int max = nums[0];
         for (int i = 1; i < nums.length; i++) {
             //先处理maxDp
-            int currentMax = Math.max(Math.max(nums[i],nums[i]*nums[i-1]),Math.max(nums[i]*maxDp[i-1],nums[i]*minDp[i-1]));
-            int currentMin = Math.min(Math.min(nums[i],nums[i]*nums[i-1]),Math.min(nums[i]*maxDp[i-1],nums[i]*minDp[i-1]));
-
-
+            int currentMax = Math.max(Math.max(nums[i], nums[i] * nums[i - 1]), Math.max(nums[i] * maxDp[i - 1], nums[i] * minDp[i - 1]));
+            int currentMin = Math.min(Math.min(nums[i], nums[i] * nums[i - 1]), Math.min(nums[i] * maxDp[i - 1], nums[i] * minDp[i - 1]));
             minDp[i] = currentMin;
-            maxDp[i] =currentMax;
-            max = Math.max(currentMax,max);
+            maxDp[i] = currentMax;
+            max = Math.max(currentMax, max);
         }
         return max;
     }
 
+    /**
+     * 238. 除自身以外数组的乘积
+     */
+    public int[] productExceptSelf(int[] nums) {
+        if (nums.length<=1)return nums;
+        int incre[] = new int[nums.length];
+        int decre[] = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (i == 0)incre[i] = nums[i];
+            else incre[i] = incre[i - 1] * nums[i];
+        }
+        for (int i = nums.length-1; i >= 0; i--) {
+            if (i==nums.length-1)decre[i] = nums[i];
+            else decre[i] = decre[i + 1] * nums[i];
+        }
+        int [] res = new int[nums.length];
+        for (int i = 0; i < res.length; i++) {
+            if (i==0)res[i] = decre[i+1];
+            else if (i==res.length-1)res[i] = incre[i-1];
+            else res[i] = incre[i-1]*decre[i+1];
+        }
+        return res;
+    }
 
 
     public static void main(String[] args) {
