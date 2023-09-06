@@ -3163,9 +3163,50 @@ public class Solution {
 //        }
 //        return allTimes;
     }
+
+    /**
+     *448. 找到所有数组中消失的数字
+     * @param nums
+     * @return
+     */
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+//        for (int i = 0; i < nums.length; i++) {
+//            int nextIndex = nums[i]%nums.length;
+//            int nextSValue = nums[i];
+//            while (nums[nextIndex]%nums.length!=nextIndex){
+//
+//                int tempnextSValue = nums[nextIndex];
+//                int tempnextIndex = nums[nextIndex]%nums.length;
+//
+//                nums[nextIndex] = nextSValue;
+//
+//                nextIndex = tempnextIndex;
+//                nextSValue = tempnextSValue;
+//
+//            }
+//        }
+//        List<Integer> res = new ArrayList<>();
+//        for (int i = 1; i <= nums.length; i++) {
+//            if (nums[i%nums.length]%nums.length!=i%nums.length)res.add(i);
+//        }
+//        return res;
+
+        int n = nums.length;
+        for (int num : nums) {
+            int x = (num - 1) % n;
+            nums[x] += n;
+        }
+        List<Integer> ret = new ArrayList<Integer>();
+        for (int i = 0; i < n; i++) {
+            if (nums[i] <= n) {
+                ret.add(i + 1);
+            }
+        }
+        return ret;
+
+    }
     public static void main(String[] args) {
-        System.out.println("new Solution().leastInterval(new char[]{'A','A','A','B','B','B'},2) = " +
-                new Solution().leastInterval(new char[]{'A','A','A','B','B','B', 'C','C','C', 'D', 'D', 'E'}, 2));
+        new Solution().findDisappearedNumbers(new int[]{4,3,2,7,8,2,3,1});
     }
 
 }
