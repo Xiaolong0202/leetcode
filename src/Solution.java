@@ -3075,8 +3075,97 @@ public class Solution {
     }
 
 
+    /**
+     *621. 任务调度器
+     */
+    class LeastIntervalTask{
+        int time;
+        boolean state;
+        Character val;
+    }
+    public int leastInterval(char[] tasks, int n) {
+       int[] countArr = new int[26];
+        for (char task : tasks) {
+            countArr[task-'A']++;
+        }
+        int maxCount = Integer.MIN_VALUE;
+        int maxCountCOUNT = 0;
+        for (int i = 0; i < countArr.length; i++) {
+            if (countArr[i]>maxCount){
+                maxCount = countArr[i];
+                maxCountCOUNT = 0;
+            }
+            if (countArr[i]==maxCount)maxCountCOUNT++;
+        }
+        return Math.max((maxCount-1)*(n+1)+maxCountCOUNT,tasks.length);
+//        HashMap<Character,LeastIntervalTask> map = new HashMap<>();
+//        int taskNum = 0;
+//        for (int i = 0; i < tasks.length; i++) {
+//            LeastIntervalTask leastIntervalTask = map.get(tasks[i]);
+//            if (leastIntervalTask==null){
+//                leastIntervalTask= new LeastIntervalTask();
+//                leastIntervalTask.time = 0;
+//                leastIntervalTask.val  = tasks[i];
+//                map.put(tasks[i], leastIntervalTask);
+//                taskNum++;
+//            }
+//            leastIntervalTask.time++;
+//        }
+//        List<LeastIntervalTask> list = new ArrayList<>();
+//        for (LeastIntervalTask value : map.values()) {
+//            list.add(value);
+//        }
+//        list.sort((o1, o2) -> Integer.compare(o2.time,o1.time));
+//        Deque<LeastIntervalTask> waitDeque = new ArrayDeque<>();
+//
+//        int allTimes = 0;
+//        while (list.size()>0){
+//            LeastIntervalTask task = null;
+//            int index = -1;
+//            for (int i = 0; i < list.size(); i++) {
+//               LeastIntervalTask currtask = list.get(i);
+//               if (currtask.state==false){
+//                   task = currtask;
+//                   index = i;
+//                   break;
+//               }
+//            }
+//            if (task!=null){
+//                task.state = true;
+//                task.time--;
+//                if (task.time<=0){
+//                    list.remove(task);
+//                }else {
+//                    for (int i = 1; i+index < list.size(); i++) {
+//                        LeastIntervalTask qian = list.get(index + i);
+//                        LeastIntervalTask hou = list.get(index + i -1);
+//                        if (hou.time< qian.time){
+//                            list.set(index + i -1,qian);
+//                            list.set(index+i,hou);
+//                        }else {
+//                            break;
+//                        }
+//                    }
+//                }
+//                    waitDeque.offerFirst(task);
+//                    if (waitDeque.size()>n){
+//                        LeastIntervalTask outTask = waitDeque.pollLast();
+//                        outTask.state = false;
+//                    }
+//            }else {
+//                waitDeque.offerFirst(new LeastIntervalTask());
+//                if (waitDeque.size()>n){
+//                    LeastIntervalTask outTask = waitDeque.pollLast();
+//                    outTask.state = false;
+//                }
+//            }
+//            allTimes++;
+//        }
+//        return allTimes;
+    }
     public static void main(String[] args) {
-        System.out.println("new Solution().canFinish(2,new int[][]{new int[]{1,0}}) = " + new Solution().canFinish(2, new int[][]{new int[]{1, 0}}));
+        System.out.println("new Solution().leastInterval(new char[]{'A','A','A','B','B','B'},2) = " +
+                new Solution().leastInterval(new char[]{'A','A','A','B','B','B', 'C','C','C', 'D', 'D', 'E'}, 2));
     }
 
 }
