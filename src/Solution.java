@@ -1053,10 +1053,8 @@ public class Solution {
 
     public void combinationSum3(int k, int n, int floor, int currentNum, int sum, List<Integer> list) {
         if (sum > n) {
-        }
-        else if (sum == n && k < floor) {
-        }
-        else if (k == floor) {
+        } else if (sum == n && k < floor) {
+        } else if (k == floor) {
             if (sum == n) combinationListSum3.add(new ArrayList<>(list));
         } else {
             int maxI = n > 9 ? 9 : n - 1;
@@ -3217,7 +3215,7 @@ public class Solution {
 
         // Encodes a tree to a single string.
         public String serialize(TreeNode root) {
-            if (root==null)return "[]";
+            if (root == null) return "[]";
             Deque<TreeNode> deque = new LinkedList<>();
             deque.offerFirst(root);
             StringBuilder sb = new StringBuilder("[");
@@ -3236,25 +3234,25 @@ public class Solution {
 
         // Decodes your encoded data to tree.
         public TreeNode deserialize(String data) {
-            if ("[]".equals(data))return null;
+            if ("[]".equals(data)) return null;
             List<TreeNode> list = new ArrayList<>();
             char[] charArray = data.toCharArray();
 
             for (int i = 1; i < charArray.length; i++) {
-                if (charArray[i]=='n'){
-                    i+=4;
+                if (charArray[i] == 'n') {
+                    i += 4;
                     list.add(null);
-                }else {
+                } else {
                     TreeNode currentNode = new TreeNode();
-                    if (charArray[i]=='-'){
+                    if (charArray[i] == '-') {
                         i++;
                         while (charArray[i] != ',' && charArray[i] != ']') {
-                            currentNode.val = currentNode.val*10 - Integer.parseInt(String.valueOf(charArray[i]));
+                            currentNode.val = currentNode.val * 10 - Integer.parseInt(String.valueOf(charArray[i]));
                             i++;
                         }
-                    }else {
+                    } else {
                         while (charArray[i] != ',' && charArray[i] != ']') {
-                            currentNode.val = currentNode.val*10 + Integer.parseInt(String.valueOf(charArray[i]));
+                            currentNode.val = currentNode.val * 10 + Integer.parseInt(String.valueOf(charArray[i]));
                             i++;
                         }
                     }
@@ -3263,20 +3261,74 @@ public class Solution {
             }
 
             TreeNode root = list.get(0);
-            if (root!=null){
+            if (root != null) {
                 Deque<TreeNode> deque = new LinkedList<>();
                 deque.offerFirst(root);
                 int i = 1;
-                while (!deque.isEmpty()){
+                while (!deque.isEmpty()) {
                     TreeNode node = deque.pollLast();
                     node.left = list.get(i++);
                     node.right = list.get(i++);
-                    if (node.left!=null) deque.offerFirst(node.left);
-                    if (node.right!=null)deque.offerFirst(node.right);
+                    if (node.left != null) deque.offerFirst(node.left);
+                    if (node.right != null) deque.offerFirst(node.right);
                 }
             }
             return root;
         }
+    }
+
+    /**
+     * 312. 戳气球
+     *
+     * @param nums
+     * @return
+     */
+    public int maxCoins(int[] nums) {
+        int[] balloons = new int[nums.length + 2];
+        System.arraycopy(nums, 0, balloons, 1, nums.length);
+        balloons[0] = 1;
+        balloons[nums.length + 1] = 1;
+        int[][] dp = new int[nums.length + 2][nums.length + 2];
+        for (int len = 1; len <= nums.length; len++) {
+            for (int l = 0; l + len + 1 <= nums.length + 1; l++) {
+                int r = l + len + 1;
+                for (int k = l + 1; k < r; k++) {
+                    dp[l][r] = Math.max(dp[l][r], dp[l][k] + dp[k][r] + balloons[l] * balloons[k] * balloons[r]);
+                }
+            }
+        }
+        return dp[0][nums.length + 1];
+    }
+
+    /**
+     * 438. 找到字符串中所有字母异位词
+     * @param s
+     * @param p
+     * @return
+     */
+    public List<Integer> findAnagrams(String s, String p) {
+        long start = System.currentTimeMillis();
+        if (s.length()<p.length())return new ArrayList<>();
+        char[] pCharArray = p.toCharArray();
+        char[] sCharArray = s.toCharArray();
+        int[] pvisited = new int[26];
+        int[] svisited  = new int[26];
+        for (int i = 0; i < pCharArray.length; i++) {
+            pvisited[pCharArray[i] - 'a']++;
+        }
+        for (int i = 0; i < pCharArray.length-1; i++) {
+            svisited[sCharArray[i] - 'a']++;
+        }
+        List<Integer> res = new ArrayList<>();
+        for (int i = pCharArray.length-1; i < sCharArray.length; i++) {
+            svisited[sCharArray[i]-'a']++;
+           if (Arrays.equals(pvisited,svisited)){
+               res.add(i-pCharArray.length+1);
+           }
+           svisited[sCharArray[i-pCharArray.length+1]-'a']--;
+        }
+        System.out.println("System.currentTimeMillis()-start = " + (System.currentTimeMillis() - start));
+        return res;
     }
 
     public static void main(String[] args) {
