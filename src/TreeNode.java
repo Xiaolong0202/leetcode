@@ -15,4 +15,12 @@ public class TreeNode {
             this.left = left;
             this.right = right;
         }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TreeNode{");
+        sb.append("val=").append(val);
+        sb.append('}');
+        return sb.toString();
     }
+}

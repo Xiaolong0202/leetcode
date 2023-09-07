@@ -364,7 +364,7 @@ public class Solution {
     }
 
 
-    private int pricese[];
+    private int[] pricese;
     private Random random;
 
     public Solution(int[] nums) {
@@ -893,12 +893,12 @@ public class Solution {
             if (chars[i] == ' ') {
                 if ((i != len - 1) && chars[i + 1] == ' ') {
                 } else {
-                    sb.append(s.substring(i + 1, j));
+                    sb.append(s, i + 1, j);
                     sb.append(' ');
                 }
                 j = i;
             } else if (i == 0) {
-                sb.append(s.substring(i, j));
+                sb.append(s, i, j);
             }
             i--;
         }
@@ -1052,11 +1052,12 @@ public class Solution {
     }
 
     public void combinationSum3(int k, int n, int floor, int currentNum, int sum, List<Integer> list) {
-        if (sum > n) return;
-        else if (sum == n && k < floor) return;
+        if (sum > n) {
+        }
+        else if (sum == n && k < floor) {
+        }
         else if (k == floor) {
             if (sum == n) combinationListSum3.add(new ArrayList<>(list));
-            return;
         } else {
             int maxI = n > 9 ? 9 : n - 1;
             for (int i = currentNum + 1; i <= maxI; i++) {
@@ -1379,8 +1380,7 @@ public class Solution {
                 }
             }
         }
-        if (dp[target] == target) return true;
-        else return false;
+        return dp[target] == target;
     }
 
     /**
@@ -1598,7 +1598,7 @@ public class Solution {
      * 322. 零钱兑换
      */
     public int coinChange(int[] coins, int amount) {
-        int dp[] = new int[amount + 1];
+        int[] dp = new int[amount + 1];
         Arrays.fill(dp, Integer.MAX_VALUE - 1);
         dp[0] = 0;
         for (int c : coins) {
@@ -1635,7 +1635,10 @@ public class Solution {
         HashSet<String> dic = new HashSet<>(wordDict);
         for (int i = 1; i <= length; i++) {
             for (int j = 0; j < i; j++) {
-                if (dic.contains(s.substring(j, i)) && dp[j]) dp[i] = true;
+                if (dic.contains(s.substring(j, i)) && dp[j]) {
+                    dp[i] = true;
+                    break;
+                }
             }
         }
         return dp[length];
@@ -1655,7 +1658,7 @@ public class Solution {
 
     int rob(int[] nums, int start, int end) {
         if (start == end) return nums[start];
-        int dp[] = new int[nums.length];
+        int[] dp = new int[nums.length];
         dp[start] = nums[start];
         dp[start + 1] = Math.max(dp[start], nums[start + 1]);
         for (int i = start + 2; i <= end; i++) {
@@ -1691,7 +1694,7 @@ public class Solution {
      */
     public int maxProfit1(int[] prices) {
         if (prices.length <= 1) return 0;
-        int dp[] = new int[prices.length];
+        int[] dp = new int[prices.length];
         for (int i = 1; i < prices.length; i++) {
             int minus = prices[i] - prices[i - 1];
             dp[i] = minus + dp[i - 1];
@@ -1729,7 +1732,7 @@ public class Solution {
      */
     public int maxProfit(int k, int[] prices) {
         if (prices.length <= 1) return 0;
-        int dp[] = new int[k * 2 + 1];
+        int[] dp = new int[k * 2 + 1];
         //初始化
         for (int i = 1; i < dp.length; i++) {
             if (i % 2 != 0) {
@@ -1758,8 +1761,8 @@ public class Solution {
      * @return
      */
     public int maxProfit(int[] prices) {
-        int dpBuy[] = new int[prices.length];//第i天的最大的买入后的余额
-        int dpSell[] = new int[prices.length];//第i天的最大的卖出后的余额
+        int[] dpBuy = new int[prices.length];//第i天的最大的买入后的余额
+        int[] dpSell = new int[prices.length];//第i天的最大的卖出后的余额
         dpBuy[0] = -prices[0];//第0天买入就是第一天价格的负数
         dpSell[0] = 0;//第0天卖出就是0
         for (int i = 1; i < prices.length; i++) {
@@ -1776,7 +1779,7 @@ public class Solution {
      * @param postorder
      * @return
      */
-    private HashMap<Integer, Integer> nodeValIndexMap = new HashMap<>();
+    private final HashMap<Integer, Integer> nodeValIndexMap = new HashMap<>();
 
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         for (int i = 0; i < inorder.length; i++) {
@@ -1824,7 +1827,7 @@ public class Solution {
     //动态规划
     public int findLength(int[] nums1, int[] nums2) {
         int res = Integer.MIN_VALUE;
-        int dp[][] = new int[nums1.length + 1][nums2.length + 1];
+        int[][] dp = new int[nums1.length + 1][nums2.length + 1];
         for (int i = 1; i <= nums2.length; i++) {
             for (int j = 1; j <= nums1.length; j++) {
                 if (nums2[i - 1] == nums1[j - 1]) {
@@ -1843,7 +1846,7 @@ public class Solution {
         char[] charArr1 = text1.toCharArray();
         char[] charArr2 = text2.toCharArray();
 
-        int dp[][] = new int[charArr1.length + 1][charArr2.length + 1];
+        int[][] dp = new int[charArr1.length + 1][charArr2.length + 1];
         for (int i = 1; i <= charArr1.length; i++) {
             for (int j = 1; j <= charArr2.length; j++) {
                 if (charArr1[i - 1] == charArr2[j - 1]) {
@@ -1896,8 +1899,7 @@ public class Solution {
                 i++;
             } else i++;
         }
-        if (j == charArrays.length) return true;
-        else return false;
+        return j == charArrays.length;
     }
 
     /**
@@ -1910,7 +1912,7 @@ public class Solution {
     public int numDistinct(String s, String t) {
         char[] sCharArray = s.toCharArray();
         char[] tCharArray = t.toCharArray();
-        int dp[][] = new int[sCharArray.length + 1][tCharArray.length + 1];
+        int[][] dp = new int[sCharArray.length + 1][tCharArray.length + 1];
         for (int i = 0; i < dp.length; i++) {
             dp[i][0] = 1;
         }
@@ -2330,8 +2332,8 @@ public class Solution {
             }
         }
 
-        private TrieNode root;
-        private HashSet<String> set;
+        private final TrieNode root;
+        private final HashSet<String> set;
 
         public Trie() {
             root = new TrieNode(null);
@@ -2572,7 +2574,7 @@ public class Solution {
     /**
      * 236. 二叉树的最近公共祖先
      */
-    private HashMap<TreeNode, List<TreeNode>> aimAndParents = new HashMap<>();
+    private final HashMap<TreeNode, List<TreeNode>> aimAndParents = new HashMap<>();
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null) return null;
@@ -2796,8 +2798,7 @@ public class Solution {
                 }
             }
         }
-        if (count < numCourses) return false;
-        else return true;
+        return count >= numCourses;
     }
 
     /**
@@ -2969,8 +2970,8 @@ public class Solution {
      * @return
      */
     public int maxProduct(int[] nums) {
-        int minDp[] = new int[nums.length];
-        int maxDp[] = new int[nums.length];
+        int[] minDp = new int[nums.length];
+        int[] maxDp = new int[nums.length];
         maxDp[0] = nums[0];
         minDp[0] = nums[0];
         int max = nums[0];
@@ -2990,8 +2991,8 @@ public class Solution {
      */
     public int[] productExceptSelf(int[] nums) {
         if (nums.length <= 1) return nums;
-        int incre[] = new int[nums.length];
-        int decre[] = new int[nums.length];
+        int[] incre = new int[nums.length];
+        int[] decre = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
             if (i == 0) incre[i] = nums[i];
             else incre[i] = incre[i - 1] * nums[i];
@@ -3049,7 +3050,7 @@ public class Solution {
 //        }
 //        return maxS;
         int maxS = 0;
-        int dp[][] = new int[matrix.length][matrix[0].length];
+        int[][] dp = new int[matrix.length][matrix[0].length];
         for (int i = 0; i < dp[0].length; i++) {
             if (matrix[0][i] == '0') dp[0][i] = -1;
             else maxS = 1;
@@ -3065,10 +3066,10 @@ public class Solution {
                     currentMaxLen++;
                 }
                 currentMaxLen--;
-                currentMaxLen = Math.min(dp[i-1][j-1]+1,currentMaxLen);
+                currentMaxLen = Math.min(dp[i - 1][j - 1] + 1, currentMaxLen);
                 dp[i][j] = currentMaxLen;
                 currentMaxLen++;
-                maxS = Math.max(currentMaxLen*currentMaxLen,maxS);
+                maxS = Math.max(currentMaxLen * currentMaxLen, maxS);
             }
         }
         return maxS;
@@ -3076,28 +3077,29 @@ public class Solution {
 
 
     /**
-     *621. 任务调度器
+     * 621. 任务调度器
      */
-    class LeastIntervalTask{
+    class LeastIntervalTask {
         int time;
         boolean state;
         Character val;
     }
+
     public int leastInterval(char[] tasks, int n) {
-       int[] countArr = new int[26];
+        int[] countArr = new int[26];
         for (char task : tasks) {
-            countArr[task-'A']++;
+            countArr[task - 'A']++;
         }
         int maxCount = Integer.MIN_VALUE;
         int maxCountCOUNT = 0;
         for (int i = 0; i < countArr.length; i++) {
-            if (countArr[i]>maxCount){
+            if (countArr[i] > maxCount) {
                 maxCount = countArr[i];
                 maxCountCOUNT = 0;
             }
-            if (countArr[i]==maxCount)maxCountCOUNT++;
+            if (countArr[i] == maxCount) maxCountCOUNT++;
         }
-        return Math.max((maxCount-1)*(n+1)+maxCountCOUNT,tasks.length);
+        return Math.max((maxCount - 1) * (n + 1) + maxCountCOUNT, tasks.length);
 //        HashMap<Character,LeastIntervalTask> map = new HashMap<>();
 //        int taskNum = 0;
 //        for (int i = 0; i < tasks.length; i++) {
@@ -3165,7 +3167,8 @@ public class Solution {
     }
 
     /**
-     *448. 找到所有数组中消失的数字
+     * 448. 找到所有数组中消失的数字
+     *
      * @param nums
      * @return
      */
@@ -3205,8 +3208,94 @@ public class Solution {
         return ret;
 
     }
+
+
+    /**
+     * 297. 二叉树的序列化与反序列化
+     */
+    public static class Codec {
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            if (root==null)return "[]";
+            Deque<TreeNode> deque = new LinkedList<>();
+            deque.offerFirst(root);
+            StringBuilder sb = new StringBuilder("[");
+            while (!deque.isEmpty()) {
+                TreeNode treeNode = deque.pollLast();
+                sb.append(treeNode == null ? "null" : treeNode.val);
+                sb.append(',');
+                if (treeNode != null) {
+                    deque.offerFirst(treeNode.left);
+                    deque.offerFirst(treeNode.right);
+                }
+            }
+            sb.replace(sb.length() - 1, sb.length(), "]");
+            return sb.toString();
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            if ("[]".equals(data))return null;
+            List<TreeNode> list = new ArrayList<>();
+            char[] charArray = data.toCharArray();
+
+            for (int i = 1; i < charArray.length; i++) {
+                if (charArray[i]=='n'){
+                    i+=4;
+                    list.add(null);
+                }else {
+                    TreeNode currentNode = new TreeNode();
+                    if (charArray[i]=='-'){
+                        i++;
+                        while (charArray[i] != ',' && charArray[i] != ']') {
+                            currentNode.val = currentNode.val*10 - Integer.parseInt(String.valueOf(charArray[i]));
+                            i++;
+                        }
+                    }else {
+                        while (charArray[i] != ',' && charArray[i] != ']') {
+                            currentNode.val = currentNode.val*10 + Integer.parseInt(String.valueOf(charArray[i]));
+                            i++;
+                        }
+                    }
+                    list.add(currentNode);
+                }
+            }
+
+            TreeNode root = list.get(0);
+            if (root!=null){
+                Deque<TreeNode> deque = new LinkedList<>();
+                deque.offerFirst(root);
+                int i = 1;
+                while (!deque.isEmpty()){
+                    TreeNode node = deque.pollLast();
+                    node.left = list.get(i++);
+                    node.right = list.get(i++);
+                    if (node.left!=null) deque.offerFirst(node.left);
+                    if (node.right!=null)deque.offerFirst(node.right);
+                }
+            }
+            return root;
+        }
+    }
+
     public static void main(String[] args) {
-        new Solution().findDisappearedNumbers(new int[]{4,3,2,7,8,2,3,1});
+        TreeNode node = new TreeNode();
+        node.val = 123;
+        TreeNode left = new TreeNode();
+        left.val = 89;
+        TreeNode right = new TreeNode();
+        right.val = 66;
+        right.left = new TreeNode();
+        right.right = new TreeNode();
+        right.right.val = 999;
+        node.left = left;
+        node.right = right;
+
+        right.right.right = new TreeNode();
+        right.right.right.val = 11111;
+        System.out.println("new Solution.Codec().serialize(node) = " + new Codec().serialize(node));
+
     }
 
 }
