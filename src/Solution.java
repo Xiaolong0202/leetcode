@@ -3331,6 +3331,29 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 把二叉搜索树转换为累加树
+     * @param root
+     * @return
+     */
+    public TreeNode convertBST(TreeNode root) {
+        int addNum = 0;
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        TreeNode cur = root;
+        while (cur!=null || !deque.isEmpty()){
+            while (cur!=null){
+                deque.offerLast(cur);
+                cur = cur.right;
+            }
+           cur =  deque.pollLast();
+            cur.val += addNum;
+           addNum = cur.val;
+           cur = cur.left;
+        }
+        return root;
+    }
+
+
     public static void main(String[] args) {
         TreeNode node = new TreeNode();
         node.val = 123;
