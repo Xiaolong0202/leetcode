@@ -3302,30 +3302,31 @@ public class Solution {
 
     /**
      * 438. 找到字符串中所有字母异位词
+     *
      * @param s
      * @param p
      * @return
      */
     public List<Integer> findAnagrams(String s, String p) {
         long start = System.currentTimeMillis();
-        if (s.length()<p.length())return new ArrayList<>();
+        if (s.length() < p.length()) return new ArrayList<>();
         char[] pCharArray = p.toCharArray();
         char[] sCharArray = s.toCharArray();
         int[] pvisited = new int[26];
-        int[] svisited  = new int[26];
+        int[] svisited = new int[26];
         for (int i = 0; i < pCharArray.length; i++) {
             pvisited[pCharArray[i] - 'a']++;
         }
-        for (int i = 0; i < pCharArray.length-1; i++) {
+        for (int i = 0; i < pCharArray.length - 1; i++) {
             svisited[sCharArray[i] - 'a']++;
         }
         List<Integer> res = new ArrayList<>();
-        for (int i = pCharArray.length-1; i < sCharArray.length; i++) {
-            svisited[sCharArray[i]-'a']++;
-           if (Arrays.equals(pvisited,svisited)){
-               res.add(i-pCharArray.length+1);
-           }
-           svisited[sCharArray[i-pCharArray.length+1]-'a']--;
+        for (int i = pCharArray.length - 1; i < sCharArray.length; i++) {
+            svisited[sCharArray[i] - 'a']++;
+            if (Arrays.equals(pvisited, svisited)) {
+                res.add(i - pCharArray.length + 1);
+            }
+            svisited[sCharArray[i - pCharArray.length + 1] - 'a']--;
         }
         System.out.println("System.currentTimeMillis()-start = " + (System.currentTimeMillis() - start));
         return res;
@@ -3333,6 +3334,7 @@ public class Solution {
 
     /**
      * 把二叉搜索树转换为累加树
+     *
      * @param root
      * @return
      */
@@ -3340,19 +3342,37 @@ public class Solution {
         int addNum = 0;
         Deque<TreeNode> deque = new ArrayDeque<>();
         TreeNode cur = root;
-        while (cur!=null || !deque.isEmpty()){
-            while (cur!=null){
+        while (cur != null || !deque.isEmpty()) {
+            while (cur != null) {
                 deque.offerLast(cur);
                 cur = cur.right;
             }
-           cur =  deque.pollLast();
+            cur = deque.pollLast();
             cur.val += addNum;
-           addNum = cur.val;
-           cur = cur.left;
+            addNum = cur.val;
+            cur = cur.left;
         }
         return root;
     }
 
+    /**
+     * 560. 和为 K 的子数组
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int subarraySum(int[] nums, int k) {
+        Map<Integer,  Integer>  map = new HashMap<>();
+        int[] qianzhuihe = new int[nums.length + 1];
+        int count = 0;
+        map.put(0,1);
+        for (int i = 0; i < nums.length; i++) {
+            qianzhuihe[i + 1] = qianzhuihe[i] + nums[i];
+            count+=map.getOrDefault(qianzhuihe[i+1]-k,0);
+            map.put(qianzhuihe[i+1],map.getOrDefault(qianzhuihe[i+1],0)+1);
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
         TreeNode node = new TreeNode();
