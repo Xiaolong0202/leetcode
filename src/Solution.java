@@ -520,26 +520,31 @@ public class Solution {
         return next;
     }
 
+    /**
+     * 454. 四数相加 II
+     * @param nums1
+     * @param nums2
+     * @param nums3
+     * @param nums4
+     * @return
+     */
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        int n = nums1.length;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int sum = nums1[i] + nums2[j];
-                System.out.println(sum);
-                map.put(sum, map.getOrDefault(sum, -1) + 1);
+        Map<Integer,Integer> map = new HashMap();
+        for(int i = 0;i<nums1.length;i++){
+            for(int j = 0;j<nums2.length;j++){
+                map.put(nums1[i]+nums2[j],map.getOrDefault(nums1[i]+nums2[j],0)+1);
             }
         }
-        System.out.println(map);
-        int count = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int sum = nums3[i] + nums4[j];
-                System.out.println(-sum);
-                count += map.getOrDefault(-sum, 0);
+        int res = 0;
+        for(int i = 0;i<nums3.length;i++){
+            for(int j = 0;j<nums4.length;j++){
+                Integer num = map.get(-(nums3[i]+nums4[j]));
+                if(num!=null){
+                    res += num;
+                }
             }
         }
-        return count;
+        return res;
     }
 
     /**
