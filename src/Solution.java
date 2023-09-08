@@ -3357,65 +3357,145 @@ public class Solution {
 
     /**
      * 560. 和为 K 的子数组
+     *
      * @param nums
      * @param k
      * @return
      */
     public int subarraySum(int[] nums, int k) {
-        Map<Integer,  Integer>  map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         int[] qianzhuihe = new int[nums.length + 1];
         int count = 0;
-        map.put(0,1);
+        map.put(0, 1);
         for (int i = 0; i < nums.length; i++) {
             qianzhuihe[i + 1] = qianzhuihe[i] + nums[i];
-            count+=map.getOrDefault(qianzhuihe[i+1]-k,0);
-            map.put(qianzhuihe[i+1],map.getOrDefault(qianzhuihe[i+1],0)+1);
+            count += map.getOrDefault(qianzhuihe[i + 1] - k, 0);
+            map.put(qianzhuihe[i + 1], map.getOrDefault(qianzhuihe[i + 1], 0) + 1);
         }
         return count;
     }
 
     /**
      * 33. 搜索旋转排序数组
+     *
      * @param nums
      * @param target
      * @return
      */
     public int search(int[] nums, int target) {
-            int l = 0;
-            int r = nums.length - 1;
-            while (l<r){
-                int mid = l+r>>1;
-                if (nums[mid]==target){
-                    return mid;
-                }
-                if(nums[mid]>target){
-                    if (nums[mid]<nums[0]){
+        int l = 0;
+        int r = nums.length - 1;
+        while (l < r) {
+            int mid = l + r >> 1;
+            if (nums[mid] == target) {
+                return mid;
+            }
+            if (nums[mid] > target) {
+                if (nums[mid] < nums[0]) {
+                    r = mid - 1;
+                } else {
+                    if (target >= nums[0]) {
                         r = mid - 1;
-                    }else {
-                        if (target>=nums[0]){
-                            r = mid - 1;
-                        }else {
-                            l = mid + 1;
-                        }
+                    } else {
+                        l = mid + 1;
                     }
-                }else {
-                     if (nums[mid]>=nums[0]){
-                         l = mid+1;
-                     }else {
-                         if (target<nums[0]){
-                             l = mid + 1;
-                         }else {
-                             r = mid - 1;
-                         }
-                     }
+                }
+            } else {
+                if (nums[mid] >= nums[0]) {
+                    l = mid + 1;
+                } else {
+                    if (target < nums[0]) {
+                        l = mid + 1;
+                    } else {
+                        r = mid - 1;
+                    }
                 }
             }
-            return nums[l]==target ? l : -1;
+        }
+        return nums[l] == target ? l : -1;
+    }
+
+    /**
+     * 54. 螺旋矩阵
+     *
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> list = new ArrayList<>();
+        int[][] visited = new int[matrix.length][matrix[0].length];
+        int x = 0;
+        int y = 0;
+
+        while (true) {
+            while (y < matrix[0].length && visited[x][y] == 0) {
+                visited[x][y] = 1;
+                list.add(matrix[x][y]);
+                y++;
+            }
+            y--;
+            x++;
+            if (x < 0 || y < 0 || x >= matrix.length || y >= matrix[0].length) break;
+            if (visited[x][y] == 1) break;
+            while (x < matrix.length && visited[x][y] == 0) {
+                visited[x][y] = 1;
+                list.add(matrix[x][y]);
+                x++;
+            }
+            x--;
+            y--;
+            if (x < 0 || y < 0 || x >= matrix.length || y >= matrix[0].length) break;
+            if (visited[x][y] == 1) break;
+            while (y >= 0 && visited[x][y] == 0) {
+                visited[x][y] = 1;
+                list.add(matrix[x][y]);
+                y--;
+            }
+            y++;
+            x--;
+            if (x < 0 || y < 0 || x >= matrix.length || y >= matrix[0].length) break;
+            if (visited[x][y] == 1) break;
+            while (x >= 0 && visited[x][y] == 0) {
+                visited[x][y] = 1;
+                list.add(matrix[x][y]);
+                x--;
+            }
+            x++;
+            y++;
+            if (x < 0 || y < 0 || x >= matrix.length || y >= matrix[0].length) break;
+            if (visited[x][y] == 1) break;
+        }
+        return list;
+    }
+
+    /**
+     * 516. 最长回文子序列
+     * @param s
+     * @return
+     */
+    public int longestPalindromeSubseq(String s) {
+        char[] charArray = s.toCharArray();
+        int[][] dp = new int[charArray.length][charArray.length];//i~j之间是否存在回文序列
+        for (int i = charArray.length-1; i >= 0; i--) {
+            for (int j = i; j < charArray.length; j++) {
+                if (charArray[i] == charArray[j]) {
+                    if (i == j) {
+                        dp[i][j] = 1;
+                    } else if (j - i== 1) {
+                        dp[i][j] = 2;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1] + 2;
+                    }
+                } else {
+                   dp[i][j] = Math.max(dp[i+1][j],dp[i][j-1]);
+                }
+            }
+        }
+        return dp[0][dp.length-1];
     }
 
     public static void main(String[] args) {
-        System.out.println("new Solution().search(new int[]{4,5,6,7,0,1,2},0) = " +
-                new Solution().search(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
+        new Solution().longestPalindromeSubseq("bbbab");
     }
 
 }
