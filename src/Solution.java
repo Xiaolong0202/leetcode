@@ -542,34 +542,40 @@ public class Solution {
         return count;
     }
 
+    /**
+     * 15. 三数之和
+     *
+     * @param nums
+     * @return
+     */
     public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        List<List<Integer>> list = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
-            int a = nums[i];
-            if (a > 0) break;
-            if ((i > 0 && a == nums[i - 1])) continue;
+            if (nums[i] > 0) break;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int aim = -nums[i];
             int l = i + 1;
             int r = nums.length - 1;
             while (l < r) {
-                if (nums[l] + nums[r] > -a) {
-                    r--;
-                } else if (nums[l] + nums[r] < -a) {
-                    l++;
-                } else {
-                    List<Integer> integerList = new ArrayList<>();
-                    integerList.add(a);
-                    integerList.add(nums[l]);
-                    integerList.add(nums[r]);
-                    list.add(integerList);
-                    while (l < r && nums[l + 1] == nums[l]) l++;
-                    while (l < r && nums[r - 1] == nums[r]) r--;
+                if (nums[l] + nums[r] == aim) {
+                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));
+                    while (l < r && nums[l + 1] == nums[l]) {
+                        l++;
+                    }
+                    while (l < r && nums[r - 1] == nums[r]) {
+                        r--;
+                    }
                     l++;
                     r--;
+                } else if (nums[l] + nums[r] > aim) {
+                    r--;
+                } else if (nums[l] + nums[r] < aim) {
+                    l++;
                 }
             }
         }
-        return list;
+        return res;
     }
 
     public boolean canConstruct(String ransomNote, String magazine) {
@@ -3470,29 +3476,31 @@ public class Solution {
 
     /**
      * 516. 最长回文子序列
+     *
      * @param s
      * @return
      */
     public int longestPalindromeSubseq(String s) {
         char[] charArray = s.toCharArray();
         int[][] dp = new int[charArray.length][charArray.length];//i~j之间是否存在回文序列
-        for (int i = charArray.length-1; i >= 0; i--) {
+        for (int i = charArray.length - 1; i >= 0; i--) {
             for (int j = i; j < charArray.length; j++) {
                 if (charArray[i] == charArray[j]) {
                     if (i == j) {
                         dp[i][j] = 1;
-                    } else if (j - i== 1) {
+                    } else if (j - i == 1) {
                         dp[i][j] = 2;
                     } else {
                         dp[i][j] = dp[i + 1][j - 1] + 2;
                     }
                 } else {
-                   dp[i][j] = Math.max(dp[i+1][j],dp[i][j-1]);
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
                 }
             }
         }
-        return dp[0][dp.length-1];
+        return dp[0][dp.length - 1];
     }
+
 
     public static void main(String[] args) {
         new Solution().longestPalindromeSubseq("bbbab");
