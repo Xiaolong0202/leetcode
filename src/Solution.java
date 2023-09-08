@@ -3526,6 +3526,51 @@ public class Solution {
         }
     }
 
+    /**
+     * 450. 删除二叉搜索树中的节点
+     * @param root
+     * @param key
+     * @return
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        TreeNode keyNode = root;
+        TreeNode pre = new TreeNode();
+        pre.left = root;
+        TreeNode res = pre;
+        while(keyNode!=null&&keyNode.val!=key){
+            pre = keyNode;
+            if (keyNode.val>key){
+                keyNode = keyNode.left;
+                continue;
+            }
+            if (keyNode.val<key){
+                keyNode = keyNode.right;
+                continue;
+            }
+        }
+        if (keyNode==null)return root;
+        TreeNode right = keyNode.right;
+        TreeNode temp = right;
+        if (right!=null){
+            while (temp.left!=null){
+                temp = temp.left;
+            }
+            temp.left = keyNode.left;
+            if (pre.left==keyNode){
+                pre.left = right;
+            }else {
+                pre.right = right;
+            }
+        }else {
+            if (pre.left==keyNode){
+                pre.left = keyNode.left;
+            }else {
+                pre.right = keyNode.left;
+            }
+        }
+        return res.left;
+    }
+
 
     public static void main(String[] args) {
         new Solution().longestPalindromeSubseq("bbbab");
