@@ -2585,23 +2585,23 @@ public class Solution {
      */
     private final HashMap<TreeNode, List<TreeNode>> aimAndParents = new HashMap<>();
 
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null) return null;
-        findNode(root, p);
-        findNode(root, q);
-        List<TreeNode> plist = aimAndParents.get(p);
-        List<TreeNode> qlist = aimAndParents.get(q);
-        if (plist == null) plist = new ArrayList<>();
-        if (qlist == null) plist = new ArrayList<>();
-        HashSet<TreeNode> set = new HashSet<>();
-        for (TreeNode node : plist) {
-            set.add(node);
-        }
-        for (TreeNode node : qlist) {
-            if (set.contains(node)) return node;
-        }
-        return null;
-    }
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//        if (root == null) return null;
+//        findNode(root, p);
+//        findNode(root, q);
+//        List<TreeNode> plist = aimAndParents.get(p);
+//        List<TreeNode> qlist = aimAndParents.get(q);
+//        if (plist == null) plist = new ArrayList<>();
+//        if (qlist == null) plist = new ArrayList<>();
+//        HashSet<TreeNode> set = new HashSet<>();
+//        for (TreeNode node : plist) {
+//            set.add(node);
+//        }
+//        for (TreeNode node : qlist) {
+//            if (set.contains(node)) return node;
+//        }
+//        return null;
+//    }
 
     public TreeNode findNode(TreeNode root, TreeNode aim) {
         if (root == null) return null;
@@ -3504,6 +3504,26 @@ public class Solution {
             }
         }
         return dp[0][dp.length - 1];
+    }
+
+    /**
+     * 235. 二叉搜索树的最近公共祖先
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        int small = Math.min(p.val,q.val);
+        int big = Math.max(p.val,q.val);
+        if (root.val>=small&&root.val<=big)return root;
+        else {
+            if (root.val>big){
+                return lowestCommonAncestor(root.left,p,q);
+            }else {
+                return lowestCommonAncestor(root.right,p,q);
+            }
+        }
     }
 
 
