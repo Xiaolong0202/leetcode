@@ -3374,23 +3374,48 @@ public class Solution {
         return count;
     }
 
+    /**
+     * 33. 搜索旋转排序数组
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int search(int[] nums, int target) {
+            int l = 0;
+            int r = nums.length - 1;
+            while (l<r){
+                int mid = l+r>>1;
+                if (nums[mid]==target){
+                    return mid;
+                }
+                if(nums[mid]>target){
+                    if (nums[mid]<nums[0]){
+                        r = mid - 1;
+                    }else {
+                        if (target>=nums[0]){
+                            r = mid - 1;
+                        }else {
+                            l = mid + 1;
+                        }
+                    }
+                }else {
+                     if (nums[mid]>=nums[0]){
+                         l = mid+1;
+                     }else {
+                         if (target<nums[0]){
+                             l = mid + 1;
+                         }else {
+                             r = mid - 1;
+                         }
+                     }
+                }
+            }
+            return nums[l]==target ? l : -1;
+    }
+
     public static void main(String[] args) {
-        TreeNode node = new TreeNode();
-        node.val = 123;
-        TreeNode left = new TreeNode();
-        left.val = 89;
-        TreeNode right = new TreeNode();
-        right.val = 66;
-        right.left = new TreeNode();
-        right.right = new TreeNode();
-        right.right.val = 999;
-        node.left = left;
-        node.right = right;
-
-        right.right.right = new TreeNode();
-        right.right.right.val = 11111;
-        System.out.println("new Solution.Codec().serialize(node) = " + new Codec().serialize(node));
-
+        System.out.println("new Solution().search(new int[]{4,5,6,7,0,1,2},0) = " +
+                new Solution().search(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
     }
 
 }
