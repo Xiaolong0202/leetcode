@@ -3630,6 +3630,27 @@ public class Solution {
         }
     }
 
+
+    /**
+     * 513. 找树左下角的值
+     * @param root
+     * @return
+     */
+    private int maxN = -1;
+    private Map<Integer,Integer> findBottomLeftValuemap = new HashMap<>();
+    public int findBottomLeftValue(TreeNode root) {
+        findBottomLeftValue(root,0);
+        return findBottomLeftValuemap.get(maxN);
+    }
+    public void findBottomLeftValue(TreeNode root,int n) {
+        if (root == null) return;
+        if (!findBottomLeftValuemap.containsKey(n)){
+            findBottomLeftValuemap.put(n,root.val);
+        }
+        maxN = Math.max(maxN,n);
+        findBottomLeftValue(root.left,n+1);
+        findBottomLeftValue(root.right,n+1);
+    }
     public static void main(String[] args) {
         new Solution().guibingSort(new int[]{5, 3, 2, 1}, 0, 3);
     }
