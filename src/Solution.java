@@ -1034,25 +1034,50 @@ public class Solution {
         return ints;
     }
 
+    /**
+     * 738. 单调递增的数字
+     * @param n
+     * @return
+     */
     public int monotoneIncreasingDigits(int n) {
-        String string = Integer.toString(n);
-        char[] num = string.toCharArray();
-        for (int i = 0; i < num.length - 1; i++) {
-            if (num[i] > num[i + 1]) {
-                while (i > 0 && num[i] == num[i - 1]) {
-                    i--;
+        char[] charArray = Integer.toString(n).toCharArray();
+        for (int i = 0; i < charArray.length - 1; i++) {
+            if (charArray[i] > charArray[i + 1]) {
+                char c = charArray[i];
+                i++;
+                int j = i+1;
+                while (j<charArray.length){
+                    charArray[j++] = '9';
                 }
-                num[i++]++;
-                while (i < num.length) {
-                    num[i++] = '9';
+                charArray[i--] = '9';
+                while (i >= 0 && charArray[i] >= c) {
+                        charArray[i--] = '9';
                 }
-                StringBuilder stringBuilder = new StringBuilder();
-                for (char c : num) {
-                    stringBuilder.append(c);
-                }
-                return Integer.parseInt(stringBuilder.toString());
+                i++;
+                charArray[i] = (char) (c - 1);
             }
         }
+        return Integer.parseInt(new String(charArray));
+
+
+//        String string = Integer.toString(n);
+//        char[] num = string.toCharArray();
+//        for (int i = 0; i < num.length - 1; i++) {
+//            if (num[i] > num[i + 1]) {
+//                while (i > 0 && num[i] == num[i - 1]) {
+//                    i--;
+//                }
+//                num[i++]++;
+//                while (i < num.length) {
+//                    num[i++] = '9';
+//                }
+//                StringBuilder stringBuilder = new StringBuilder();
+//                for (char c : num) {
+//                    stringBuilder.append(c);
+//                }
+//                return Integer.parseInt(stringBuilder.toString());
+//            }
+//        }
         return n;
     }
 
@@ -3658,6 +3683,7 @@ public class Solution {
 
     /**
      * 112. 路径总和
+     *
      * @param root
      * @param targetSum
      * @return
@@ -3670,29 +3696,32 @@ public class Solution {
 
     /**
      * 654. 最大二叉树
+     *
      * @param nums
      * @return
      */
     public TreeNode constructMaximumBinaryTree(int[] nums) {
-        return constructMaximumBinaryTree(nums,0,nums.length-1);
+        return constructMaximumBinaryTree(nums, 0, nums.length - 1);
     }
-    public TreeNode constructMaximumBinaryTree(int[] nums,int start,int end) {
+
+    public TreeNode constructMaximumBinaryTree(int[] nums, int start, int end) {
         TreeNode root = new TreeNode();
-        if (start==end){
-            root.val = nums[start];return root;
+        if (start == end) {
+            root.val = nums[start];
+            return root;
         }
         int maxIndex = start;
         for (int i = start; i <= end; i++) {
-            if (nums[i]>nums[maxIndex]){
+            if (nums[i] > nums[maxIndex]) {
                 maxIndex = i;
             }
         }
         root.val = nums[maxIndex];
-        if (maxIndex>start){
-            root.left = constructMaximumBinaryTree(nums,start,maxIndex-1);
+        if (maxIndex > start) {
+            root.left = constructMaximumBinaryTree(nums, start, maxIndex - 1);
         }
-        if (maxIndex<end){
-            root.right = constructMaximumBinaryTree(nums,maxIndex+1,end);
+        if (maxIndex < end) {
+            root.right = constructMaximumBinaryTree(nums, maxIndex + 1, end);
         }
         return root;
     }
