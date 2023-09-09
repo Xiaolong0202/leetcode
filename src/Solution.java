@@ -3576,6 +3576,7 @@ public class Solution {
 
     /**
      * 72. 编辑距离
+     *
      * @param word1
      * @param word2
      * @return
@@ -3583,7 +3584,7 @@ public class Solution {
     public int minDistance(String word1, String word2) {
         char[] word1CharArray = word1.toCharArray();
         char[] word2CharArray = word2.toCharArray();
-        int dp[][] = new int[word1CharArray.length+1][word2CharArray.length+1];
+        int dp[][] = new int[word1CharArray.length + 1][word2CharArray.length + 1];
         for (int i = 1; i < dp.length; i++) {
             dp[i][0] = i;
         }
@@ -3592,7 +3593,7 @@ public class Solution {
         }
         for (int i = 1; i < dp.length; i++) {
             for (int j = 1; j < dp[0].length; j++) {
-                if (word1CharArray[i-1] == word2CharArray[j-1]) {
+                if (word1CharArray[i - 1] == word2CharArray[j - 1]) {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
                     dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
@@ -3633,26 +3634,71 @@ public class Solution {
 
     /**
      * 513. 找树左下角的值
+     *
      * @param root
      * @return
      */
     private int maxN = -1;
-    private Map<Integer,Integer> findBottomLeftValuemap = new HashMap<>();
+    private Map<Integer, Integer> findBottomLeftValuemap = new HashMap<>();
+
     public int findBottomLeftValue(TreeNode root) {
-        findBottomLeftValue(root,0);
+        findBottomLeftValue(root, 0);
         return findBottomLeftValuemap.get(maxN);
     }
-    public void findBottomLeftValue(TreeNode root,int n) {
+
+    public void findBottomLeftValue(TreeNode root, int n) {
         if (root == null) return;
-        if (!findBottomLeftValuemap.containsKey(n)){
-            findBottomLeftValuemap.put(n,root.val);
+        if (!findBottomLeftValuemap.containsKey(n)) {
+            findBottomLeftValuemap.put(n, root.val);
         }
-        maxN = Math.max(maxN,n);
-        findBottomLeftValue(root.left,n+1);
-        findBottomLeftValue(root.right,n+1);
+        maxN = Math.max(maxN, n);
+        findBottomLeftValue(root.left, n + 1);
+        findBottomLeftValue(root.right, n + 1);
     }
+
+    /**
+     * 112. 路径总和
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) return false;
+        if (root.left == null && root.right == null && root.val == targetSum) return true;
+        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
+    }
+
+    /**
+     * 654. 最大二叉树
+     * @param nums
+     * @return
+     */
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return constructMaximumBinaryTree(nums,0,nums.length-1);
+    }
+    public TreeNode constructMaximumBinaryTree(int[] nums,int start,int end) {
+        TreeNode root = new TreeNode();
+        if (start==end){
+            root.val = nums[start];return root;
+        }
+        int maxIndex = start;
+        for (int i = start; i <= end; i++) {
+            if (nums[i]>nums[maxIndex]){
+                maxIndex = i;
+            }
+        }
+        root.val = nums[maxIndex];
+        if (maxIndex>start){
+            root.left = constructMaximumBinaryTree(nums,start,maxIndex-1);
+        }
+        if (maxIndex<end){
+            root.right = constructMaximumBinaryTree(nums,maxIndex+1,end);
+        }
+        return root;
+    }
+
     public static void main(String[] args) {
-        new Solution().guibingSort(new int[]{5, 3, 2, 1}, 0, 3);
+
     }
 
 }
