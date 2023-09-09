@@ -1078,7 +1078,6 @@ public class Solution {
 //                return Integer.parseInt(stringBuilder.toString());
 //            }
 //        }
-        return n;
     }
 
     List<List<Integer>> combinationListSum3 = new ArrayList<>();
@@ -3726,26 +3725,30 @@ public class Solution {
         return root;
     }
 
+    /**
+     * 968. 监控二叉树
+     * @param root
+     * @return
+     */
+    private int count = 0;
+    public int minCameraCover(TreeNode root) {
+       if (travlese(root)==0)count++;
+       return count;
+    }
+    //0 未覆盖  1 有摄像机 2已经覆盖 状态转移
+    public int travlese(TreeNode root){
+        if (root == null)return  2;
+        int left = travlese(root.left);
+        int right = travlese(root.right);
+        if (left == 0|| right==0){
+            count++;
+            return 1;
+        }
+        if (left==1||right==1)return 2;
+        return 0;
+    }
     public static void main(String[] args) {
 
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
