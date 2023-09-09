@@ -522,6 +522,7 @@ public class Solution {
 
     /**
      * 454. 四数相加 II
+     *
      * @param nums1
      * @param nums2
      * @param nums3
@@ -529,17 +530,17 @@ public class Solution {
      * @return
      */
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        Map<Integer,Integer> map = new HashMap();
-        for(int i = 0;i<nums1.length;i++){
-            for(int j = 0;j<nums2.length;j++){
-                map.put(nums1[i]+nums2[j],map.getOrDefault(nums1[i]+nums2[j],0)+1);
+        Map<Integer, Integer> map = new HashMap();
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+                map.put(nums1[i] + nums2[j], map.getOrDefault(nums1[i] + nums2[j], 0) + 1);
             }
         }
         int res = 0;
-        for(int i = 0;i<nums3.length;i++){
-            for(int j = 0;j<nums4.length;j++){
-                Integer num = map.get(-(nums3[i]+nums4[j]));
-                if(num!=null){
+        for (int i = 0; i < nums3.length; i++) {
+            for (int j = 0; j < nums4.length; j++) {
+                Integer num = map.get(-(nums3[i] + nums4[j]));
+                if (num != null) {
                     res += num;
                 }
             }
@@ -3508,26 +3509,28 @@ public class Solution {
 
     /**
      * 235. 二叉搜索树的最近公共祖先
+     *
      * @param root
      * @param p
      * @param q
      * @return
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        int small = Math.min(p.val,q.val);
-        int big = Math.max(p.val,q.val);
-        if (root.val>=small&&root.val<=big)return root;
+        int small = Math.min(p.val, q.val);
+        int big = Math.max(p.val, q.val);
+        if (root.val >= small && root.val <= big) return root;
         else {
-            if (root.val>big){
-                return lowestCommonAncestor(root.left,p,q);
-            }else {
-                return lowestCommonAncestor(root.right,p,q);
+            if (root.val > big) {
+                return lowestCommonAncestor(root.left, p, q);
+            } else {
+                return lowestCommonAncestor(root.right, p, q);
             }
         }
     }
 
     /**
      * 450. 删除二叉搜索树中的节点
+     *
      * @param root
      * @param key
      * @return
@@ -3537,43 +3540,98 @@ public class Solution {
         TreeNode pre = new TreeNode();
         pre.left = root;
         TreeNode res = pre;
-        while(keyNode!=null&&keyNode.val!=key){
+        while (keyNode != null && keyNode.val != key) {
             pre = keyNode;
-            if (keyNode.val>key){
+            if (keyNode.val > key) {
                 keyNode = keyNode.left;
                 continue;
             }
-            if (keyNode.val<key){
+            if (keyNode.val < key) {
                 keyNode = keyNode.right;
                 continue;
             }
         }
-        if (keyNode==null)return root;
+        if (keyNode == null) return root;
         TreeNode right = keyNode.right;
         TreeNode temp = right;
-        if (right!=null){
-            while (temp.left!=null){
+        if (right != null) {
+            while (temp.left != null) {
                 temp = temp.left;
             }
             temp.left = keyNode.left;
-            if (pre.left==keyNode){
+            if (pre.left == keyNode) {
                 pre.left = right;
-            }else {
+            } else {
                 pre.right = right;
             }
-        }else {
-            if (pre.left==keyNode){
+        } else {
+            if (pre.left == keyNode) {
                 pre.left = keyNode.left;
-            }else {
+            } else {
                 pre.right = keyNode.left;
             }
         }
         return res.left;
     }
 
+    /**
+     * 72. 编辑距离
+     * @param word1
+     * @param word2
+     * @return
+     */
+    public int minDistance(String word1, String word2) {
+        char[] word1CharArray = word1.toCharArray();
+        char[] word2CharArray = word2.toCharArray();
+        int dp[][] = new int[word1CharArray.length+1][word2CharArray.length+1];
+        for (int i = 1; i < dp.length; i++) {
+            dp[i][0] = i;
+        }
+        for (int i = 1; i < dp[0].length; i++) {
+            dp[0][i] = i;
+        }
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 1; j < dp[0].length; j++) {
+                if (word1CharArray[i-1] == word2CharArray[j-1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+                }
+            }
+        }
+        return dp[word1.length()][word2.length()];
+    }
+
+    public void guibingSort(int[] nums, int l, int r) {
+        if (l >= r) return;
+        int mid = l + r >> 1;
+        guibingSort(nums, l, mid);
+        guibingSort(nums, mid + 1, r);
+        int i = l;
+        int j = mid + 1;
+        int[] temp = new int[r - l + 1];
+        int tempIndex = 0;
+        while (i <= mid && j <= r) {
+            if (nums[i] <= nums[j]) {
+                temp[tempIndex++] = nums[i++];
+            } else {
+                temp[tempIndex++] = nums[j++];
+            }
+        }
+        while (i <= mid) {
+            temp[tempIndex++] = nums[i++];
+        }
+        while (j <= r) {
+            temp[tempIndex++] = nums[j++];
+        }
+        tempIndex--;
+        while (tempIndex >= 0) {
+            nums[r--] = temp[tempIndex--];
+        }
+    }
 
     public static void main(String[] args) {
-        new Solution().longestPalindromeSubseq("bbbab");
+        new Solution().guibingSort(new int[]{5, 3, 2, 1}, 0, 3);
     }
 
 }
