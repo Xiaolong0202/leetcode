@@ -3844,7 +3844,6 @@ public class Solution {
      */
     public int evalRPN(String[] tokens) {
         Deque<String> deque = new ArrayDeque<>();
-        int res = 0;
         for (int i = 0; i < tokens.length; i++) {
             if (Character.isDigit(tokens[i].charAt(0))||tokens[i].length()>1) {
                 deque.offerLast(tokens[i]);
