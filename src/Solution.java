@@ -2192,23 +2192,6 @@ public class Solution {
         return R.next;
     }
 
-    /**
-     * 160. 相交链表
-     *
-     * @param headA
-     * @param headB
-     * @return
-     */
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode a = headA;
-        ListNode b = headB;
-        while (a != b) {
-            a = a == null ? headB : a.next;
-            b = b == null ? headA : b.next;
-        }
-        return a;
-    }
-
 
     /**
      * 142. 环形链表 II
@@ -2245,7 +2228,6 @@ public class Solution {
         permute(nums, new int[nums.length], res, new ArrayList<>());
         return res;
     }
-
 
     public void permute(int[] nums, int[] visited, List<List<Integer>> res, List<Integer> list) {
         if (list.size() >= nums.length) {
@@ -3771,6 +3753,12 @@ public class Solution {
         }
     }
 
+    /**
+     * 整数转罗马数字
+     *
+     * @param num
+     * @return
+     */
     public String intToRoman(int num) {
         StringBuilder stringBuilder = new StringBuilder();
         List<LUOMA> list = new ArrayList<>();
@@ -3798,6 +3786,7 @@ public class Solution {
 
     /**
      * 24. 两两交换链表中的节点
+     *
      * @param head
      * @return
      */
@@ -3819,6 +3808,68 @@ public class Solution {
         }
         return head.next;
     }
+
+    /**
+     * 面试题 02.07. 链表相交
+     *
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode pa = headA;
+        ListNode pb = headB;
+
+        while (pa != pb) {
+            System.out.print("pa.val = " + pa.val);
+            System.out.println("  pb.val = " + pb.val);
+            if (pa.next != null) {
+                pa = pa.next;
+            } else {
+                pa = headB;
+            }
+            if (pb.next != null) {
+                pb = pb.next;
+            } else {
+                pb = headA;
+            }
+        }
+        return pa;
+    }
+
+    /**
+     * 150. 逆波兰表达式求值
+     * @param tokens
+     * @return
+     */
+    public int evalRPN(String[] tokens) {
+        Deque<String> deque = new ArrayDeque<>();
+        int res = 0;
+        for (int i = 0; i < tokens.length; i++) {
+            if (Character.isDigit(tokens[i].charAt(0))||tokens[i].length()>1) {
+                deque.offerLast(tokens[i]);
+            }else {
+                int b = Integer.parseInt(deque.pollLast());
+                int a = Integer.parseInt(deque.pollLast());
+                switch (tokens[i]){
+                    case "+":
+                        deque.offerLast(String.valueOf(a+b));
+                        break;
+                    case "-":
+                        deque.offerLast(String.valueOf(a-b));
+                        break;
+                    case "*":
+                        deque.offerLast(String.valueOf(a*b));
+                        break;
+                    case "/":
+                        deque.offerLast(String.valueOf(a/b));
+                        break;
+                }
+            }
+        }
+        return Integer.parseInt(deque.pollLast());
+    }
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
