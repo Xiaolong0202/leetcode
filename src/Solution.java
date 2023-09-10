@@ -3809,59 +3809,33 @@ public class Solution {
         return head.next;
     }
 
-    /**
-     * 面试题 02.07. 链表相交
-     *
-     * @param headA
-     * @param headB
-     * @return
-     */
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode pa = headA;
-        ListNode pb = headB;
-
-        while (pa != pb) {
-            System.out.print("pa.val = " + pa.val);
-            System.out.println("  pb.val = " + pb.val);
-            if (pa.next != null) {
-                pa = pa.next;
-            } else {
-                pa = headB;
-            }
-            if (pb.next != null) {
-                pb = pb.next;
-            } else {
-                pb = headA;
-            }
-        }
-        return pa;
-    }
 
     /**
      * 150. 逆波兰表达式求值
+     *
      * @param tokens
      * @return
      */
     public int evalRPN(String[] tokens) {
         Deque<String> deque = new ArrayDeque<>();
         for (int i = 0; i < tokens.length; i++) {
-            if (Character.isDigit(tokens[i].charAt(0))||tokens[i].length()>1) {
+            if (Character.isDigit(tokens[i].charAt(0)) || tokens[i].length() > 1) {
                 deque.offerLast(tokens[i]);
-            }else {
+            } else {
                 int b = Integer.parseInt(deque.pollLast());
                 int a = Integer.parseInt(deque.pollLast());
-                switch (tokens[i]){
+                switch (tokens[i]) {
                     case "+":
-                        deque.offerLast(String.valueOf(a+b));
+                        deque.offerLast(String.valueOf(a + b));
                         break;
                     case "-":
-                        deque.offerLast(String.valueOf(a-b));
+                        deque.offerLast(String.valueOf(a - b));
                         break;
                     case "*":
-                        deque.offerLast(String.valueOf(a*b));
+                        deque.offerLast(String.valueOf(a * b));
                         break;
                     case "/":
-                        deque.offerLast(String.valueOf(a/b));
+                        deque.offerLast(String.valueOf(a / b));
                         break;
                 }
             }
@@ -3869,20 +3843,72 @@ public class Solution {
         return Integer.parseInt(deque.pollLast());
     }
 
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
-        StreamTokenizer st = new StreamTokenizer(r);
-        while (st.nextToken() != StreamTokenizer.TT_EOF) {
-            System.out.println("st.tttype = " + st.ttype);
-            if (st.ttype == StreamTokenizer.TT_WORD) {
-                System.out.println("st.sval = " + st.sval);
-            }
-            if (st.ttype == StreamTokenizer.TT_NUMBER) {
-                System.out.println("st.nval = " + st.nval);
+    /**
+     * 1047. 删除字符串中的所有相邻重复项
+     *
+     * @param s
+     * @return
+     */
+    public String removeDuplicates(String s) {
+        Deque<Character> deque = new ArrayDeque<>();
+        char[] chars = s.toCharArray();
+        for (char c : chars) {
+            if (!deque.isEmpty() && deque.peekLast() == c) {
+                deque.pollLast();
+            } else {
+                deque.offerLast(c);
             }
         }
-        System.out.println("结束");
+        StringBuilder sb = new StringBuilder();
+        while (!deque.isEmpty()) {
+            sb.append(deque.pollFirst());
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * 93. 复原 IP 地址
+     * @param s
+     * @return
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> list = new ArrayList<>();
+        restoreIpAddresses(s.toCharArray(), 4, 0, new StringBuilder(), list);
+        return list;
+    }
+
+    public void restoreIpAddresses(char[] str, int n, int i, StringBuilder sb, List<String> res) {
+        if (i == str.length){
+            if (n == 0){
+                sb.delete(sb.length()-1,sb.length());
+                res.add(sb.toString());
+                sb.append(".");
+            }
+            return;
+        }
+        if (str.length - i > n * 3) return;//长度不匹配则放弃
+        if (str[i] == '0') {
+            sb.append(str[i]);
+            sb.append('.');
+            restoreIpAddresses(str, n - 1, i + 1, sb, res);
+            sb.delete(sb.length() - 2, sb.length());
+            return;
+        }
+        for (int j = 0; j < 3 && i + j < str.length; j++) {
+            String appendValue = new String(str, i, j + 1);
+            if (Integer.parseInt(appendValue) <= 255) {
+                sb.append(appendValue);
+                sb.append('.');
+                restoreIpAddresses(str, n - 1, i + appendValue.length(), sb, res);
+                sb.delete(sb.length() - appendValue.length() - 1, sb.length());
+            }
+        }
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        new Solution().restoreIpAddresses("0000");
     }
 
 }
