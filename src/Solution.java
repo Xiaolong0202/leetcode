@@ -3916,8 +3916,8 @@ public class Solution {
         }
         if (i == 0) {
             int l = i;
-            int r = nums.length-1;
-            while (l<r){
+            int r = nums.length - 1;
+            while (l < r) {
                 int temp = nums[l];
                 nums[l] = nums[r];
                 nums[r] = temp;
@@ -3936,14 +3936,58 @@ public class Solution {
         nums[i] = temp;
 
         i++;
-        j = nums.length-1;
-        while (i<j){
+        j = nums.length - 1;
+        while (i < j) {
             temp = nums[j];
             nums[j] = nums[i];
             nums[i] = temp;
             i++;
             j--;
         }
+    }
+
+    /**
+     * 2. 两数相加
+     *
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int extra = 0;
+        ListNode pre = new ListNode();
+        ListNode head = pre;
+        while (l2 != null && l1 != null) {
+            ListNode cur = new ListNode();
+            cur.val = (l1.val + l2.val + extra) % 10;
+            extra = (l1.val + l2.val + extra) / 10;
+            pre.next = cur;
+            pre = pre.next;
+            l2 = l2.next;
+            l1 = l1.next;
+        }
+        while (l1 != null) {
+            ListNode cur = new ListNode();
+            cur.val = (l1.val + extra) % 10;
+            extra = (l1.val + extra) / 10;
+            pre.next = cur;
+            pre = pre.next;
+            l1 = l1.next;
+        }
+        while (l2 != null) {
+            ListNode cur = new ListNode();
+            cur.val = (l2.val + extra) % 10;
+            extra = (l2.val + extra) / 10;
+            pre.next = cur;
+            pre = pre.next;
+            l2 = l2.next;
+        }
+        if (extra>0){
+            ListNode cur = new ListNode();
+            cur.val = extra;
+            pre.next = cur;
+        }
+        return head.next;
     }
 
     public static void main(String[] args) throws IOException {
