@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StreamTokenizer;
 import java.util.*;
 
 public class Solution {
@@ -1036,6 +1040,7 @@ public class Solution {
 
     /**
      * 738. 单调递增的数字
+     *
      * @param n
      * @return
      */
@@ -1045,13 +1050,13 @@ public class Solution {
             if (charArray[i] > charArray[i + 1]) {
                 char c = charArray[i];
                 i++;
-                int j = i+1;
-                while (j<charArray.length){
+                int j = i + 1;
+                while (j < charArray.length) {
                     charArray[j++] = '9';
                 }
                 charArray[i--] = '9';
                 while (i >= 0 && charArray[i] >= c) {
-                        charArray[i--] = '9';
+                    charArray[i--] = '9';
                 }
                 i++;
                 charArray[i] = (char) (c - 1);
@@ -3727,28 +3732,107 @@ public class Solution {
 
     /**
      * 968. 监控二叉树
+     *
      * @param root
      * @return
      */
     private int count = 0;
+
     public int minCameraCover(TreeNode root) {
-       if (travlese(root)==0)count++;
-       return count;
+        if (travlese(root) == 0) count++;
+        return count;
     }
+
     //0 未覆盖  1 有摄像机 2已经覆盖 状态转移
-    public int travlese(TreeNode root){
-        if (root == null)return  2;
+    public int travlese(TreeNode root) {
+        if (root == null) return 2;
         int left = travlese(root.left);
         int right = travlese(root.right);
-        if (left == 0|| right==0){
+        if (left == 0 || right == 0) {
             count++;
             return 1;
         }
-        if (left==1||right==1)return 2;
+        if (left == 1 || right == 1) return 2;
         return 0;
     }
-    public static void main(String[] args) {
 
+    /**
+     * 12. 整数转罗马数字
+     *
+     * @return
+     */
+    class LUOMA {
+        Integer num;
+        String str;
+
+        public LUOMA(Integer num, String str) {
+            this.num = num;
+            this.str = str;
+        }
+    }
+
+    public String intToRoman(int num) {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<LUOMA> list = new ArrayList<>();
+        list.add(new LUOMA(1000, "M"));
+        list.add(new LUOMA(900, "CM"));
+        list.add(new LUOMA(500, "D"));
+        list.add(new LUOMA(400, "CD"));
+        list.add(new LUOMA(100, "C"));
+        list.add(new LUOMA(90, "XC"));
+        list.add(new LUOMA(50, "L"));
+        list.add(new LUOMA(40, "XL"));
+        list.add(new LUOMA(10, "X"));
+        list.add(new LUOMA(9, "IX"));
+        list.add(new LUOMA(5, "V"));
+        list.add(new LUOMA(4, "IV"));
+        list.add(new LUOMA(1, "I"));
+        for (LUOMA luoma : list) {
+            while (luoma.num <= num) {
+                num -= luoma.num;
+                stringBuilder.append(luoma.str);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 24. 两两交换链表中的节点
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode p = new ListNode();//结点p表示前驱结点，即 p.next与p.next.next 进行交换操作，两个结点交换完成之后再接到p结点之后
+        p.next = head;
+        head = p;
+
+        while (p.next != null && p.next.next != null) {
+            ListNode qian = p.next;
+            ListNode hou = qian.next;
+
+            qian.next = hou.next;
+            hou.next = qian;
+            p.next = hou;
+
+            p = qian;
+        }
+        return head.next;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+        StreamTokenizer st = new StreamTokenizer(r);
+        while (st.nextToken() != StreamTokenizer.TT_EOF) {
+            System.out.println("st.tttype = " + st.ttype);
+            if (st.ttype == StreamTokenizer.TT_WORD) {
+                System.out.println("st.sval = " + st.sval);
+            }
+            if (st.ttype == StreamTokenizer.TT_NUMBER) {
+                System.out.println("st.nval = " + st.nval);
+            }
+        }
+        System.out.println("结束");
     }
 
 }
