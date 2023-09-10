@@ -3869,6 +3869,7 @@ public class Solution {
 
     /**
      * 93. 复原 IP 地址
+     *
      * @param s
      * @return
      */
@@ -3879,15 +3880,15 @@ public class Solution {
     }
 
     public void restoreIpAddresses(char[] str, int n, int i, StringBuilder sb, List<String> res) {
-        if (i == str.length){
-            if (n == 0){
-                sb.delete(sb.length()-1,sb.length());
+        if (i == str.length) {
+            if (n == 0) {
+                sb.delete(sb.length() - 1, sb.length());
                 res.add(sb.toString());
                 sb.append(".");
             }
             return;
         }
-        if (str.length - i > n * 3) return;//长度不匹配则放弃
+        if (str.length - i > n * 3) return; //长度不匹配则放弃
         if (str[i] == '0') {
             sb.append(str[i]);
             sb.append('.');
@@ -3906,6 +3907,44 @@ public class Solution {
         }
     }
 
+
+    public void nextPermutation(int[] nums) {
+        int i = nums.length - 1;
+        while (i > 0 && nums[i] <= nums[i - 1]) {
+            //todo  交换
+            i--;
+        }
+        if (i == 0) {
+            int l = i;
+            int r = nums.length-1;
+            while (l<r){
+                int temp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = temp;
+                l++;
+                r--;
+            }
+            return;
+        }
+        i--;
+        int j = nums.length - 1;
+        while (nums[j] <= nums[i]) {
+            j--;
+        }
+        int temp = nums[j];
+        nums[j] = nums[i];
+        nums[i] = temp;
+
+        i++;
+        j = nums.length-1;
+        while (i<j){
+            temp = nums[j];
+            nums[j] = nums[i];
+            nums[i] = temp;
+            i++;
+            j--;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         new Solution().restoreIpAddresses("0000");
