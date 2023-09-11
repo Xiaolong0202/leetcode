@@ -4049,6 +4049,7 @@ public class Solution {
 
     /**
      * 165. 比较版本号
+     *
      * @param version1
      * @param version2
      * @return
@@ -4061,18 +4062,40 @@ public class Solution {
         while (i < split1.length && j < split2.length) {
             int i1 = Integer.parseInt(split1[i++]);
             int i2 = Integer.parseInt(split2[j++]);
-            if (i1>i2)return 1;
-            if (i2>i1)return -1;
+            if (i1 > i2) return 1;
+            if (i2 > i1) return -1;
         }
-        while (i < split1.length  ) {
+        while (i < split1.length) {
             int i1 = Integer.parseInt(split1[i++]);
-            if (i1>0)return 1;
+            if (i1 > 0) return 1;
         }
-        while (j < split2.length  ) {
+        while (j < split2.length) {
             int i2 = Integer.parseInt(split2[j++]);
-            if (i2>0)return -1;
+            if (i2 > 0) return -1;
         }
         return 0;
+    }
+
+    /**
+     * 145. 二叉树的后序遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offerLast(root);
+        while (!deque.isEmpty()) {
+            TreeNode last = deque.pollLast();
+            if (last == null) {
+                continue;
+            }
+            deque.offerLast(last.left);
+            deque.offerLast(last.right);
+            list.add(0, last.val);
+        }
+        return list;
     }
 
     public static void main(String[] args) throws IOException {
