@@ -1,7 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StreamTokenizer;
+import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 public class Solution {
@@ -1638,14 +1636,17 @@ public class Solution {
      */
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
-        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        Arrays.fill(dp, Integer.MAX_VALUE - 10);
         dp[0] = 0;
-        for (int c : coins) {
-            for (int i = c; i <= amount; i++) {
-                dp[i] = Math.min(dp[i], dp[i - c] + 1);
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = coins[i]; j < dp.length; j++) {
+                dp[i] = Math.min(dp[j], dp[j - coins[i]] + 1);
             }
         }
-        return dp[amount] == Integer.MAX_VALUE - 1 ? -1 : dp[amount];
+        if (dp[amount] == Integer.MAX_VALUE - 10) {
+            return -1;
+        }
+        return dp[amount];
     }
 
     /**
@@ -3982,7 +3983,7 @@ public class Solution {
             pre = pre.next;
             l2 = l2.next;
         }
-        if (extra>0){
+        if (extra > 0) {
             ListNode cur = new ListNode();
             cur.val = extra;
             pre.next = cur;
@@ -3990,8 +3991,92 @@ public class Solution {
         return head.next;
     }
 
+    /**
+     * 41. 缺失的第一个正数
+     *
+     * @param nums
+     * @return
+     */
+    public int firstMissingPositive(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] > 0 && nums[i] <= nums.length && nums[i] != nums[nums[i] - 1]) {
+                int temp = nums[i];
+                nums[i] = nums[temp - 1];
+                nums[temp - 1] = temp;
+            }
+        }
+
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) return i + 1;
+        }
+        return nums.length + 1;
+    }
+
+    /**
+     * @param head
+     * @param x
+     * @return
+     */
+    public ListNode partition(ListNode head, int x) {
+        ListNode pre = new ListNode();
+        pre.next = head;
+        head = pre;
+        while (pre.next != null && pre.next.val < x) {
+            pre = pre.next;
+        }
+        if (pre.next == null) return head.next;
+        //找到>=x结点的前驱结点
+        ListNode lpre = pre.next;
+        ListNode l = lpre.next;
+        while (l != null) {
+            if (l.val < x) {
+
+                lpre.next = l.next;
+
+                l.next = pre.next;
+                pre.next = l;
+                pre = pre.next;
+
+                l = lpre.next;
+            } else {
+                l = l.next;
+                lpre = lpre.next;
+            }
+        }
+        return head.next;
+    }
+
+    /**
+     * 165. 比较版本号
+     * @param version1
+     * @param version2
+     * @return
+     */
+    public int compareVersion(String version1, String version2) {
+        String[] split1 = version1.split("\\.");
+        String[] split2 = version2.split("\\.");
+        int i = 0;
+        int j = 0;
+        while (i < split1.length && j < split2.length) {
+            int i1 = Integer.parseInt(split1[i++]);
+            int i2 = Integer.parseInt(split2[j++]);
+            if (i1>i2)return 1;
+            if (i2>i1)return -1;
+        }
+        while (i < split1.length  ) {
+            int i1 = Integer.parseInt(split1[i++]);
+            if (i1>0)return 1;
+        }
+        while (j < split2.length  ) {
+            int i2 = Integer.parseInt(split2[j++]);
+            if (i2>0)return -1;
+        }
+        return 0;
+    }
+
     public static void main(String[] args) throws IOException {
-        new Solution().restoreIpAddresses("0000");
+
     }
 
 }
