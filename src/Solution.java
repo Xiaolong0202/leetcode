@@ -4098,6 +4098,41 @@ public class Solution {
         return list;
     }
 
+    /**
+     * 61. 旋转链表
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null) return head;
+        ListNode t =  head;
+        int len = 0;
+        while (t != null) {
+            len++;
+            t = t.next;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+        for (int i = 0; i < k % len; i++) {
+            if (fast.next == null) {
+                fast = head;
+            } else {
+                fast = fast.next;
+            }
+        }
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        fast.next = head;
+        head = slow.next;
+        slow.next = null;
+
+        return head;
+    }
+
     public static void main(String[] args) throws IOException {
 
     }
