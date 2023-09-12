@@ -4133,6 +4133,65 @@ public class Solution {
         return head;
     }
 
+    /**
+     * 752. 打开转盘锁
+     */
+    class openLockTime{
+        String string;
+        int times = 0;
+
+        public openLockTime(String string,int times) {
+            this.string = string;
+            this.times = times;
+        }
+    }
+    public int openLock(String[] deadends, String target) {
+        HashSet<String> set = new HashSet<>();
+        for (String deadend : deadends) {
+            set.add(deadend);
+        }
+
+        Deque<openLockTime> deque = new ArrayDeque<>();
+        HashSet<String> visited = new HashSet<>();
+
+        deque.offerLast(new openLockTime("0000",0));
+        while (!deque.isEmpty()){
+            openLockTime openLockTime = deque.pollFirst();
+            if (set.contains(openLockTime.string)||visited.contains(openLockTime.string)){
+                continue;
+            }
+            if (openLockTime.string.equals(target)) {
+                return openLockTime.times;
+            }
+            visited.add(openLockTime.string);
+            char[] charArray = openLockTime.string.toCharArray();
+            for (int i = 0; i < charArray.length; i++) {
+                //++
+                if (charArray[i]=='9'){
+                    charArray[i] = '0';
+                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    charArray[i] = '9';
+                }else {
+                    charArray[i]++;
+                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    charArray[i]--;
+                }
+                //--
+                if (charArray[i]=='0'){
+                    charArray[i] = '9';
+                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    charArray[i] = '0';
+                }else {
+                    charArray[i]--;
+                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    charArray[i]++;
+                }
+            }
+        }
+        return -1;
+    }
+
+
     public static void main(String[] args) throws IOException {
 
     }
