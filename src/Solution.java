@@ -4192,6 +4192,47 @@ public class Solution {
     }
 
 
+    /**
+     * 695. 岛屿的最大面积
+     * @param grid
+     * @return
+     */
+    public int maxAreaOfIsland(int[][] grid) {
+        int maxS = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j]==1){
+                    int currentS = 0;
+                    Deque<int[]> deque = new ArrayDeque<>();
+                    deque.offerLast(new int[]{i,j});
+                    while (!deque.isEmpty()){
+                        int[] last = deque.pollFirst();
+                        int x = last[0];
+                        int y = last[1];
+                        if (grid[x][y]==1){
+                            grid[x][y] = 0;
+                            currentS++;
+                            if (x-1>=0){
+                                deque.offerLast(new int[]{x-1,y});
+                            }
+                            if (y-1>=0){
+                                deque.offerLast(new int[]{x,y-1});
+                            }
+                            if (y+1<grid[0].length){
+                                deque.offerLast(new int[]{x,y+1});
+                            }
+                            if (x+1<grid.length){
+                                deque.offerLast(new int[]{x+1,y});
+                            }
+                        }
+                    }
+                    maxS = Math.max(maxS,currentS);
+                }
+            }
+        }
+        return maxS;
+    }
+
     public static void main(String[] args) throws IOException {
 
     }
