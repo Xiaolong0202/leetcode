@@ -4100,13 +4100,14 @@ public class Solution {
 
     /**
      * 61. 旋转链表
+     *
      * @param head
      * @param k
      * @return
      */
     public ListNode rotateRight(ListNode head, int k) {
         if (head == null) return head;
-        ListNode t =  head;
+        ListNode t = head;
         int len = 0;
         while (t != null) {
             len++;
@@ -4136,15 +4137,16 @@ public class Solution {
     /**
      * 752. 打开转盘锁
      */
-    class openLockTime{
+    class openLockTime {
         String string;
         int times = 0;
 
-        public openLockTime(String string,int times) {
+        public openLockTime(String string, int times) {
             this.string = string;
             this.times = times;
         }
     }
+
     public int openLock(String[] deadends, String target) {
         HashSet<String> set = new HashSet<>();
         for (String deadend : deadends) {
@@ -4154,10 +4156,10 @@ public class Solution {
         Deque<openLockTime> deque = new ArrayDeque<>();
         HashSet<String> visited = new HashSet<>();
 
-        deque.offerLast(new openLockTime("0000",0));
-        while (!deque.isEmpty()){
+        deque.offerLast(new openLockTime("0000", 0));
+        while (!deque.isEmpty()) {
             openLockTime openLockTime = deque.pollFirst();
-            if (set.contains(openLockTime.string)||visited.contains(openLockTime.string)){
+            if (set.contains(openLockTime.string) || visited.contains(openLockTime.string)) {
                 continue;
             }
             if (openLockTime.string.equals(target)) {
@@ -4167,23 +4169,23 @@ public class Solution {
             char[] charArray = openLockTime.string.toCharArray();
             for (int i = 0; i < charArray.length; i++) {
                 //++
-                if (charArray[i]=='9'){
+                if (charArray[i] == '9') {
                     charArray[i] = '0';
-                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    deque.offerLast(new openLockTime(new String(charArray), openLockTime.times + 1));
                     charArray[i] = '9';
-                }else {
+                } else {
                     charArray[i]++;
-                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    deque.offerLast(new openLockTime(new String(charArray), openLockTime.times + 1));
                     charArray[i]--;
                 }
                 //--
-                if (charArray[i]=='0'){
+                if (charArray[i] == '0') {
                     charArray[i] = '9';
-                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    deque.offerLast(new openLockTime(new String(charArray), openLockTime.times + 1));
                     charArray[i] = '0';
-                }else {
+                } else {
                     charArray[i]--;
-                    deque.offerLast(new openLockTime(new String(charArray),openLockTime.times+1));
+                    deque.offerLast(new openLockTime(new String(charArray), openLockTime.times + 1));
                     charArray[i]++;
                 }
             }
@@ -4193,7 +4195,8 @@ public class Solution {
 
 
     /**
-     * 695. 岛屿的最大面积
+     * 岛屿的最大面积
+     *
      * @param grid
      * @return
      */
@@ -4201,40 +4204,67 @@ public class Solution {
         int maxS = 0;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j]==1){
+                if (grid[i][j] == 1) {
                     int currentS = 0;
                     Deque<int[]> deque = new ArrayDeque<>();
-                    deque.offerLast(new int[]{i,j});
-                    while (!deque.isEmpty()){
+                    deque.offerLast(new int[]{i, j});
+                    while (!deque.isEmpty()) {
                         int[] last = deque.pollFirst();
                         int x = last[0];
                         int y = last[1];
-                        if (grid[x][y]==1){
+                        if (grid[x][y] == 1) {
                             grid[x][y] = 0;
                             currentS++;
-                            if (x-1>=0){
-                                deque.offerLast(new int[]{x-1,y});
+                            if (x - 1 >= 0) {
+                                deque.offerLast(new int[]{x - 1, y});
                             }
-                            if (y-1>=0){
-                                deque.offerLast(new int[]{x,y-1});
+                            if (y - 1 >= 0) {
+                                deque.offerLast(new int[]{x, y - 1});
                             }
-                            if (y+1<grid[0].length){
-                                deque.offerLast(new int[]{x,y+1});
+                            if (y + 1 < grid[0].length) {
+                                deque.offerLast(new int[]{x, y + 1});
                             }
-                            if (x+1<grid.length){
-                                deque.offerLast(new int[]{x+1,y});
+                            if (x + 1 < grid.length) {
+                                deque.offerLast(new int[]{x + 1, y});
                             }
                         }
                     }
-                    maxS = Math.max(maxS,currentS);
+                    maxS = Math.max(maxS, currentS);
                 }
             }
         }
         return maxS;
     }
 
-    public static void main(String[] args) throws IOException {
+    /**
+     * 1004. 最大连续1的个数 III
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int longestOnes(int[] nums, int k) {
+        int l = 0;
+        int r = 0;
+        int currentKUse=0;
+        int res = 0;
+        while (r<nums.length){
+            if (nums[r]==0){
+                currentKUse++;
+            }
+            while (l<=r&&currentKUse>k){
+                if (nums[l++]==0){
+                    currentKUse--;
+                }
+            }
+            r++;
+            res = Math.max(res,r-l);
+        }
+        return res;
+    }
 
+    public static void main(String[] args) throws IOException {
+        new Solution().longestOnes(new int[]{1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1}, 9);
     }
 
 }
