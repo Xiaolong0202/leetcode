@@ -4263,6 +4263,30 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 797. 所有可能的路径
+     * @param graph
+     * @return
+     */
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        List<List<Integer>> res = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(0);
+        allPathsSourceTarget(graph,res, list,0);
+        return res;
+    }
+    public void allPathsSourceTarget(int[][] graph,List<List<Integer>> res,List<Integer> list,int currentIndex) {
+        if (currentIndex==graph.length-1){
+            res.add(new ArrayList<>(list));return;
+        }
+        for (int i = 0; i < graph[currentIndex].length; i++) {
+            list.add(graph[currentIndex][i]);
+            allPathsSourceTarget(graph,res,list,graph[currentIndex][i]);
+            list.remove(list.size()-1);
+        }
+    }
+
+
     public static void main(String[] args) throws IOException {
         new Solution().longestOnes(new int[]{1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1}, 9);
     }
