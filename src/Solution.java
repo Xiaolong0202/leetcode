@@ -4246,25 +4246,26 @@ public class Solution {
     public int longestOnes(int[] nums, int k) {
         int l = 0;
         int r = 0;
-        int currentKUse=0;
+        int currentKUse = 0;
         int res = 0;
-        while (r<nums.length){
-            if (nums[r]==0){
+        while (r < nums.length) {
+            if (nums[r] == 0) {
                 currentKUse++;
             }
-            while (l<=r&&currentKUse>k){
-                if (nums[l++]==0){
+            while (l <= r && currentKUse > k) {
+                if (nums[l++] == 0) {
                     currentKUse--;
                 }
             }
             r++;
-            res = Math.max(res,r-l);
+            res = Math.max(res, r - l);
         }
         return res;
     }
 
     /**
      * 797. 所有可能的路径
+     *
      * @param graph
      * @return
      */
@@ -4272,20 +4273,97 @@ public class Solution {
         List<List<Integer>> res = new ArrayList<>();
         ArrayList<Integer> list = new ArrayList<>();
         list.add(0);
-        allPathsSourceTarget(graph,res, list,0);
+        allPathsSourceTarget(graph, res, list, 0);
         return res;
     }
-    public void allPathsSourceTarget(int[][] graph,List<List<Integer>> res,List<Integer> list,int currentIndex) {
-        if (currentIndex==graph.length-1){
-            res.add(new ArrayList<>(list));return;
+
+    public void allPathsSourceTarget(int[][] graph, List<List<Integer>> res, List<Integer> list, int currentIndex) {
+        if (currentIndex == graph.length - 1) {
+            res.add(new ArrayList<>(list));
+            return;
         }
         for (int i = 0; i < graph[currentIndex].length; i++) {
             list.add(graph[currentIndex][i]);
-            allPathsSourceTarget(graph,res,list,graph[currentIndex][i]);
-            list.remove(list.size()-1);
+            allPathsSourceTarget(graph, res, list, graph[currentIndex][i]);
+            list.remove(list.size() - 1);
         }
     }
 
+    public int numEnclaves(int[][] grid) {
+        int sumS = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 1) {
+                    Deque<int[]> deque = new ArrayDeque<>();
+                    deque.offerLast(new int[]{i, j});
+                    int s = 0;
+                    boolean flag = false;
+                    while (!deque.isEmpty()) {
+                        int[] last = deque.pollLast();
+                        int x = last[0];
+                        int y = last[1];
+                        if (grid[x][y] == 1) {
+                            System.out.println("s = " + s);
+                            System.out.println("y = " + y);
+                            grid[x][y] = 0;
+                            s++;
+                            if (x == 0 || y == 0 || x == grid.length - 1 || y == grid[0].length - 1) {
+                                flag = true;
+                            }
+                            if (x - 1 >= 0) {
+                                deque.offerLast(new int[]{x - 1, y});
+                            }
+                            if (y - 1 >= 0) {
+                                deque.offerLast(new int[]{x, y - 1});
+                            }
+                            if (y + 1 < grid[0].length) {
+                                deque.offerLast(new int[]{x, y + 1});
+                            }
+                            if (x + 1 < grid.length) {
+                                deque.offerLast(new int[]{x + 1, y});
+                            }
+                        }
+                    }
+                    if (!flag) {
+                        sumS += s;
+                    }
+                }
+            }
+        }
+        return sumS;
+    }
+
+    /**
+     * 130. 被围绕的区域
+     * @param board
+     */
+    public void solve(char[][] board) {
+        int[][] vivited = new int[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            solveDfs(board,vivited,i,0);
+            solveDfs(board,vivited,i,board[0].length-1);
+        }
+        for (int i = 0; i < board[0].length; i++) {
+            solveDfs(board,vivited,0,i);
+            solveDfs(board,vivited,board.length-1,i);
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j]=='O'&&vivited[i][j]==0)board[i][j]='X';
+            }
+        }
+    }
+
+    public void solveDfs(char[][] board, int[][] visited, int x, int y) {
+        if (x < 0 || y < 0 || x >= board.length || y >= board[0].length || board[x][y] == 'X' || visited[x][y] == 1) {
+            return;
+        }
+        visited[x][y] = 1;
+        solveDfs(board, visited, x + 1, y);
+        solveDfs(board, visited, x - 1, y);
+        solveDfs(board, visited, x, y + 1);
+        solveDfs(board, visited, x, y - 1);
+    }
 
     public static void main(String[] args) throws IOException {
         new Solution().longestOnes(new int[]{1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1}, 9);
