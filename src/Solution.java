@@ -4468,6 +4468,55 @@ public class Solution {
         return false;
     }
 
+    /**
+     * 463. 岛屿的周长
+     */
+    private int islandPerimeterLong = 0;
+    public int islandPerimeter(int[][] grid) {
+        int x = -1;
+        int y = -1;
+        ok:
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j]==1){
+                    x=i;
+                    y=j;
+                    break ok;
+                }
+            }
+        }
+        dfsIslandPerimeter(grid,x,y,new int[grid.length][grid[0].length]);
+        return islandPerimeterLong;
+    }
+    boolean dfsIslandPerimeter(int[][] grid,int x,int y,int [][] visited){
+        if (x<0||y<0||x>=grid.length||y>=grid[0].length){
+            return true;
+        }
+        if (grid[x][y]==0){
+            return true;
+        }
+        if (grid[x][y]==1){
+            if (visited[x][y]==1){
+                return false;
+            }
+            visited[x][y] = 1;
+            if (dfsIslandPerimeter(grid,x+1,y,visited)){
+                islandPerimeterLong++;
+            }
+            if (dfsIslandPerimeter(grid,x-1,y,visited)){
+                islandPerimeterLong++;
+            }
+            if (dfsIslandPerimeter(grid,x,y+1,visited)){
+                islandPerimeterLong++;
+            }
+            if (dfsIslandPerimeter(grid,x,y-1,visited)){
+                islandPerimeterLong++;
+            }
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) throws IOException {
     new Solution().ladderLength("qa","sq",
             List.of("si","go","se","cm","so","ph","mt","db","mb","sb","kr","ln","tm","le","av","sm","ar","ci","ca","br","ti","ba","to","ra","fa","yo","ow","sn","ya","cr","po","fe","ho","ma","re","or","rn","au","ur","rh","sr","tc","lt","lo","as","fr","nb","yb","if","pb","ge","th","pm","rb","sh","co","ga","li","ha","hz","no","bi","di","hi","qa","pi","os","uh","wm","an","me","mo","na","la","st","er","sc","ne","mn","mi","am","ex","pt","io","be","fm","ta","tb","ni","mr","pa","he","lr","sq","ye"));
