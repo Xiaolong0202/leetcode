@@ -4335,21 +4335,22 @@ public class Solution {
 
     /**
      * 130. 被围绕的区域
+     *
      * @param board
      */
     public void solve(char[][] board) {
         int[][] vivited = new int[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
-            solveDfs(board,vivited,i,0);
-            solveDfs(board,vivited,i,board[0].length-1);
+            solveDfs(board, vivited, i, 0);
+            solveDfs(board, vivited, i, board[0].length - 1);
         }
         for (int i = 0; i < board[0].length; i++) {
-            solveDfs(board,vivited,0,i);
-            solveDfs(board,vivited,board.length-1,i);
+            solveDfs(board, vivited, 0, i);
+            solveDfs(board, vivited, board.length - 1, i);
         }
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j]=='O'&&vivited[i][j]==0)board[i][j]='X';
+                if (board[i][j] == 'O' && vivited[i][j] == 0) board[i][j] = 'X';
             }
         }
     }
@@ -4365,8 +4366,55 @@ public class Solution {
         solveDfs(board, visited, x, y - 1);
     }
 
+    /**
+     * 417. 太平洋大西洋水流问题
+     * @param heights
+     * @return
+     */
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        boolean [][] taiping = new boolean[heights.length][heights[0].length];
+        boolean [][] daxi = new boolean[heights.length][heights[0].length];
+        for (int i = 0; i < heights.length; i++) {
+            dfspacificAtlanticTAIPING(heights,taiping,i,0,i,0);
+            dfspacificAtlanticTAIPING(heights,daxi,i,heights[0].length-1,i,heights[0].length-1);
+        }
+        for (int i = 0; i < heights[0].length; i++) {
+            dfspacificAtlanticTAIPING(heights,taiping,0,i,0,i);
+            dfspacificAtlanticTAIPING(heights,daxi,heights.length-1,i,heights.length-1,i);
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < heights.length; i++) {
+            for (int j = 0; j < heights[0].length; j++) {
+                if (taiping[i][j]&&daxi[i][j]){
+                    res.add(List.of(i,j));
+                }
+            }
+        }
+        return res;
+    }
+
+    private void dfspacificAtlanticTAIPING(int[][] heights, boolean[][] taiping, int x, int y,int preX,int preY) {
+        if (x<0||y<0||x>=heights.length||y>=heights[0].length)return;
+        if (taiping[x][y])return;
+        if (heights[x][y]<heights[preX][preY]){
+            return;
+        }
+        taiping[x][y] = true;
+        dfspacificAtlanticTAIPING(heights,taiping,x+1,y,x,y);
+        dfspacificAtlanticTAIPING(heights,taiping,x,y+1,x,y);
+        dfspacificAtlanticTAIPING(heights,taiping,x-1,y,x,y);
+        dfspacificAtlanticTAIPING(heights,taiping,x,y-1,x,y);
+    }
+
+
     public static void main(String[] args) throws IOException {
-        new Solution().longestOnes(new int[]{1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1}, 9);
+    new Solution().pacificAtlantic(new int[][]{
+            new int[]{1,2,2,3,5},
+            new int[]{3,2,3,4,4},
+            new int[]{2,4,5,3,1},
+            new int[]{6,7,1,4,5},
+            new int[]{5,1,1,2,4},
+    });
     }
 
 }
