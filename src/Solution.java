@@ -4516,6 +4516,39 @@ public class Solution {
         return false;
     }
 
+    /**
+     * 1971. 寻找图中是否存在路径
+     * @param n
+     * @param edges
+     * @param source
+     * @param destination
+     * @return
+     */
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        UnionFindAlgorithm unionFindAlgorithm = new UnionFindAlgorithm();
+        for (int i = 0; i < edges.length; i++) {
+            unionFindAlgorithm.join(edges[i][0],edges[i][1]);
+        }
+        return unionFindAlgorithm.find(source)==unionFindAlgorithm.find(destination);
+    }
+
+
+    /**
+     *
+     684. 冗余连接
+     * @param edges
+     * @return
+     */
+    public int[] findRedundantConnection(int[][] edges) {
+        UnionFindAlgorithm unionFindAlgorithm = new UnionFindAlgorithm();
+        for (int i = 0; i < edges.length; i++) {
+            if (unionFindAlgorithm.find(edges[i][0])==unionFindAlgorithm.find(edges[i][1])){
+                return new int[]{edges[i][0],edges[i][1]};
+            }
+            unionFindAlgorithm.join(edges[i][0],edges[i][1]);
+        }
+        return new int[2];
+    }
 
     public static void main(String[] args) throws IOException {
     new Solution().ladderLength("qa","sq",
