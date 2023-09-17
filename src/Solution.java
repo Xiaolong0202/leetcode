@@ -4406,15 +4406,45 @@ public class Solution {
         dfspacificAtlanticTAIPING(heights,taiping,x,y-1,x,y);
     }
 
+    /**
+     * 127. 单词接龙
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> set = new HashSet<>(wordList);
+        Deque<String> deque = new ArrayDeque<>();
+        Map<String,Integer> map = new HashMap<>();
+        map.put(beginWord,1);
+        deque.offerLast(beginWord);
+        while (!deque.isEmpty()){
+            String last = deque.pollFirst();
+            Integer path = map.get(last);
+            if (last.equals(endWord)){
+                return path;
+            }
+            char[] charArray = last.toCharArray();
+            for (int i = 0; i < charArray.length; i++) {
+                for (int j = 'a'; j <= 'z' ; j++) {
+                    char c = charArray[i];
+                    charArray[i] = (char) j;
+                    String s = String.valueOf(charArray);
+                    if (set.contains(s)&&!map.containsKey(s)){
+                        map.put(s,path+1);
+                        deque.offerLast(s);
+                    }
+                    charArray[i] = c;
+                }
+            }
+        }
+        return 0;
+    }
 
     public static void main(String[] args) throws IOException {
-    new Solution().pacificAtlantic(new int[][]{
-            new int[]{1,2,2,3,5},
-            new int[]{3,2,3,4,4},
-            new int[]{2,4,5,3,1},
-            new int[]{6,7,1,4,5},
-            new int[]{5,1,1,2,4},
-    });
+    new Solution().ladderLength("qa","sq",
+            List.of("si","go","se","cm","so","ph","mt","db","mb","sb","kr","ln","tm","le","av","sm","ar","ci","ca","br","ti","ba","to","ra","fa","yo","ow","sn","ya","cr","po","fe","ho","ma","re","or","rn","au","ur","rh","sr","tc","lt","lo","as","fr","nb","yb","if","pb","ge","th","pm","rb","sh","co","ga","li","ha","hz","no","bi","di","hi","qa","pi","os","uh","wm","an","me","mo","na","la","st","er","sc","ne","mn","mi","am","ex","pt","io","be","fm","ta","tb","ni","mr","pa","he","lr","sq","ye"));
     }
 
 }
