@@ -1,6 +1,8 @@
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 public class Solution {
 
@@ -4440,6 +4442,30 @@ public class Solution {
             }
         }
         return 0;
+    }
+
+    /**
+     * 841. 钥匙和房间
+     * @param rooms
+     * @return
+     */
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        HashSet<Integer> keySet = new HashSet<>();
+        Deque<Integer> deque = new ArrayDeque<>();
+        deque.offerLast(0);
+        while (!deque.isEmpty()){
+            Integer room = deque.pollLast();
+            keySet.add(room);
+            if (keySet.size()==rooms.size()){
+                return true;
+            }
+            for (Integer next : rooms.get(room)) {
+                if (!keySet.contains(next)){
+                    deque.offerLast(next);
+                }
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) throws IOException {
