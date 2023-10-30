@@ -4370,46 +4370,48 @@ public class Solution {
 
     /**
      * 417. 太平洋大西洋水流问题
+     *
      * @param heights
      * @return
      */
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
-        boolean [][] taiping = new boolean[heights.length][heights[0].length];
-        boolean [][] daxi = new boolean[heights.length][heights[0].length];
+        boolean[][] taiping = new boolean[heights.length][heights[0].length];
+        boolean[][] daxi = new boolean[heights.length][heights[0].length];
         for (int i = 0; i < heights.length; i++) {
-            dfspacificAtlanticTAIPING(heights,taiping,i,0,i,0);
-            dfspacificAtlanticTAIPING(heights,daxi,i,heights[0].length-1,i,heights[0].length-1);
+            dfspacificAtlanticTAIPING(heights, taiping, i, 0, i, 0);
+            dfspacificAtlanticTAIPING(heights, daxi, i, heights[0].length - 1, i, heights[0].length - 1);
         }
         for (int i = 0; i < heights[0].length; i++) {
-            dfspacificAtlanticTAIPING(heights,taiping,0,i,0,i);
-            dfspacificAtlanticTAIPING(heights,daxi,heights.length-1,i,heights.length-1,i);
+            dfspacificAtlanticTAIPING(heights, taiping, 0, i, 0, i);
+            dfspacificAtlanticTAIPING(heights, daxi, heights.length - 1, i, heights.length - 1, i);
         }
         List<List<Integer>> res = new ArrayList<>();
         for (int i = 0; i < heights.length; i++) {
             for (int j = 0; j < heights[0].length; j++) {
-                if (taiping[i][j]&&daxi[i][j]){
-                    res.add(List.of(i,j));
+                if (taiping[i][j] && daxi[i][j]) {
+                    res.add(List.of(i, j));
                 }
             }
         }
         return res;
     }
 
-    private void dfspacificAtlanticTAIPING(int[][] heights, boolean[][] taiping, int x, int y,int preX,int preY) {
-        if (x<0||y<0||x>=heights.length||y>=heights[0].length)return;
-        if (taiping[x][y])return;
-        if (heights[x][y]<heights[preX][preY]){
+    private void dfspacificAtlanticTAIPING(int[][] heights, boolean[][] taiping, int x, int y, int preX, int preY) {
+        if (x < 0 || y < 0 || x >= heights.length || y >= heights[0].length) return;
+        if (taiping[x][y]) return;
+        if (heights[x][y] < heights[preX][preY]) {
             return;
         }
         taiping[x][y] = true;
-        dfspacificAtlanticTAIPING(heights,taiping,x+1,y,x,y);
-        dfspacificAtlanticTAIPING(heights,taiping,x,y+1,x,y);
-        dfspacificAtlanticTAIPING(heights,taiping,x-1,y,x,y);
-        dfspacificAtlanticTAIPING(heights,taiping,x,y-1,x,y);
+        dfspacificAtlanticTAIPING(heights, taiping, x + 1, y, x, y);
+        dfspacificAtlanticTAIPING(heights, taiping, x, y + 1, x, y);
+        dfspacificAtlanticTAIPING(heights, taiping, x - 1, y, x, y);
+        dfspacificAtlanticTAIPING(heights, taiping, x, y - 1, x, y);
     }
 
     /**
      * 127. 单词接龙
+     *
      * @param beginWord
      * @param endWord
      * @param wordList
@@ -4418,23 +4420,23 @@ public class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         HashSet<String> set = new HashSet<>(wordList);
         Deque<String> deque = new ArrayDeque<>();
-        Map<String,Integer> map = new HashMap<>();
-        map.put(beginWord,1);
+        Map<String, Integer> map = new HashMap<>();
+        map.put(beginWord, 1);
         deque.offerLast(beginWord);
-        while (!deque.isEmpty()){
+        while (!deque.isEmpty()) {
             String last = deque.pollFirst();
             Integer path = map.get(last);
-            if (last.equals(endWord)){
+            if (last.equals(endWord)) {
                 return path;
             }
             char[] charArray = last.toCharArray();
             for (int i = 0; i < charArray.length; i++) {
-                for (int j = 'a'; j <= 'z' ; j++) {
+                for (int j = 'a'; j <= 'z'; j++) {
                     char c = charArray[i];
                     charArray[i] = (char) j;
                     String s = String.valueOf(charArray);
-                    if (set.contains(s)&&!map.containsKey(s)){
-                        map.put(s,path+1);
+                    if (set.contains(s) && !map.containsKey(s)) {
+                        map.put(s, path + 1);
                         deque.offerLast(s);
                     }
                     charArray[i] = c;
@@ -4446,6 +4448,7 @@ public class Solution {
 
     /**
      * 841. 钥匙和房间
+     *
      * @param rooms
      * @return
      */
@@ -4453,14 +4456,14 @@ public class Solution {
         HashSet<Integer> keySet = new HashSet<>();
         Deque<Integer> deque = new ArrayDeque<>();
         deque.offerLast(0);
-        while (!deque.isEmpty()){
+        while (!deque.isEmpty()) {
             Integer room = deque.pollLast();
             keySet.add(room);
-            if (keySet.size()==rooms.size()){
+            if (keySet.size() == rooms.size()) {
                 return true;
             }
             for (Integer next : rooms.get(room)) {
-                if (!keySet.contains(next)){
+                if (!keySet.contains(next)) {
                     deque.offerLast(next);
                 }
             }
@@ -4472,44 +4475,46 @@ public class Solution {
      * 463. 岛屿的周长
      */
     private int islandPerimeterLong = 0;
+
     public int islandPerimeter(int[][] grid) {
         int x = -1;
         int y = -1;
         ok:
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j]==1){
-                    x=i;
-                    y=j;
+                if (grid[i][j] == 1) {
+                    x = i;
+                    y = j;
                     break ok;
                 }
             }
         }
-        dfsIslandPerimeter(grid,x,y,new int[grid.length][grid[0].length]);
+        dfsIslandPerimeter(grid, x, y, new int[grid.length][grid[0].length]);
         return islandPerimeterLong;
     }
-    boolean dfsIslandPerimeter(int[][] grid,int x,int y,int [][] visited){
-        if (x<0||y<0||x>=grid.length||y>=grid[0].length){
+
+    boolean dfsIslandPerimeter(int[][] grid, int x, int y, int[][] visited) {
+        if (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length) {
             return true;
         }
-        if (grid[x][y]==0){
+        if (grid[x][y] == 0) {
             return true;
         }
-        if (grid[x][y]==1){
-            if (visited[x][y]==1){
+        if (grid[x][y] == 1) {
+            if (visited[x][y] == 1) {
                 return false;
             }
             visited[x][y] = 1;
-            if (dfsIslandPerimeter(grid,x+1,y,visited)){
+            if (dfsIslandPerimeter(grid, x + 1, y, visited)) {
                 islandPerimeterLong++;
             }
-            if (dfsIslandPerimeter(grid,x-1,y,visited)){
+            if (dfsIslandPerimeter(grid, x - 1, y, visited)) {
                 islandPerimeterLong++;
             }
-            if (dfsIslandPerimeter(grid,x,y+1,visited)){
+            if (dfsIslandPerimeter(grid, x, y + 1, visited)) {
                 islandPerimeterLong++;
             }
-            if (dfsIslandPerimeter(grid,x,y-1,visited)){
+            if (dfsIslandPerimeter(grid, x, y - 1, visited)) {
                 islandPerimeterLong++;
             }
         }
@@ -4518,6 +4523,7 @@ public class Solution {
 
     /**
      * 1971. 寻找图中是否存在路径
+     *
      * @param n
      * @param edges
      * @param source
@@ -4527,32 +4533,44 @@ public class Solution {
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         UnionFindAlgorithm unionFindAlgorithm = new UnionFindAlgorithm();
         for (int i = 0; i < edges.length; i++) {
-            unionFindAlgorithm.join(edges[i][0],edges[i][1]);
+            unionFindAlgorithm.join(edges[i][0], edges[i][1]);
         }
-        return unionFindAlgorithm.find(source)==unionFindAlgorithm.find(destination);
+        return unionFindAlgorithm.find(source) == unionFindAlgorithm.find(destination);
     }
 
 
     /**
+     * 684. 冗余连接
      *
-     684. 冗余连接
      * @param edges
      * @return
      */
     public int[] findRedundantConnection(int[][] edges) {
         UnionFindAlgorithm unionFindAlgorithm = new UnionFindAlgorithm();
         for (int i = 0; i < edges.length; i++) {
-            if (unionFindAlgorithm.find(edges[i][0])==unionFindAlgorithm.find(edges[i][1])){
-                return new int[]{edges[i][0],edges[i][1]};
+            if (unionFindAlgorithm.find(edges[i][0]) == unionFindAlgorithm.find(edges[i][1])) {
+                return new int[]{edges[i][0], edges[i][1]};
             }
-            unionFindAlgorithm.join(edges[i][0],edges[i][1]);
+            unionFindAlgorithm.join(edges[i][0], edges[i][1]);
         }
         return new int[2];
     }
 
-    public static void main(String[] args) throws IOException {
-    new Solution().ladderLength("qa","sq",
-            List.of("si","go","se","cm","so","ph","mt","db","mb","sb","kr","ln","tm","le","av","sm","ar","ci","ca","br","ti","ba","to","ra","fa","yo","ow","sn","ya","cr","po","fe","ho","ma","re","or","rn","au","ur","rh","sr","tc","lt","lo","as","fr","nb","yb","if","pb","ge","th","pm","rb","sh","co","ga","li","ha","hz","no","bi","di","hi","qa","pi","os","uh","wm","an","me","mo","na","la","st","er","sc","ne","mn","mi","am","ex","pt","io","be","fm","ta","tb","ni","mr","pa","he","lr","sq","ye"));
+    /**
+     * 685. 冗余连接 II
+     *
+     * @param edges
+     * @return
+     */
+    public int[] findRedundantDirectedConnection(int[][] edges) {
+        UnionFindAlgorithm unionFindAlgorithm = new UnionFindAlgorithm();
+        for (int i = 0; i < edges.length; i++) {
+            if (unionFindAlgorithm.find(edges[i][0]) == unionFindAlgorithm.find(edges[i][1])) {
+                return new int[]{edges[i][0], edges[i][1]};
+            }
+            unionFindAlgorithm.join(edges[i][0], edges[i][1]);
+        }
+        return new int[2];
     }
 
 }
