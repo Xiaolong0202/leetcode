@@ -4573,4 +4573,51 @@ public class Solution {
         return new int[2];
     }
 
+
+    /**
+     * 16. 最接近的三数之和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int threeSumClosest(int[] nums, int target) {
+        int minMinus = 0x3f3f3f3f;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length-2; i++) {
+            if (i>0&&nums[i]==nums[i-1])continue;
+            int l = i+1;
+            int r = nums.length-1;
+            int aim = target - nums[i];
+            while (l<r){
+                int tempSum = nums[l]+nums[r];
+                if (Math.abs(minMinus)>Math.abs(aim-tempSum)){
+                    minMinus = aim - tempSum;
+                }
+                if (tempSum>aim){
+                    r--;
+                }
+                if (tempSum<aim){
+                    l++;
+                }
+                if (tempSum==aim){
+                    return target;
+                }
+            }
+        }
+        return target-minMinus;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
