@@ -4576,6 +4576,7 @@ public class Solution {
 
     /**
      * 16. 最接近的三数之和
+     *
      * @param nums
      * @param target
      * @return
@@ -4583,28 +4584,114 @@ public class Solution {
     public int threeSumClosest(int[] nums, int target) {
         int minMinus = 0x3f3f3f3f;
         Arrays.sort(nums);
-        for (int i = 0; i < nums.length-2; i++) {
-            if (i>0&&nums[i]==nums[i-1])continue;
-            int l = i+1;
-            int r = nums.length-1;
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int l = i + 1;
+            int r = nums.length - 1;
             int aim = target - nums[i];
-            while (l<r){
-                int tempSum = nums[l]+nums[r];
-                if (Math.abs(minMinus)>Math.abs(aim-tempSum)){
+            while (l < r) {
+                int tempSum = nums[l] + nums[r];
+                if (Math.abs(minMinus) > Math.abs(aim - tempSum)) {
                     minMinus = aim - tempSum;
                 }
-                if (tempSum>aim){
+                if (tempSum > aim) {
                     r--;
                 }
-                if (tempSum<aim){
+                if (tempSum < aim) {
                     l++;
                 }
-                if (tempSum==aim){
+                if (tempSum == aim) {
                     return target;
                 }
             }
         }
-        return target-minMinus;
+        return target - minMinus;
+    }
+
+    /**
+     * 399. 除法求值
+     *
+     * @param equations
+     * @param values
+     * @param queries
+     * @return
+     */
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String, String> parent = new HashMap<>();//对应父级
+        Map<String, Double> weight = new HashMap<>();//对应到父级的权重,比值
+
+        //初始
+        equations.forEach(list -> {
+            parent.put(list.get(0), list.get(0));
+            parent.put(list.get(1), list.get(1));
+
+            weight.put(list.get(0), 1D);
+            weight.put(list.get(1), 1D);
+        });
+
+
+        for (int i = 0; i < values.length; i++) {
+            List<String> equationList = equations.get(i);
+            String up = equationList.get(0);
+            String down = equationList.get(1);
+            add(up, down, values[i], parent, weight);
+//            if (!weight.containsKey(up) && !weight.containsKey(down)) {
+//                weight.put(up, values[i]);
+//                weight.put(down, 1D);
+//            }
+//            if (weight.containsKey(down)) {
+//                weight.put(up, weight.get(down) * values[i]);
+//            }
+//            if (weight.containsKey(up)) {
+//                weight.put(down, weight.get(up) / values[i]);
+//            }
+        }
+        double[] res = new double[queries.size()];
+//        parent.keySet().forEach(son -> {
+//            find(son, parent, weight);
+//        });
+        for (int i = 0; i < res.length; i++) {
+            List<String> queiesList = queries.get(i);
+            String up = queiesList.get(0);
+            String down = queiesList.get(1);
+            if (parent.get(up)==null||parent.get(down)==null||!find(up,parent,weight).equals(find(down,parent,weight))) {
+                res[i] = -1D;
+                continue;
+            }
+            res[i] = weight.get(up) / weight.get(down);
+        }
+        return res;
+    }
+
+    String find(String a, Map<String, String> parent, Map<String, Double> weight) {
+        if (parent.containsKey(a) && !parent.get(a).equals(a)) {
+            String p = parent.get(a);
+            parent.put(a, find(p, parent, weight));
+            weight.put(a, weight.get(p) * weight.get(a));
+        }
+        return parent.get(a);
+    }
+
+    //a -> b
+    void add(String a, String b, Double v, Map<String, String> parent, Map<String, Double> weight) {
+       String pA =  find(a, parent, weight);
+       String pB =  find(b, parent, weight);
+        if (pA.equals(pB)) {
+            return;
+        }
+        weight.put(pA,v*weight.get(b)/weight.get(a));
+        parent.put(pA,pB);
+//        weight.put(find(a, parent, weight), v / weight.get(a));
+//        find(a, parent, weight);
+////        find(b, parent, weight);
+//        parent.put(parent.get(a), b);
+    }
+
+    public static void main(String[] args) {
+        new Solution().calcEquation(List.of(List.of("x1","x2"), List.of("x2","x3"),List.of("x1","x4"),List.of("x2","x5")), new double[]{3.0,0.5,3.4,5.6}
+                , List.of(List.of("b","a"), List.of("a","f"), List.of("f","f")));
+
+
     }
 
 }
