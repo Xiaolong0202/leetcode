@@ -4628,33 +4628,18 @@ public class Solution {
             weight.put(list.get(0), 1D);
             weight.put(list.get(1), 1D);
         });
-
-
         for (int i = 0; i < values.length; i++) {
             List<String> equationList = equations.get(i);
             String up = equationList.get(0);
             String down = equationList.get(1);
             add(up, down, values[i], parent, weight);
-//            if (!weight.containsKey(up) && !weight.containsKey(down)) {
-//                weight.put(up, values[i]);
-//                weight.put(down, 1D);
-//            }
-//            if (weight.containsKey(down)) {
-//                weight.put(up, weight.get(down) * values[i]);
-//            }
-//            if (weight.containsKey(up)) {
-//                weight.put(down, weight.get(up) / values[i]);
-//            }
         }
         double[] res = new double[queries.size()];
-//        parent.keySet().forEach(son -> {
-//            find(son, parent, weight);
-//        });
         for (int i = 0; i < res.length; i++) {
             List<String> queiesList = queries.get(i);
             String up = queiesList.get(0);
             String down = queiesList.get(1);
-            if (parent.get(up)==null||parent.get(down)==null||!find(up,parent,weight).equals(find(down,parent,weight))) {
+            if (parent.get(up) == null || parent.get(down) == null || !find(up, parent, weight).equals(find(down, parent, weight))) {
                 res[i] = -1D;
                 continue;
             }
@@ -4674,24 +4659,51 @@ public class Solution {
 
     //a -> b
     void add(String a, String b, Double v, Map<String, String> parent, Map<String, Double> weight) {
-       String pA =  find(a, parent, weight);
-       String pB =  find(b, parent, weight);
+        String pA = find(a, parent, weight);
+        String pB = find(b, parent, weight);
         if (pA.equals(pB)) {
             return;
         }
-        weight.put(pA,v*weight.get(b)/weight.get(a));
-        parent.put(pA,pB);
-//        weight.put(find(a, parent, weight), v / weight.get(a));
-//        find(a, parent, weight);
-////        find(b, parent, weight);
-//        parent.put(parent.get(a), b);
+        weight.put(pA, v * weight.get(b) / weight.get(a));
+        parent.put(pA, pB);
+    }
+
+    /**
+     * 58. 最后一个单词的长度
+     *
+     * @param s
+     * @return
+     */
+    public int lengthOfLastWord(String s) {
+        char[] charArray = s.toCharArray();
+        int l = -1;
+        for (int i = 0; i < charArray.length; i++) {
+            if (charArray[i] == ' ' && charArray[Math.min(i + 1, charArray.length - 1)] != ' ') {
+                l = i;
+            }
+        }
+        int r = charArray.length-1;
+        for (int i = charArray.length; i > 0; i--) {
+            if (charArray[i-1]!=' '){
+                r = i;
+                break;
+            }
+        }
+        return r-l-1;
     }
 
     public static void main(String[] args) {
-        new Solution().calcEquation(List.of(List.of("x1","x2"), List.of("x2","x3"),List.of("x1","x4"),List.of("x2","x5")), new double[]{3.0,0.5,3.4,5.6}
-                , List.of(List.of("b","a"), List.of("a","f"), List.of("f","f")));
-
-
+//        new Solution().calcEquation(List.of(List.of("x1", "x2"), List.of("x2", "x3"), List.of("x1", "x4"), List.of("x2", "x5")), new double[]{3.0, 0.5, 3.4, 5.6}
+//                , List.of(List.of("b", "a"), List.of("a", "f"), List.of("f", "f")));
+        String testWord = "Hello world !";
+        char[] charArray = testWord.toCharArray();
+        int lastIndex = -1;
+        for (int i = 0; i < charArray.length; i++) {
+            if (charArray[i] == ' ') {
+                lastIndex = i;
+            }
+        }
+        System.out.println(lastIndex);
     }
 
 }
