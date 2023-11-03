@@ -4700,7 +4700,7 @@ public class Solution {
      */
     public int lengthOfLongestSubstring(String s) {
         char[] charArray = s.toCharArray();
-        if (charArray.length<=1)return charArray.length;
+        if (charArray.length <= 1) return charArray.length;
         int l = 0;
         int r = 1;
         int res = Integer.MIN_VALUE;
@@ -4710,19 +4710,51 @@ public class Solution {
 //            }
 //        };
         int[] set = new int[256];
-        set[charArray[0]]=1;
+        set[charArray[0]] = 1;
         while (r < charArray.length) {
-            while (set[charArray[r]]!=0 && l < r) {
-                set[charArray[l++]]=0;
+            while (set[charArray[r]] != 0 && l < r) {
+                set[charArray[l++]] = 0;
             }
-            res = Math.max(r-l+1,res);
+            res = Math.max(r - l + 1, res);
             // System.out.print("charArray[l] = " + charArray[l]);
             // System.out.print("charArray[r] = " + charArray[r]);
             // System.out.print("l = " + l);
             // System.out.println("r = " + r);
-            set[charArray[r++]]=charArray[r-1];
+            set[charArray[r++]] = charArray[r - 1];
         }
         return res;
+    }
+
+    /**
+     * 581. 最短无序连续子数组
+     *
+     * @param nums
+     * @return
+     */
+    public int findUnsortedSubarray(int[] nums) {
+        if (nums.length <= 0) return 0;
+        int index = 0;
+
+        List<Integer> list = new ArrayList<>();
+        int minList = Integer.MAX_VALUE;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[index] <= nums[i]) {
+                index = i;
+            } else {
+                list.add(i);
+                minList = Math.min(nums[i],minList);
+            }
+        }
+        if (list.size() == 0) {
+            return 0;
+        } else {
+            int minIndex = list.get(0) - 1;
+            while (minIndex >= 0 && nums[minIndex] > minList) {
+                minIndex--;
+            }
+            minIndex++;
+            return  list.get(list.size() - 1) - minIndex + 1;
+        }
     }
 
 
