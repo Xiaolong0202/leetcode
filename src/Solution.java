@@ -4682,28 +4682,53 @@ public class Solution {
                 l = i;
             }
         }
-        int r = charArray.length-1;
+        int r = charArray.length - 1;
         for (int i = charArray.length; i > 0; i--) {
-            if (charArray[i-1]!=' '){
+            if (charArray[i - 1] != ' ') {
                 r = i;
                 break;
             }
         }
-        return r-l-1;
+        return r - l - 1;
     }
 
-    public static void main(String[] args) {
-//        new Solution().calcEquation(List.of(List.of("x1", "x2"), List.of("x2", "x3"), List.of("x1", "x4"), List.of("x2", "x5")), new double[]{3.0, 0.5, 3.4, 5.6}
-//                , List.of(List.of("b", "a"), List.of("a", "f"), List.of("f", "f")));
-        String testWord = "Hello world !";
-        char[] charArray = testWord.toCharArray();
-        int lastIndex = -1;
-        for (int i = 0; i < charArray.length; i++) {
-            if (charArray[i] == ' ') {
-                lastIndex = i;
+    /**
+     * 3. 无重复字符的最长子串
+     *
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring(String s) {
+        char[] charArray = s.toCharArray();
+        if (charArray.length<=1)return charArray.length;
+        int l = 0;
+        int r = 1;
+        int res = Integer.MIN_VALUE;
+//        HashSet<Character> set = new HashSet<>() {
+//            {
+//                add(charArray[0]);
+//            }
+//        };
+        int[] set = new int[256];
+        set[charArray[0]]=1;
+        while (r < charArray.length) {
+            while (set[charArray[r]]!=0 && l < r) {
+                set[charArray[l++]]=0;
             }
+            res = Math.max(r-l+1,res);
+            // System.out.print("charArray[l] = " + charArray[l]);
+            // System.out.print("charArray[r] = " + charArray[r]);
+            // System.out.print("l = " + l);
+            // System.out.println("r = " + r);
+            set[charArray[r++]]=charArray[r-1];
         }
-        System.out.println(lastIndex);
+        return res;
+    }
+
+
+
+    public static void main(String[] args) {
+
     }
 
 }
