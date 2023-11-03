@@ -3,6 +3,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Solution {
 
@@ -4704,11 +4706,6 @@ public class Solution {
         int l = 0;
         int r = 1;
         int res = Integer.MIN_VALUE;
-//        HashSet<Character> set = new HashSet<>() {
-//            {
-//                add(charArray[0]);
-//            }
-//        };
         int[] set = new int[256];
         set[charArray[0]] = 1;
         while (r < charArray.length) {
@@ -4716,10 +4713,6 @@ public class Solution {
                 set[charArray[l++]] = 0;
             }
             res = Math.max(r - l + 1, res);
-            // System.out.print("charArray[l] = " + charArray[l]);
-            // System.out.print("charArray[r] = " + charArray[r]);
-            // System.out.print("l = " + l);
-            // System.out.println("r = " + r);
             set[charArray[r++]] = charArray[r - 1];
         }
         return res;
@@ -4742,7 +4735,7 @@ public class Solution {
                 index = i;
             } else {
                 list.add(i);
-                minList = Math.min(nums[i],minList);
+                minList = Math.min(nums[i], minList);
             }
         }
         if (list.size() == 0) {
@@ -4753,14 +4746,64 @@ public class Solution {
                 minIndex--;
             }
             minIndex++;
-            return  list.get(list.size() - 1) - minIndex + 1;
+            return list.get(list.size() - 1) - minIndex + 1;
+        }
+    }
+
+    /**
+     * 301. 删除无效的括号
+     *
+     * @param s
+     * @return
+     */
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> ans = new ArrayList<String>();
+        Set<String> currSet = new HashSet<String>();
+
+        currSet.add(s);
+        while (true) {
+            for (String str : currSet) {
+                if (isOk(str)) {
+                    ans.add(str);
+                }
+            }
+            if (ans.size() > 0) {
+                return ans;
+            }
+            Set<String> nextSet = new HashSet<String>();
+            for (String str : currSet) {
+                for (int i = 0; i < str.length(); i++) {
+                    if (i > 0 && str.charAt(i) == str.charAt(i - 1)) {
+                        continue;
+                    }
+                    if (str.charAt(i) == '(' || str.charAt(i) == ')') {
+                        nextSet.add(str.substring(0, i) + str.substring(i + 1));
+                    }
+                }
+            }
+            currSet = nextSet;
         }
     }
 
 
+    public Boolean isOk(String sb) {
+        int cnt = 0;
+        for (int i = 0; i < sb.length(); i++) {
+            if (sb.charAt(i) == '(') {
+                cnt++;
+            } else if (sb.charAt(i) == ')') {
+                cnt--;
+                if (cnt < 0) {
+                    return false;
+                }
+            }
+        }
+        return cnt == 0;
+    }
 
     public static void main(String[] args) {
-
+        System.out.println("new Solution().removeInvalidParentheses(\"()((((((()l(\") = "
+                + new Solution().removeInvalidParentheses("()((((((()l("));
     }
 
 }
