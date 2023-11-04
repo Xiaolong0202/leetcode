@@ -4878,6 +4878,28 @@ public class Solution {
 //        }
     }
 
+
+    /**
+     * 124. 二叉树中的最大路径和
+     * @param root
+     * @return
+     */
+
+    public int maxPathSum(TreeNode root){
+        int[] ints = {Integer.MIN_VALUE};
+        maxPathSum(root, ints);
+        return ints[0];
+    }
+    public int maxPathSum(TreeNode root,int[] nums) {
+        if(root==null)return 0;
+        int leftRes = maxPathSum(root.left,nums);
+        int rightRes = maxPathSum(root.right,nums);
+        nums[0] = Math.max(nums[0],Math.max(Math.max(leftRes+rightRes+root.val,root.val),Math.max(leftRes,rightRes)+root.val));
+        return Math.max(Math.max(leftRes,rightRes)+root.val,root.val);
+    }
+
+
+
     public static void main(String[] args) {
         new Solution().maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3);
     }
