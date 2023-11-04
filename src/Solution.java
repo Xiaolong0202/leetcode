@@ -4917,26 +4917,52 @@ public class Solution {
 
             int[] left = new int[heights.length];//所能达到的最远位置但不包括
             int[] right = new int[heights.length];
-            Arrays.fill(right,right.length);
+            Arrays.fill(right, right.length);
             //维护一个单调递减的单调栈
             for (int j = 0; j < heights.length; j++) {
                 while (!deque.isEmpty() && heights[j] <= heights[deque.peekLast()]) {
-                   Integer l = deque.pollLast();
-                   right[l] = j;
+                    Integer l = deque.pollLast();
+                    right[l] = j;
                 }
                 left[j] = deque.isEmpty() ? -1 : deque.peekLast();
                 deque.offerLast(j);
             }
             deque.clear();
             for (int j = 0; j < heights.length; j++) {
-                maxArea = Math.max((right[j]-left[j]-1)*heights[j],maxArea);
+                maxArea = Math.max((right[j] - left[j] - 1) * heights[j], maxArea);
             }
         }
         return maxArea;
     }
 
+    /**
+     * 32. 最长有效括号
+     *
+     * @param s
+     * @return
+     */
+    public int longestValidParentheses(String s) {
+        char[] charArray = s.toCharArray();
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < charArray.length; i++) {
+            if (!deque.isEmpty() && charArray[deque.peekLast()] == '(' && charArray[i] == ')'){
+                deque.pollLast();
+            }else {
+                deque.offerLast(i);
+            }
+        }
+        int res = 0;
+        int preIndex = -1;
+        while (!deque.isEmpty()){
+            Integer index = deque.pollFirst();
+            res = Math.max(res,index-preIndex-1);
+            preIndex = index;
+        }
+        return Math.max(res,charArray.length-preIndex-1);
+    }
+
     public static void main(String[] args) {
-        new Solution().maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3);
+        System.out.println("new Solution().isOk(\")(\") = " + new Solution().isOk(")("));
     }
 
 }
