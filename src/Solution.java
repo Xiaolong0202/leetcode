@@ -4881,24 +4881,59 @@ public class Solution {
 
     /**
      * 124. 二叉树中的最大路径和
+     *
      * @param root
      * @return
      */
-
-    public int maxPathSum(TreeNode root){
+    public int maxPathSum(TreeNode root) {
         int[] ints = {Integer.MIN_VALUE};
         maxPathSum(root, ints);
         return ints[0];
     }
-    public int maxPathSum(TreeNode root,int[] nums) {
-        if(root==null)return 0;
-        int leftRes = maxPathSum(root.left,nums);
-        int rightRes = maxPathSum(root.right,nums);
-        nums[0] = Math.max(nums[0],Math.max(Math.max(leftRes+rightRes+root.val,root.val),Math.max(leftRes,rightRes)+root.val));
-        return Math.max(Math.max(leftRes,rightRes)+root.val,root.val);
+
+    public int maxPathSum(TreeNode root, int[] nums) {
+        if (root == null) return 0;
+        int leftRes = maxPathSum(root.left, nums);
+        int rightRes = maxPathSum(root.right, nums);
+        nums[0] = Math.max(nums[0], Math.max(Math.max(leftRes + rightRes + root.val, root.val), Math.max(leftRes, rightRes) + root.val));
+        return Math.max(Math.max(leftRes, rightRes) + root.val, root.val);
     }
 
+    /**
+     * 85. 最大矩形
+     *
+     * @param matrix
+     * @return
+     */
+    public int maximalRectangle(char[][] matrix) {
+        int maxArea = 0;
+        int[] heights = new int[matrix[0].length];
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < matrix.length; i++) {
+            //初始化heights数组
+            for (int j = 0; j < heights.length; j++) {
+                heights[j] = matrix[i][j] == '1' ? 1 + heights[j] : 0;
+            }
 
+            int[] left = new int[heights.length];//所能达到的最远位置但不包括
+            int[] right = new int[heights.length];
+            Arrays.fill(right,right.length);
+            //维护一个单调递减的单调栈
+            for (int j = 0; j < heights.length; j++) {
+                while (!deque.isEmpty() && heights[j] <= heights[deque.peekLast()]) {
+                   Integer l = deque.pollLast();
+                   right[l] = j;
+                }
+                left[j] = deque.isEmpty() ? -1 : deque.peekLast();
+                deque.offerLast(j);
+            }
+            deque.clear();
+            for (int j = 0; j < heights.length; j++) {
+                maxArea = Math.max((right[j]-left[j]-1)*heights[j],maxArea);
+            }
+        }
+        return maxArea;
+    }
 
     public static void main(String[] args) {
         new Solution().maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3);
