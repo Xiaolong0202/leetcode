@@ -1,10 +1,6 @@
-import java.awt.*;
-import java.io.*;
-import java.net.URL;
+
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 public class Solution {
 
@@ -4785,7 +4781,6 @@ public class Solution {
         }
     }
 
-
     public Boolean isOk(String sb) {
         int cnt = 0;
         for (int i = 0; i < sb.length(); i++) {
@@ -4801,9 +4796,90 @@ public class Solution {
         return cnt == 0;
     }
 
+    /**
+     * 239. 滑动窗口最大值
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (k == 1) return nums;
+        int[] res = new int[nums.length - k + 1];
+        int count = 0;
+        int l = 0;
+        int r = 1;
+        Deque<Integer> deque = new ArrayDeque<>();//单调递减的单调队列,存放index,head最大
+        deque.offerLast(l);
+        while (r < k) {
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[r]) {
+                deque.pollLast();
+            }
+            deque.offerLast(r);
+            r++;
+        }
+
+        l++;
+        r++;
+        res[count++] = nums[deque.peekFirst()];
+        while (r <= nums.length) {
+            if (l - 1 == deque.peekFirst()) {
+                deque.pollFirst();
+            }
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[r - 1]) {
+                deque.pollLast();
+            }
+            deque.offerLast(r - 1);
+            l++;
+            r++;
+            res[count++] = nums[deque.peekFirst()];
+        }
+        return res;
+
+        //另一个最初的版本
+//        public int[] maxSlidingWindow(int[] nums, int k) {
+//            if (k==1)return nums;
+//            int[] res = new int[nums.length-k+1];
+//            int count = 0;
+//            int l = 0;
+//            int r = 1;
+//            int maxIndex = l;//表示一个窗口当中的最大的且最靠后的那个值的index
+////        int secondMAXIndex = -1;//表示一个窗口当中的第二大的且最靠后的那个值的index
+//            while (r<k){
+//                if (nums[r]>=nums[maxIndex]){
+//                    maxIndex = r;
+//                }
+//                r++;
+//            }
+//            l++;
+//            r++;
+//            res[count++] = nums[maxIndex];
+//            while (r<=nums.length){
+////            System.out.print("nums[l-1] = " + nums[l - 1]);//l-1表示被踢出去的那个值
+////            System.out.println("  nums[r-1] = " + nums[r - 1]);//r-1表示新增的那个值
+//                if (l-1==maxIndex){
+//                    //如果之前的最大值被请出窗口了则再找一个新的
+//                    maxIndex = l;
+//                    for (int i = l; i < r; i++) {
+//                        if (nums[i]>=nums[maxIndex]){
+//                            maxIndex = i;
+//                        }
+//                    }
+//                }
+//
+//                if (nums[r-1]>=nums[maxIndex]){
+//                    maxIndex = r-1;
+//                }
+//                res[count++] = nums[maxIndex];
+//                l++;
+//                r++;
+//            }
+//            return res;
+//        }
+    }
+
     public static void main(String[] args) {
-        System.out.println("new Solution().removeInvalidParentheses(\"()((((((()l(\") = "
-                + new Solution().removeInvalidParentheses("()((((((()l("));
+        new Solution().maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3);
     }
 
 }
