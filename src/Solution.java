@@ -4989,6 +4989,7 @@ public class Solution {
         }
         return dp[s.length()][p.length()];
     }
+
     public boolean matches(String s, String p, int i, int j) {
         if (i == 0) {
             return false;
@@ -4999,9 +5000,48 @@ public class Solution {
         return s.charAt(i - 1) == p.charAt(j - 1);
     }
 
+    /**
+     * 89. 格雷编码
+     *
+     * @param n
+     * @return
+     */
+    public List<Integer> grayCode(int n) {
+        if (n==0){
+            return List.of(0);
+        }
+        ArrayList<Integer> list = new ArrayList<>() {
+            {
+                add(0);
+                add(1);
+            }
+        };
+        if (n==1)return list;
+        grayCode(n, 2, list);
+        return list;
+    }
+    public void grayCode(int max, int n, List<Integer> list) {
+        int num = 1<<(n-1);
+        List<Integer> tempList = new ArrayList<>();
+        for (Integer integer : list) {
+            tempList.add(num|integer);
+        }
+        for (int i = tempList.size() - 1; i >= 0; i--) {
+            list.add(tempList.get(i));
+        }
+        if (max==n){
+            return;
+        }else {
+            grayCode(max,n+1,list);
+        }
+    }
 
     public static void main(String[] args) {
+        System.out.println("2>2 = " + ((1 << 2) - 1));
+
+        System.out.println(1 | 4);
     }
+
 
 }
 
