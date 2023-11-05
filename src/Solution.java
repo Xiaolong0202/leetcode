@@ -4945,24 +4945,62 @@ public class Solution {
         char[] charArray = s.toCharArray();
         Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < charArray.length; i++) {
-            if (!deque.isEmpty() && charArray[deque.peekLast()] == '(' && charArray[i] == ')'){
+            if (!deque.isEmpty() && charArray[deque.peekLast()] == '(' && charArray[i] == ')') {
                 deque.pollLast();
-            }else {
+            } else {
                 deque.offerLast(i);
             }
         }
         int res = 0;
         int preIndex = -1;
-        while (!deque.isEmpty()){
+        while (!deque.isEmpty()) {
             Integer index = deque.pollFirst();
-            res = Math.max(res,index-preIndex-1);
+            res = Math.max(res, index - preIndex - 1);
             preIndex = index;
         }
-        return Math.max(res,charArray.length-preIndex-1);
+        return Math.max(res, charArray.length - preIndex - 1);
     }
 
+    /**
+     * 10. 正则表达式匹配
+     *
+     * @param s
+     * @param p
+     * @return
+     */
+    public boolean isMatch(String s, String p) {
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        int m = s.length();
+        int n = p.length();
+        for (int i = 0; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (p.charAt(j - 1) == '*') {
+                    dp[i][j] = dp[i][j - 2];
+                    if (matches(s, p, i, j - 1)) {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                } else {
+                    if (matches(s, p, i, j)) {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
+    }
+    public boolean matches(String s, String p, int i, int j) {
+        if (i == 0) {
+            return false;
+        }
+        if (p.charAt(j - 1) == '.') {
+            return true;
+        }
+        return s.charAt(i - 1) == p.charAt(j - 1);
+    }
+
+
     public static void main(String[] args) {
-        System.out.println("new Solution().isOk(\")(\") = " + new Solution().isOk(")("));
     }
 
 }
