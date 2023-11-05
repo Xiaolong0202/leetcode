@@ -5114,10 +5114,10 @@ public class Solution {
         }
         //去除先导0
         int p = 0;
-        while (p < res.length()&&res.charAt(p)=='0') {
+        while (p < res.length() && res.charAt(p) == '0') {
             p++;
         }
-        if (p==res.length())p--;
+        if (p == res.length()) p--;
         return res.substring(p);
     }
 
@@ -5136,12 +5136,22 @@ public class Solution {
         return builder.reverse().toString();
     }
 
+    /**
+     * 231. 2 的幂
+     *
+     * @param n
+     * @return
+     */
+    public boolean isPowerOfTwo(int n) {
+        if (n < 0) return false;
+        String binaryString = Integer.toBinaryString(n);
+        String substring = binaryString.substring(1);
+        return binaryString.charAt(0) == '1' && (substring.length() == 0 || Integer.parseInt(substring, 2) == 0);
+    }
 
     public static void main(String[] args) {
-        System.out.println("2>2 = " + ((1 << 2) - 1));
-
-        new Solution().multiply("123456789", "987654321");
-        System.out.println(456 * 123);
+        System.out.println("new Solution().isPowerOfTwo(17) = " + new Solution().isPowerOfTwo(17));
+        System.out.println("121231231:   " + Integer.parseInt('0' + "1".substring(1)));
     }
 
 
