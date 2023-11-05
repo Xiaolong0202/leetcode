@@ -5085,10 +5085,63 @@ public class Solution {
 //        return c;
     }
 
+    /**
+     * 43. 字符串相乘
+     *
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public String multiply(String num1, String num2) {
+        char[] num1CharArray = num1.toCharArray();
+        char[] num2CharArray = num2.toCharArray();
+        String res = "0";
+        int countResTen = 0;
+        for (int i = num1CharArray.length - 1; i >= 0; i--, countResTen++) {
+            String tempRes = "0";
+            int countTen = 0;
+            for (int j = num2CharArray.length - 1; j >= 0; j--, countTen++) {
+                String value = String.valueOf((num2CharArray[j] - '0') * (num1CharArray[i] - '0'));
+                for (int z = 0; z < countTen; z++) {
+                    value += '0';
+                }
+                tempRes = addStrings(value, tempRes);
+            }
+            for (int j = 0; j < countResTen; j++) {
+                tempRes += '0';
+            }
+            res = addStrings(tempRes, res);
+        }
+        //去除先导0
+        int p = 0;
+        while (p < res.length()&&res.charAt(p)=='0') {
+            p++;
+        }
+        if (p==res.length())p--;
+        return res.substring(p);
+    }
+
+    public String addStrings(String num1, String num2) {
+        StringBuilder builder = new StringBuilder();
+        int carry = 0;
+        for (int i = num1.length() - 1, j = num2.length() - 1;
+             i >= 0 || j >= 0 || carry != 0;
+             i--, j--) {
+            int x = i < 0 ? 0 : num1.charAt(i) - '0';
+            int y = j < 0 ? 0 : num2.charAt(j) - '0';
+            int sum = (x + y + carry) % 10;
+            builder.append(sum);
+            carry = (x + y + carry) / 10;
+        }
+        return builder.reverse().toString();
+    }
+
+
     public static void main(String[] args) {
         System.out.println("2>2 = " + ((1 << 2) - 1));
 
-        new Solution().canWinNim(1);
+        new Solution().multiply("123456789", "987654321");
+        System.out.println(456 * 123);
     }
 
 
