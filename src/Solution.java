@@ -5207,6 +5207,39 @@ public class Solution {
             }
         }
     }
+
+
+    /**
+     * 328. 奇偶链表
+     *
+     * @param head
+     * @return
+     */
+    public ListNode oddEvenList(ListNode head) {
+        ListNode ji = new ListNode();
+        ListNode ou = new ListNode();
+        ListNode Jres = ji;
+        ListNode Ores = ou;
+        int index = 1;
+        while (head != null) {
+            if (index % 2 == 0) {
+                ou.next = head;
+                head = head.next;
+                ou = ou.next;
+                ou.next = null;
+            } else {
+                ji.next = head;
+                head = head.next;
+                ji = ji.next;
+                ji.next = null;
+            }
+            index++;
+        }
+        ji.next = Ores.next;
+        return Jres.next;
+    }
+
+
     public static void main(String[] args) {
         System.out.println("new Solution().isPowerOfTwo(17) = " + new Solution().isPowerOfTwo(17));
         System.out.println("121231231:   " + Integer.parseInt('0' + "1".substring(1)));
