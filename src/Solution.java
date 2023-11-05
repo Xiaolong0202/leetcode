@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 
@@ -5114,19 +5113,17 @@ public class Solution {
         }
         //去除先导0
         int p = 0;
-        while (p < res.length()&&res.charAt(p)=='0') {
+        while (p < res.length() && res.charAt(p) == '0') {
             p++;
         }
-        if (p==res.length())p--;
+        if (p == res.length()) p--;
         return res.substring(p);
     }
 
     public String addStrings(String num1, String num2) {
         StringBuilder builder = new StringBuilder();
         int carry = 0;
-        for (int i = num1.length() - 1, j = num2.length() - 1;
-             i >= 0 || j >= 0 || carry != 0;
-             i--, j--) {
+        for (int i = num1.length() - 1, j = num2.length() - 1; i >= 0 || j >= 0 || carry != 0; i--, j--) {
             int x = i < 0 ? 0 : num1.charAt(i) - '0';
             int y = j < 0 ? 0 : num2.charAt(j) - '0';
             int sum = (x + y + carry) % 10;
@@ -5136,12 +5133,22 @@ public class Solution {
         return builder.reverse().toString();
     }
 
+    /**
+     * 231. 2 的幂
+     *
+     * @param n
+     * @return
+     */
+    public boolean isPowerOfTwo(int n) {
+//        if (n < 0) return false;
+//        String binaryString = Integer.toBinaryString(n);
+//        String substring = binaryString.substring(1);
+//        return binaryString.charAt(0) == '1' && (substring.length() == 0 || Integer.parseInt(substring, 2) == 0);
+        return n > 0 && ((n & (n - 1)) == 0);
+    }
 
     public static void main(String[] args) {
-        System.out.println("2>2 = " + ((1 << 2) - 1));
 
-        new Solution().multiply("123456789", "987654321");
-        System.out.println(456 * 123);
     }
 
 
