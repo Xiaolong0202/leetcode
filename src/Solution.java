@@ -5062,10 +5062,33 @@ public class Solution {
         return String.valueOf(charArray);
     }
 
+    /**
+     * 292. Nim 游戏
+     *
+     * @param n
+     * @return
+     */
+    public boolean canWinNim(int n) {
+        return n % 4 != 0;
+        //用动态规划的思想可以得出规律，被四整除的就返回false
+//        if (n<=3)return true;
+//        boolean a = true;
+//        boolean b = true;
+//        boolean c = true;
+//        for (int i = 4; i <= n; i++) {
+//            boolean tempRes = !a || !b || !c;
+//            a = b;
+//            b = c;
+//            c = tempRes;
+//            System.out.println(i+"  "+c);
+//        }
+//        return c;
+    }
+
     public static void main(String[] args) {
         System.out.println("2>2 = " + ((1 << 2) - 1));
 
-        System.out.println(1 | 4);
+        new Solution().canWinNim(1);
     }
 
 
