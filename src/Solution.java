@@ -896,29 +896,28 @@ public class Solution {
         return s.replaceAll(" ", "%20");
     }
 
-    public String reverseWords(String s) {
-        s = s.trim();
-        StringBuilder sb = new StringBuilder();
-        char[] chars = s.toCharArray();
-        int len = chars.length;
-        int i = len - 1;
-        int j = len;
-        while (i >= 0) {
-            if (chars[i] == ' ') {
-                if ((i != len - 1) && chars[i + 1] == ' ') {
-                } else {
-                    sb.append(s, i + 1, j);
-                    sb.append(' ');
-                }
-                j = i;
-            } else if (i == 0) {
-                sb.append(s, i, j);
-            }
-            i--;
-        }
-
-        return sb.toString();
-    }
+//    public String reverseWords(String s) {
+//        s = s.trim();
+//        StringBuilder sb = new StringBuilder();
+//        char[] chars = s.toCharArray();
+//        int len = chars.length;
+//        int i = len - 1;
+//        int j = len;
+//        while (i >= 0) {
+//            if (chars[i] == ' ') {
+//                if ((i != len - 1) && chars[i + 1] == ' ') {
+//                } else {
+//                    sb.append(s, i + 1, j);
+//                    sb.append(' ');
+//                }
+//                j = i;
+//            } else if (i == 0) {
+//                sb.append(s, i, j);
+//            }
+//            i--;
+//        }
+//        return sb.toString();
+//    }
 
 
     List<List<Integer>> combineList = new ArrayList<>();
@@ -5007,7 +5006,7 @@ public class Solution {
      * @return
      */
     public List<Integer> grayCode(int n) {
-        if (n==0){
+        if (n == 0) {
             return List.of(0);
         }
         ArrayList<Integer> list = new ArrayList<>() {
@@ -5016,24 +5015,51 @@ public class Solution {
                 add(1);
             }
         };
-        if (n==1)return list;
+        if (n == 1) return list;
         grayCode(n, 2, list);
         return list;
     }
+
     public void grayCode(int max, int n, List<Integer> list) {
-        int num = 1<<(n-1);
+        int num = 1 << (n - 1);
         List<Integer> tempList = new ArrayList<>();
         for (Integer integer : list) {
-            tempList.add(num|integer);
+            tempList.add(num | integer);
         }
         for (int i = tempList.size() - 1; i >= 0; i--) {
             list.add(tempList.get(i));
         }
-        if (max==n){
+        if (max == n) {
             return;
-        }else {
-            grayCode(max,n+1,list);
+        } else {
+            grayCode(max, n + 1, list);
         }
+    }
+
+    /**
+     * 557. 反转字符串中的单词 III
+     *
+     * @param s
+     * @return
+     */
+    public String reverseWords(String s) {
+        char[] charArray = s.toCharArray();
+        int preIndex = -1;
+        for (int i = 0; i <= charArray.length; i++) {
+            if (i == charArray.length || charArray[i] == ' ') {
+                int l = preIndex + 1;
+                int r = i - 1;
+                while (l < r) {
+                    char temp = charArray[l];
+                    charArray[l] = charArray[r];
+                    charArray[r] = temp;
+                    l++;
+                    r--;
+                }
+                preIndex = i;
+            }
+        }
+        return String.valueOf(charArray);
     }
 
     public static void main(String[] args) {
