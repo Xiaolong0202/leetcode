@@ -5147,6 +5147,67 @@ public class Solution {
         return n > 0 && ((n & (n - 1)) == 0);
     }
 
+
+    /**
+     * 0 1  -1(1->0)  2( 0 -> 1)
+     * //原地更改，可以多定义几个状态
+     * 289. 生命游戏
+     *
+     * @param board
+     */
+    public void gameOfLife(int[][] board) {
+        int[] offset = new int[]{-1, 1, 0};
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+
+                int liveNodeCount = 0;
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 3; l++) {
+
+                        if (offset[k] == 0 && offset[l] == 0) {
+                            continue;
+                        }
+
+                        int x = i + offset[k];
+                        int y = j + offset[l];
+
+                        if (x >= 0 && y >= 0 && x < board.length && y < board[i].length && Math.abs(board[x][y]) == 1) {
+                            liveNodeCount++;
+                        }
+
+                    }
+                }
+
+                //更改状态
+                if (liveNodeCount < 2 || liveNodeCount > 3) {
+                    //死的还是死但是活的变死
+                    if (board[i][j] == 1) {
+                        board[i][j] = -1;
+                    }
+                } else if (liveNodeCount == 2) {
+                    //状态保持不变
+                } else if (liveNodeCount == 3) {
+                    //死的变活，活的不变
+                    if (board[i][j] == 0) {
+                        board[i][j] = 2;
+                    }
+                }
+            }
+
+        }
+
+
+        //最后更新状态
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                switch (board[i][j]) {
+                    case -1 -> board[i][j] = 0;
+                    case 2 -> board[i][j] = 1;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
     }
