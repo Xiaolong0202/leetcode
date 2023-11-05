@@ -5207,9 +5207,9 @@ public class Solution {
             }
         }
     }
-
     public static void main(String[] args) {
-
+        System.out.println("new Solution().isPowerOfTwo(17) = " + new Solution().isPowerOfTwo(17));
+        System.out.println("121231231:   " + Integer.parseInt('0' + "1".substring(1)));
     }
 
 
