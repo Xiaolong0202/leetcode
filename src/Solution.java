@@ -5274,7 +5274,7 @@ public class Solution {
 
         List<List<Integer>> res = new ArrayList<>();
         Deque<TreeNode> deque = new LinkedList<>();
-        if(root!=null)deque.offerLast(root);
+        if (root != null) deque.offerLast(root);
         boolean order = true;
         while (!deque.isEmpty()) {
             int size = deque.size();
@@ -5298,6 +5298,35 @@ public class Solution {
             res.add(list);
         }
         return res;
+    }
+
+    /**
+     *  116. 填充每个节点的下一个右侧节点指针
+     * @param root
+     * @return
+     */
+    public Node connect(Node root) {
+        Deque<Node> deque = new LinkedList<>();
+        if (root != null) deque.offerLast(root);
+        while (!deque.isEmpty()) {
+
+            Node c = deque.pollLast();
+            Node t = c;
+
+            int size = deque.size();
+            while (size-- > 0) {
+                Node node = deque.pollLast();
+                c.next = node;
+                c = c.next;
+            }
+            while (t!=null){
+                if (t.left != null) deque.offerFirst(t.left);
+                if (t.right != null) deque.offerFirst(t.right);
+                t=t.next;
+            }
+            c.next = null;
+        }
+        return root;
     }
 
 
