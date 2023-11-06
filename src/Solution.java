@@ -5301,7 +5301,8 @@ public class Solution {
     }
 
     /**
-     *  116. 填充每个节点的下一个右侧节点指针
+     * 116. 填充每个节点的下一个右侧节点指针
+     *
      * @param root
      * @return
      */
@@ -5319,14 +5320,44 @@ public class Solution {
                 c.next = node;
                 c = c.next;
             }
-            while (t!=null){
+            while (t != null) {
                 if (t.left != null) deque.offerFirst(t.left);
                 if (t.right != null) deque.offerFirst(t.right);
-                t=t.next;
+                t = t.next;
             }
             c.next = null;
         }
         return root;
+    }
+
+    /**
+     * 138. 随机链表的复制
+     *
+     * @param head
+     * @return
+     */
+    public Node copyRandomList(Node head) {
+        List<Node> list = new ArrayList<>();
+        Node h = head;
+        Node copy = new Node(0);
+        Node res = copy;
+        while (head != null) {
+            copy.next = new Node(head.val);
+            head.val = list.size();
+            list.add(copy.next);
+            head = head.next;
+            copy = copy.next;
+        }
+
+        copy = res;
+        head = h;
+        while (head != null) {
+            if (head.random!=null) copy.next.random = list.get(head.random.val);
+            head = head.next;
+            copy = copy.next;
+        }
+
+        return res.next;
     }
 
 
