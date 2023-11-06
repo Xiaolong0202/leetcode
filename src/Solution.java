@@ -5240,9 +5240,36 @@ public class Solution {
     }
 
 
+//    /**
+//     * 29. 两数相除
+//     * x^-1 == ~x 二进制取反
+//     *
+//     * @param
+//     * @param
+//     * @return
+//     */
+//    public int divide(int dividend, int divisor) {
+//    }
+    public int divide(int dividend, int divisor) {
+        if(dividend==Integer.MIN_VALUE&&divisor==-1) return Integer.MAX_VALUE;
+        if(dividend==Integer.MIN_VALUE&&divisor==1) return Integer.MIN_VALUE;
+        if(dividend>0) return -divide(-dividend, divisor);
+        if(divisor>0) return -divide(dividend, -divisor);
+        if(dividend>divisor) return 0;
+        int res = 1, tmp = divisor;
+        while((dividend-divisor)<=divisor)
+        {
+            res+=res;
+            divisor+=divisor;
+        }
+        return res+divide(dividend-divisor, tmp);
+    }
+
+
     public static void main(String[] args) {
-        System.out.println("new Solution().isPowerOfTwo(17) = " + new Solution().isPowerOfTwo(17));
-        System.out.println("121231231:   " + Integer.parseInt('0' + "1".substring(1)));
+        System.out.println(-2 >> 1);
+        System.out.println(1 >> 1);
+        new Solution().divide(10,2);
     }
 
 
