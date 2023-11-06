@@ -1666,21 +1666,21 @@ public class Solution {
     /**
      * 139. 单词拆分
      */
-    public boolean wordBreak(String s, List<String> wordDict) {
-        int length = s.length();
-        boolean[] dp = new boolean[length + 1];
-        dp[0] = true;
-        HashSet<String> dic = new HashSet<>(wordDict);
-        for (int i = 1; i <= length; i++) {
-            for (int j = 0; j < i; j++) {
-                if (dic.contains(s.substring(j, i)) && dp[j]) {
-                    dp[i] = true;
-                    break;
-                }
-            }
-        }
-        return dp[length];
-    }
+//    public boolean wordBreak(String s, List<String> wordDict) {
+//        int length = s.length();
+//        boolean[] dp = new boolean[length + 1];
+//        dp[0] = true;
+//        HashSet<String> dic = new HashSet<>(wordDict);
+//        for (int i = 1; i <= length; i++) {
+//            for (int j = 0; j < i; j++) {
+//                if (dic.contains(s.substring(j, i)) && dp[j]) {
+//                    dp[i] = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return dp[length];
+//    }
 
     /**
      * 213. 打家劫舍 II
@@ -5352,7 +5352,7 @@ public class Solution {
         copy = res;
         head = h;
         while (head != null) {
-            if (head.random!=null) copy.next.random = list.get(head.random.val);
+            if (head.random != null) copy.next.random = list.get(head.random.val);
             head = head.next;
             copy = copy.next;
         }
@@ -5360,6 +5360,42 @@ public class Solution {
         return res.next;
     }
 
+    /**
+     * 140. 单词拆分 II
+     *
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        HashSet<String> set = new HashSet<>(wordDict);
+        ArrayList<String> res = new ArrayList<>();
+        wordBreak(s,0,set,new ArrayList<>(), res);
+        return res;
+    }
+
+    public void wordBreak(String s, int i, HashSet<String> set,List<String> list,List<String> res) {
+        for (int j = i + 1; j <= s.length(); j++) {
+            String substring = s.substring(i, j);
+            if (set.contains(substring)){
+                list.add(substring);
+                if (j==s.length()){
+                    //如果到终点了则放入result中
+                    StringBuilder add = new StringBuilder();
+                    for (String a : list) {
+                        add.append(a);
+                        add.append(' ');
+                    }
+                    res.add(add.toString().trim());
+                }else {
+                    //没有到终点则继续递归
+                    wordBreak(s,j,set,list,res);
+                }
+                //复原
+                list.remove(list.size()-1);
+            }
+        }
+    }
 
     public static void main(String[] args) {
         System.out.println(-2 >> 1);
