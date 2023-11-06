@@ -5240,7 +5240,7 @@ public class Solution {
     }
 
 
-//    /**
+    //    /**
 //     * 29. 两数相除
 //     * x^-1 == ~x 二进制取反
 //     *
@@ -5251,25 +5251,60 @@ public class Solution {
 //    public int divide(int dividend, int divisor) {
 //    }
     public int divide(int dividend, int divisor) {
-        if(dividend==Integer.MIN_VALUE&&divisor==-1) return Integer.MAX_VALUE;
-        if(dividend==Integer.MIN_VALUE&&divisor==1) return Integer.MIN_VALUE;
-        if(dividend>0) return -divide(-dividend, divisor);
-        if(divisor>0) return -divide(dividend, -divisor);
-        if(dividend>divisor) return 0;
+        if (dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE;
+        if (dividend == Integer.MIN_VALUE && divisor == 1) return Integer.MIN_VALUE;
+        if (dividend > 0) return -divide(-dividend, divisor);
+        if (divisor > 0) return -divide(dividend, -divisor);
+        if (dividend > divisor) return 0;
         int res = 1, tmp = divisor;
-        while((dividend-divisor)<=divisor)
-        {
-            res+=res;
-            divisor+=divisor;
+        while ((dividend - divisor) <= divisor) {
+            res += res;
+            divisor += divisor;
         }
-        return res+divide(dividend-divisor, tmp);
+        return res + divide(dividend - divisor, tmp);
+    }
+
+    /**
+     * 103. 二叉树的锯齿形层序遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        if(root!=null)deque.offerLast(root);
+        boolean order = true;
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            List<Integer> list = new ArrayList<>();
+            if (order) {
+                while (size-- > 0) {
+                    TreeNode node = deque.pollLast();
+                    if (node.left != null) deque.offerFirst(node.left);
+                    if (node.right != null) deque.offerFirst(node.right);
+                    list.add(node.val);
+                }
+            } else {
+                while (size-- > 0) {
+                    TreeNode node = deque.pollFirst();
+                    if (node.right != null) deque.offerLast(node.right);
+                    if (node.left != null) deque.offerLast(node.left);
+                    list.add(node.val);
+                }
+            }
+            order = !order;
+            res.add(list);
+        }
+        return res;
     }
 
 
     public static void main(String[] args) {
         System.out.println(-2 >> 1);
         System.out.println(1 >> 1);
-        new Solution().divide(10,2);
+        new Solution().divide(10, 2);
     }
 
 
