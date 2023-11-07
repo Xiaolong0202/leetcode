@@ -1666,21 +1666,23 @@ public class Solution {
     /**
      * 139. 单词拆分
      */
-//    public boolean wordBreak(String s, List<String> wordDict) {
-//        int length = s.length();
-//        boolean[] dp = new boolean[length + 1];
-//        dp[0] = true;
-//        HashSet<String> dic = new HashSet<>(wordDict);
-//        for (int i = 1; i <= length; i++) {
-//            for (int j = 0; j < i; j++) {
-//                if (dic.contains(s.substring(j, i)) && dp[j]) {
-//                    dp[i] = true;
-//                    break;
-//                }
-//            }
-//        }
-//        return dp[length];
-//    }
+    public boolean wordBreak1(String s, List<String> wordDict) {
+        HashSet<String> set = new HashSet<>(wordDict);
+        int length = s.length();
+        boolean[] dp = new boolean[length + 1];//表示i之前的字符串是否能够被使用
+        dp[0] = true;
+        for (int i = 0; i < length; i++) {
+            for (int j = i + 1; j <= length; j++) {
+                if (dp[i] && set.contains(s.substring(i, j))) {
+                    dp[j] = true;
+                    if (j == length) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return dp[length];
+    }
 
     /**
      * 213. 打家劫舍 II
@@ -4966,7 +4968,7 @@ public class Solution {
      * @param p
      * @return
      */
-    public boolean isMatch(String s, String p) {
+    public boolean isMatch2(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
         dp[0][0] = true;
         int m = s.length();
@@ -5370,16 +5372,16 @@ public class Solution {
     public List<String> wordBreak(String s, List<String> wordDict) {
         HashSet<String> set = new HashSet<>(wordDict);
         ArrayList<String> res = new ArrayList<>();
-        wordBreak(s,0,set,new ArrayList<>(), res);
+        wordBreak(s, 0, set, new ArrayList<>(), res);
         return res;
     }
 
-    public void wordBreak(String s, int i, HashSet<String> set,List<String> list,List<String> res) {
+    public void wordBreak(String s, int i, HashSet<String> set, List<String> list, List<String> res) {
         for (int j = i + 1; j <= s.length(); j++) {
             String substring = s.substring(i, j);
-            if (set.contains(substring)){
+            if (set.contains(substring)) {
                 list.add(substring);
-                if (j==s.length()){
+                if (j == s.length()) {
                     //如果到终点了则放入result中
                     StringBuilder add = new StringBuilder();
                     for (String a : list) {
@@ -5387,20 +5389,57 @@ public class Solution {
                         add.append(' ');
                     }
                     res.add(add.toString().trim());
-                }else {
+                } else {
                     //没有到终点则继续递归
-                    wordBreak(s,j,set,list,res);
+                    wordBreak(s, j, set, list, res);
                 }
                 //复原
-                list.remove(list.size()-1);
+                list.remove(list.size() - 1);
             }
         }
     }
 
+    /**
+     * 44. 通配符匹配
+     *
+     * @param s
+     * @param p
+     * @return
+     */
+    public boolean isMatch(String s, String p) {
+        char[] pCharArray = p.toCharArray();
+        char[] sCharArray = s.toCharArray();
+        if (sCharArray.length == 0) {
+            for (int i = 0; i < pCharArray.length; i++) {
+                if (pCharArray[i] != '*') {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (pCharArray.length == 0) {
+            return false;
+        }
+        boolean[][] dp = new boolean[sCharArray.length + 1][pCharArray.length + 1];
+        dp[0][0] = true;
+        for (int i = 1; i < dp[0].length && pCharArray[i - 1] == '*'; i++) {
+            dp[0][i] = true;
+        }
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 1; j < dp[i].length; j++) {
+                if (pCharArray[j - 1] == '*') {
+                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j] || dp[i - 1][j - 1];  //空、字符
+                } else if (pCharArray[j - 1] == '?' || pCharArray[j - 1] == sCharArray[i - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[sCharArray.length][pCharArray.length];
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(-2 >> 1);
-        System.out.println(1 >> 1);
-        new Solution().divide(10, 2);
+        new Solution().isMatch("ho", "**ho");
     }
 
 
