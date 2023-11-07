@@ -5437,11 +5437,41 @@ public class Solution {
         return dp[sCharArray.length][pCharArray.length];
     }
 
-
-    public static void main(String[] args) {
-        new Solution().isMatch("ho", "**ho");
+    /**
+     *  69. x 的平方根
+     * @param x
+     * @return
+     */
+    public int mySqrt(int x) {
+        if (x==Integer.MAX_VALUE)return 46340;
+        if (x == 0) return 0;
+        if (x <= 3) return 1;
+        long l = 2;
+        long r = (x + 1) / 2;
+        while (l < r) {
+            long mid = l + r + 1 >> 1;
+            if (mid * mid <= x) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return (int) l;
     }
 
+    public static void main(String[] args) {
+
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            System.out.println(i);
+            double pow = Math.pow(i, 0.5);
+            int res = new Solution().mySqrt(i);
+            int pow1 = (int) pow;
+            if (res != pow1) {
+                throw new RuntimeException("结果不对" + i);
+            }
+        }
+        System.out.println("结束!!!");
+    }
 
 }
 
