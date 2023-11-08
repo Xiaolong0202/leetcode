@@ -5438,12 +5438,13 @@ public class Solution {
     }
 
     /**
-     *  69. x 的平方根
+     * 69. x 的平方根
+     *
      * @param x
      * @return
      */
     public int mySqrt(int x) {
-        if (x==Integer.MAX_VALUE)return 46340;
+        if (x == Integer.MAX_VALUE) return 46340;
         if (x == 0) return 0;
         if (x <= 3) return 1;
         long l = 2;
@@ -5459,19 +5460,79 @@ public class Solution {
         return (int) l;
     }
 
-    public static void main(String[] args) {
-
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            System.out.println(i);
-            double pow = Math.pow(i, 0.5);
-            int res = new Solution().mySqrt(i);
-            int pow1 = (int) pow;
-            if (res != pow1) {
-                throw new RuntimeException("结果不对" + i);
+    /**
+     * 91. 解码方法
+     * 思路和爬楼梯有点类似
+     * 写的时候边写边改，看着有点像屎山
+     *
+     * @param s
+     * @return
+     */
+    public int numDecodings(String s) {
+        char[] charArray = s.toCharArray();
+        if (charArray.length == 0) {
+            return 0;
+        } else if (charArray.length == 1) {
+            return charArray[0] == '0' ? 0 : 1;
+        }
+        int dp[] = new int[charArray.length];//该dp数组表示第i个之前的所有和,i由i-1与i-2得出
+        //先初始化 dp[0]dp[1]
+        if (charArray[0] == '0') {
+            dp[0] = 0;
+        } else {
+            dp[0] = 1;
+        }
+        if (charArray[0] == '0') {
+            dp[1] = 0;
+        } else {
+            boolean b = ((charArray[0] - '0') * 10 + charArray[1] - '0') <= 26;
+            if (charArray[1] == '0') {
+                if (b) {
+                    dp[1] = 1;
+                } else {
+                    dp[1] = 0;
+                }
+            } else {
+                if (b) {
+                    dp[1] = 2;
+                } else {
+                    dp[1] = 1;
+                }
             }
         }
-        System.out.println("结束!!!");
+        //再处理 i>=2的
+        for (int i = 2; i < charArray.length; i++) {
+            char c = charArray[i];
+            char preC = charArray[i - 1];
+            int temp1 = c - '0';
+            int temp2 = (preC - '0') * 10 + temp1;
+
+            if (c == '0' && preC == '0') {
+                dp[i] = 0;
+            } else if (c == '0') {
+                if (temp2 <= 26) {
+                    dp[i] = dp[i - 2];
+                } else {
+                    dp[i] = 0;
+                }
+            } else if (preC == '0') {
+                dp[i] = dp[i - 1];
+            } else {
+                //前后两个字符都不为0
+                if (temp2 > 26) {
+                    dp[i] = dp[i - 1];
+                } else {
+                    dp[i] = dp[i - 1] + dp[i - 2];
+                }
+            }
+        }
+        return dp[charArray.length - 1];
     }
+
+    public static void main(String[] args) {
+        new Solution().numDecodings("301");
+    }
+
 
 }
 
