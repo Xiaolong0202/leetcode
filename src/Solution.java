@@ -5712,7 +5712,7 @@ public class Solution {
             Map<Long, Integer> map = new HashMap<>();
             sb.append('.');
             int index = sb.length();
-            while (remain!=0) {
+            while (remain != 0) {
                 if (map.containsKey(remain)) {
                     Integer preIndex = map.get(remain);
                     sb.insert(preIndex, "(");
@@ -5720,16 +5720,33 @@ public class Solution {
                     break;
                 }
                 map.put(remain, index);
-                remain*=10;
-                sb.append(remain/d);
-                remain = remain%d;
+                remain *= 10;
+                sb.append(remain / d);
+                remain = remain % d;
                 index++;
             }
         }
-        if (fu&&n!=0) {
+        if (fu && n != 0) {
             sb.insert(0, '-');
         }
         return sb.toString();
+    }
+
+    /**
+     * 171. Excel 表列序号
+     *
+     * @param columnTitle
+     * @return
+     */
+    public int titleToNumber(String columnTitle) {
+        char[] charArray = columnTitle.toCharArray();
+        int res = 0;
+        for (int i = 0; i < charArray.length; i++) {
+            res*=26;
+            int t = charArray[i] - 'A' + 1;
+            res+=t;
+        }
+        return res;
     }
 
 
