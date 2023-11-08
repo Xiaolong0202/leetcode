@@ -5742,17 +5742,48 @@ public class Solution {
         char[] charArray = columnTitle.toCharArray();
         int res = 0;
         for (int i = 0; i < charArray.length; i++) {
-            res*=26;
+            res *= 26;
             int t = charArray[i] - 'A' + 1;
-            res+=t;
+            res += t;
         }
         return res;
     }
 
+    /***
+     * 172. 阶乘后的零
+     * 求5的因数
+     * @param n
+     * @return
+     */
+    public int trailingZeroes(int n) {
+        if (n<5)return 0;
+        int a = 5;
+        int count = 1;
+        int i = n - 5;
+        while (a <= i) {
+            a += 5;
+            int b = a;
+            while (b % 5 == 0){
+                b/=5;
+                count++;
+            }
+        }
+//        for (int i = 5; i <= n; i*=) {
+//            int a = i;
+//            int p = 0;
+//            while (a > 0 && a % 5 == 0) {
+//                a = a / 5;
+//                p++;
+//            }
+//            res += p;
+//        }
+        return count;
+    }
 
     public static void main(String[] args) {
 //        System.out.println(1 < 0 ^ -1 < 0);
-        new Solution().fractionToDecimal(2147483647, 370000);
+        long res = 1;
+        new Solution().trailingZeroes(25);
     }
 
 
