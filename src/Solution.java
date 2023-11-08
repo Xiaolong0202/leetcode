@@ -1,4 +1,3 @@
-import javax.lang.model.element.Element;
 import java.util.*;
 
 
@@ -5541,7 +5540,7 @@ public class Solution {
         int l = 0;
         int r = nums.length - 1;
         while (l < r) {
-            int mid = l + r  >> 1;
+            int mid = l + r >> 1;
             int m = nums[mid];
             int mm = (mid + 1 >= nums.length) ? Integer.MIN_VALUE : nums[mid + 1];
             if (m >= mm) {
@@ -5553,8 +5552,148 @@ public class Solution {
         return r;
     }
 
+
+    /**
+     * 149. 直线上最多的点数
+     *
+     * @param points
+     * @return
+     */
+    public int maxPoints(int[][] points) {
+        class MaxPointsLine {
+            double k;
+            double b;
+
+            int state;
+
+            public MaxPointsLine(double k, double b, int state) {
+                this.k = k;
+                this.b = b;
+                this.state = state;
+            }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("MaxPointsLine{");
+                sb.append("k=").append(k);
+                sb.append(", b=").append(b);
+                sb.append(", state=").append(state);
+                sb.append('}');
+                return sb.toString();
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+
+                MaxPointsLine line = (MaxPointsLine) o;
+
+                if (Double.compare(line.k, k) != 0) return false;
+                if (Double.compare(line.b, b) != 0) return false;
+                return state == line.state;
+            }
+
+            @Override
+            public int hashCode() {
+                int result;
+                long temp;
+                temp = Double.doubleToLongBits(k);
+                result = (int) (temp ^ (temp >>> 32));
+                temp = Double.doubleToLongBits(b);
+                result = 31 * result + (int) (temp ^ (temp >>> 32));
+                result = 31 * result + state;
+                return result;
+            }
+        }
+        class MaxPointsDot {
+
+            double x;
+            double y;
+
+            public MaxPointsDot(double x, double y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+
+                MaxPointsDot that = (MaxPointsDot) o;
+
+                if (Double.compare(that.x, x) != 0) return false;
+                return Double.compare(that.y, y) == 0;
+            }
+
+            @Override
+            public int hashCode() {
+                int result;
+                long temp;
+                temp = Double.doubleToLongBits(x);
+                result = (int) (temp ^ (temp >>> 32));
+                temp = Double.doubleToLongBits(y);
+                result = 31 * result + (int) (temp ^ (temp >>> 32));
+                return result;
+            }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("MaxPointsDot{");
+                sb.append("x=").append(x);
+                sb.append(", y=").append(y);
+                sb.append('}');
+                return sb.toString();
+            }
+        }
+        if (points.length <= 1) return points.length;
+        Map<MaxPointsLine, Set<MaxPointsDot>> map = new HashMap<>();
+
+        for (int i = 0; i < points.length; i++) {
+            double x1 = points[i][0];
+            double y1 = points[i][1];
+            for (int j = 0; j < i; j++) {
+                double x2 = points[j][0];
+                double y2 = points[j][1];
+                double k;
+                double b;
+                int state;
+                if (y1 - y2 == 0) {
+                    k = 0;
+                    b = y1;
+                    state = 1;
+                } else if (x1 - x2 == 0) {
+                    k = 1;
+                    b = x1;
+                    state = 2;
+                } else {
+                    k =   (y1 - y2)/(x1 - x2);
+                    b = y1 - k * x1;
+                    state = 3;
+                }
+                MaxPointsLine line = new MaxPointsLine(k, b, state);
+                Set<MaxPointsDot> set;
+                if (!map.containsKey(line)) {
+                    set = new HashSet<>();
+                    map.put(line, set);
+                } else {
+                    set = map.get(line);
+                }
+                set.add(new MaxPointsDot(x1, y1));
+                set.add(new MaxPointsDot(x2, y2));
+            }
+        }
+        int res = Integer.MIN_VALUE;
+        for (Set value : map.values()) {
+            res = Math.max(value.size(), res);
+        }
+        return res;
+    }
+
+
     public static void main(String[] args) {
-        new Solution().findPeakElement(new int[]{1,2,1,3,5,6,4});
+
     }
 
 
