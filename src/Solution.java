@@ -1,3 +1,4 @@
+import javax.lang.model.element.Element;
 import java.util.*;
 
 
@@ -5529,8 +5530,31 @@ public class Solution {
         return dp[charArray.length - 1];
     }
 
+    /**
+     * 162. 寻找峰值
+     * 画出折线图观察，可得二分的规则
+     *
+     * @param nums
+     * @return
+     */
+    public int findPeakElement(int[] nums) {
+        int l = 0;
+        int r = nums.length - 1;
+        while (l < r) {
+            int mid = l + r  >> 1;
+            int m = nums[mid];
+            int mm = (mid + 1 >= nums.length) ? Integer.MIN_VALUE : nums[mid + 1];
+            if (m >= mm) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return r;
+    }
+
     public static void main(String[] args) {
-        new Solution().numDecodings("301");
+        new Solution().findPeakElement(new int[]{1,2,1,3,5,6,4});
     }
 
 
