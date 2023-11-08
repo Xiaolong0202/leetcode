@@ -5668,7 +5668,7 @@ public class Solution {
                     b = x1;
                     state = 2;
                 } else {
-                    k =   (y1 - y2)/(x1 - x2);
+                    k = (y1 - y2) / (x1 - x2);
                     b = y1 - k * x1;
                     state = 3;
                 }
@@ -5691,9 +5691,51 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 166. 分数到小数
+     *
+     * @param numerator
+     * @param denominator
+     * @return
+     */
+    public String fractionToDecimal(int numerator, int denominator) {
+        boolean fu = numerator < 0 ^ denominator < 0;
+        long n = numerator;
+        long d = denominator;
+        n = Math.abs(n);
+        d = Math.abs(d);
+        StringBuilder sb = new StringBuilder();
+        long i = n / d;//整数部分
+        long remain = n % d;//余数部分
+        sb.append(i);
+        if (remain != 0) {
+            Map<Long, Integer> map = new HashMap<>();
+            sb.append('.');
+            int index = sb.length();
+            while (remain!=0) {
+                if (map.containsKey(remain)) {
+                    Integer preIndex = map.get(remain);
+                    sb.insert(preIndex, "(");
+                    sb.append(')');
+                    break;
+                }
+                map.put(remain, index);
+                remain*=10;
+                sb.append(remain/d);
+                remain = remain%d;
+                index++;
+            }
+        }
+        if (fu&&n!=0) {
+            sb.insert(0, '-');
+        }
+        return sb.toString();
+    }
+
 
     public static void main(String[] args) {
-
+//        System.out.println(1 < 0 ^ -1 < 0);
+        new Solution().fractionToDecimal(2147483647, 370000);
     }
 
 
