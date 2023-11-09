@@ -5942,6 +5942,7 @@ public class Solution {
         }
         return res;
     }
+
     public void findWords(char[][] board, String[] words, List<String> res, StringBuilder sb, int x, int y, boolean[][] flag, Trie trie) {
         if (sb.length() > 10) return;
         if (trie.set.isEmpty()) return;
@@ -6001,10 +6002,74 @@ public class Solution {
 
     }
 
-    public static void main(String[] args) {
-//        new Solution().findWords(new char[][]{new char[]{'o', 'a', 'a', 'n'}, new char[]{'e', 't', 'a', 'e'}, new char[]{'i', 'h', 'k', 'r'}, new char[]{'i', 'f', 'l', 'v'}}, new String[]{"oath", "pea", "eat", "rain"});
-        new Solution().findWords(new char[][]{new char[]{'a', 'b'}}, new String[]{"ba"});
+    /**
+     * 227. 基本计算器 II
+     *
+     * @param s
+     * @return
+     */
+    public int calculate(String s) {
+        char[] charArray = s.toCharArray();
+        int i = 0;
+        //去除空格
+        while (i < charArray.length && charArray[i] == ' ') {
+            i++;
+        }
+        //先获取到第一个数字
+        int num1 = 0;
+        while (i < charArray.length && Character.isDigit(charArray[i])) {
+            num1 *= 10;
+            num1 += charArray[i] - '0';
+            i++;
+        }
+        return calculate(charArray, i, num1);
+    }
 
+    //递归调用,num1表示前面一个操作数：  num1与num2的关系 num1 (+ - * /) num2
+    public int calculate(char[] s, int i, int num1) {
+        //去除空格
+        while (i < s.length && s[i] == ' ') {
+            i++;
+        }
+        //如果后面什么都没有就返回
+        if (i >= s.length) return num1;
+        //获得操作符
+        char operation = s[i++];
+        //去除空格
+        while (i < s.length && s[i] == ' ') {
+            i++;
+        }
+        //获取第二个操作数
+        int num2 = 0;
+        while (i < s.length && Character.isDigit(s[i])) {
+            num2 *= 10;
+            num2 += s[i] - '0';
+            i++;
+        }
+        i--;
+        int num3;
+        //如果操作符号为乘法则直接计算，如果操作数为
+        if (operation == '*' || operation == '/') {
+            if (operation == '*') {
+                num3 = num1 * num2;
+            } else {
+                num3 = num1 / num2;
+            }
+            num3 = calculate(s, i + 1, num3);
+        } else {
+            //如果是加减号则让后面的先运算完
+            if (operation == '+') {
+                num3 = num1 + calculate(s, i + 1, num2);
+            } else {
+                //如果是负号则传入 相反数 -num2
+                num3 = num1 + calculate(s, i + 1, -num2);
+            }
+        }
+        return num3;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("new Solution().calculate() = " + new Solution().calculate("1-1+1"));
     }
 
 
