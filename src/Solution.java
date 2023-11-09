@@ -5909,17 +5909,102 @@ public class Solution {
                     map.remove(key);//去除
                 }
             }
-            if (!hasZero)return new int[0];
+            if (!hasZero) return new int[0];
         }
         return res;
     }
 
+
+    /**
+     * 212. 单词搜索 II
+     *
+     * @param board
+     * @param words
+     * @return
+     */
+    public List<String> findWords(char[][] board, String[] words) {
+        StringBuilder sb = new StringBuilder();
+        boolean[][] flag = new boolean[board.length][board[0].length];
+        Trie trie = new Trie();
+        for (String word : words) {
+            trie.insert(word);
+        }
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (trie.set.isEmpty()) return res;
+                flag[i][j] = true;
+                sb.append(board[i][j]);
+                findWords(board, words, res, sb, i, j, flag, trie);
+                sb.deleteCharAt(sb.length() - 1);
+                flag[i][j] = false;
+            }
+        }
+        return res;
+    }
+    public void findWords(char[][] board, String[] words, List<String> res, StringBuilder sb, int x, int y, boolean[][] flag, Trie trie) {
+        if (sb.length() > 10) return;
+        if (trie.set.isEmpty()) return;
+        String insert = sb.toString();
+        if (trie.search(insert)) {
+            trie.set.remove(insert);
+            res.add(insert);
+        }
+        //如果是其中的一部分则继续查找
+        if (!trie.startsWith(insert)) {
+            return;
+        }
+        {
+            int a = x - 1;
+            int b = y;
+            if (a >= 0 && b >= 0 && a < board.length && b < board[0].length && !flag[a][b]) {
+                sb.append(board[a][b]);
+                flag[a][b] = true;
+                findWords(board, words, res, sb, a, b, flag, trie);
+                flag[a][b] = false;
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+        {
+            int a = x;
+            int b = y - 1;
+            if (a >= 0 && b >= 0 && a < board.length && b < board[0].length && !flag[a][b]) {
+                sb.append(board[a][b]);
+                flag[a][b] = true;
+                findWords(board, words, res, sb, a, b, flag, trie);
+                flag[a][b] = false;
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+        {
+            int a = x + 1;
+            int b = y;
+            if (a >= 0 && b >= 0 && a < board.length && b < board[0].length && !flag[a][b]) {
+                sb.append(board[a][b]);
+                flag[a][b] = true;
+                findWords(board, words, res, sb, a, b, flag, trie);
+                flag[a][b] = false;
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+        {
+            int a = x;
+            int b = y + 1;
+            if (a >= 0 && b >= 0 && a < board.length && b < board[0].length && !flag[a][b]) {
+                sb.append(board[a][b]);
+                flag[a][b] = true;
+                findWords(board, words, res, sb, a, b, flag, trie);
+                flag[a][b] = false;
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+
+    }
+
     public static void main(String[] args) {
-//        System.out.println(1 < 0 ^ -1 < 0);
-//        new Solution().largestNumber(new int[]{0, 0, 0, 0, 0, 0});
-//        System.out.println("20".substring(1).compareTo("210".substring(1)));
-//        System.out.println("Integer.toBinaryString(Integer.MIN_VALUE) = " + Integer.toBinaryString(Integer.MIN_VALUE));
-        new Solution().findOrder(3, new int[][]{new int[]{1,0}, new int[]{1,2}, new int[]{0,1}});
+//        new Solution().findWords(new char[][]{new char[]{'o', 'a', 'a', 'n'}, new char[]{'e', 't', 'a', 'e'}, new char[]{'i', 'h', 'k', 'r'}, new char[]{'i', 'f', 'l', 'v'}}, new String[]{"oath", "pea", "eat", "rain"});
+        new Solution().findWords(new char[][]{new char[]{'a', 'b'}}, new String[]{"ba"});
+
     }
 
 
