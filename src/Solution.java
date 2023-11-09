@@ -5852,15 +5852,74 @@ public class Solution {
 //        return Integer.bitCount(n);
     }
 
+    /**
+     * 210. 课程表 II
+     * 拓扑排序、还需要判断是否有环
+     *
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        Map<Integer, Set<Integer>> map = new HashMap<>();//存储图
+        Map<Integer, Integer> rudu = new HashMap<>();//存储入度
+        for (int i = 0; i < numCourses; i++) {
+            map.put(i, new HashSet<>());
+            rudu.put(i, 0);
+        }
+        for (int i = 0; i < prerequisites.length; i++) {
+            int curr = prerequisites[i][0];
+            int pre = prerequisites[i][1];
+            Set<Integer> set = map.get(pre);
+            set.add(curr);
+            rudu.put(curr, rudu.get(curr) + 1);
+        }
+        boolean a = true;
+        //判断是否有环
+        for (Integer value : rudu.values()) {
+            if (value == 0) {
+                a = false;
+                break;
+            }
+        }
+        if (a) return new int[0];
+        //构建完关系之后开始处理
+        int index = 0;
+        int[] res = new int[numCourses];
+        while (map.size() > 0) {
+            boolean hasZero = false;
+            for (Map.Entry<Integer, Integer> entry : rudu.entrySet()) {
+                if (map.size() <= 0) break;
+
+                Integer key = entry.getKey();
+                Integer value = entry.getValue();
+
+                //入度为0
+                if (value <= 0 && map.containsKey(key)) {
+                    hasZero = true;
+                    res[index++] = key;
+                    Set<Integer> set = map.get(key);
+                    //给这个去除的结点的所有的下一个结点的入度都减去1
+                    if (set == null) {
+                        return new int[0];
+                    }
+                    for (Integer next : set) {
+                        rudu.put(next, rudu.getOrDefault(next, 1) - 1);
+                    }
+                    map.remove(key);//去除
+                }
+            }
+            if (!hasZero)return new int[0];
+        }
+        return res;
+    }
 
     public static void main(String[] args) {
 //        System.out.println(1 < 0 ^ -1 < 0);
 //        new Solution().largestNumber(new int[]{0, 0, 0, 0, 0, 0});
 //        System.out.println("20".substring(1).compareTo("210".substring(1)));
 //        System.out.println("Integer.toBinaryString(Integer.MIN_VALUE) = " + Integer.toBinaryString(Integer.MIN_VALUE));
-        int n = 6;
-        System.out.println("Integer.toBinaryString(n) = " + Integer.toBinaryString(n));
-        System.out.println("Integer.toBinaryString(new Solution().reverseBits(n)) = " + Integer.toBinaryString(new Solution().reverseBits(n)));
+        new Solution().findOrder(3, new int[][]{new int[]{1,0}, new int[]{1,2}, new int[]{0,1}});
     }
 
 
