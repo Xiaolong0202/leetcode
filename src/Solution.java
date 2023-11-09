@@ -5792,7 +5792,6 @@ public class Solution {
     }
 
     /**
-     *
      * @param nums
      * @return
      */
@@ -5816,21 +5815,47 @@ public class Solution {
         //去除前导零
         int i = 0;
         while (i < sb.length() - 1) {
-            if (sb.charAt(i)=='0'){
+            if (sb.charAt(i) == '0') {
                 i++;
-            }else {
+            } else {
                 break;
             }
         }
-        sb.delete(0,i);
+        sb.delete(0, i);
         return sb.toString();
+    }
+
+    /**
+     * 191. 位1的个数
+     * 逻辑右移
+     *
+     * @param n
+     * @return
+     */
+    public int hammingWeight(int n) {
+        int res = 0;
+        for (int i = 1; i <= 32; i++) {
+            int temp = n;
+            temp = temp << (32 - i);
+            temp = temp >>> (31);
+            if (temp == 1) {
+                res++;
+            }
+        }
+        return res;
+//        return Integer.bitCount(n);
     }
 
 
     public static void main(String[] args) {
 //        System.out.println(1 < 0 ^ -1 < 0);
-        new Solution().largestNumber(new int[]{0,0,0,0,0,0});
+//        new Solution().largestNumber(new int[]{0, 0, 0, 0, 0, 0});
 //        System.out.println("20".substring(1).compareTo("210".substring(1)));
+//        System.out.println("Integer.toBinaryString(Integer.MIN_VALUE) = " + Integer.toBinaryString(Integer.MIN_VALUE));
+        int n = 90;
+        while (n-- > 0) {
+            System.out.println(Integer.bitCount(n) == new Solution().hammingWeight(n));
+        }
     }
 
 
