@@ -6068,6 +6068,21 @@ public class Solution {
         return num3;
     }
 
+    /**
+     * 268. 丢失的数字
+     * @param nums
+     * @return
+     */
+    public int missingNumber(int[] nums) {
+        int sum = 0;
+        int r = 0;
+        for(int i = 1 ; i<=nums.length;i++){
+            sum+=i;
+            r+=nums[i-1];
+        }
+        return  sum - r;
+    }
+
     public static void main(String[] args) {
         System.out.println("new Solution().calculate() = " + new Solution().calculate("1-1+1"));
     }
