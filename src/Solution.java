@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Solution {
@@ -5756,15 +5757,15 @@ public class Solution {
      * @return
      */
     public int trailingZeroes(int n) {
-        if (n<5)return 0;
+        if (n < 5) return 0;
         int a = 5;
         int count = 1;
         int i = n - 5;
         while (a <= i) {
             a += 5;
             int b = a;
-            while (b % 5 == 0){
-                b/=5;
+            while (b % 5 == 0) {
+                b /= 5;
                 count++;
             }
         }
@@ -5780,10 +5781,56 @@ public class Solution {
         return count;
     }
 
+    /**
+     * 190. 颠倒二进制位
+     *
+     * @param
+     * @return
+     */
+    public int reverseBits(int n) {
+        return Integer.reverse(n);
+    }
+
+    /**
+     *
+     * @param nums
+     * @return
+     */
+    public String largestNumber(int[] nums) {
+        List<String> collect = new ArrayList<>(Arrays.stream(nums).mapToObj(String::valueOf).toList());
+        Collections.sort(collect, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                //设定s1的length小于等于s2
+                if (s1.length() > s2.length()) return -compare(s2, s1);
+                if (s1.charAt(0) == s2.charAt(0) && s1.length() != s2.length()) {
+                    return (s1 + s2).compareTo(s2 + s1);
+                }
+                return s1.compareTo(s2);
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        for (int i = collect.size() - 1; i >= 0; i--) {
+            sb.append(collect.get(i));
+        }
+        //去除前导零
+        int i = 0;
+        while (i < sb.length() - 1) {
+            if (sb.charAt(i)=='0'){
+                i++;
+            }else {
+                break;
+            }
+        }
+        sb.delete(0,i);
+        return sb.toString();
+    }
+
+
     public static void main(String[] args) {
 //        System.out.println(1 < 0 ^ -1 < 0);
-        long res = 1;
-        new Solution().trailingZeroes(25);
+        new Solution().largestNumber(new int[]{0,0,0,0,0,0});
+//        System.out.println("20".substring(1).compareTo("210".substring(1)));
     }
 
 
