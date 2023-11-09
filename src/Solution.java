@@ -5788,7 +5788,13 @@ public class Solution {
      * @return
      */
     public int reverseBits(int n) {
-        return Integer.reverse(n);
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            if ((n & (1 << i)) != 0) {
+                res = res | Integer.MIN_VALUE >>> i;
+            }
+        }
+        return res;
     }
 
     /**
@@ -5852,10 +5858,9 @@ public class Solution {
 //        new Solution().largestNumber(new int[]{0, 0, 0, 0, 0, 0});
 //        System.out.println("20".substring(1).compareTo("210".substring(1)));
 //        System.out.println("Integer.toBinaryString(Integer.MIN_VALUE) = " + Integer.toBinaryString(Integer.MIN_VALUE));
-        int n = 90;
-        while (n-- > 0) {
-            System.out.println(Integer.bitCount(n) == new Solution().hammingWeight(n));
-        }
+        int n = 6;
+        System.out.println("Integer.toBinaryString(n) = " + Integer.toBinaryString(n));
+        System.out.println("Integer.toBinaryString(new Solution().reverseBits(n)) = " + Integer.toBinaryString(new Solution().reverseBits(n)));
     }
 
 
