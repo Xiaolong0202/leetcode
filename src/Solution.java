@@ -6070,17 +6070,68 @@ public class Solution {
 
     /**
      * 268. 丢失的数字
+     *
      * @param nums
      * @return
      */
     public int missingNumber(int[] nums) {
         int sum = 0;
         int r = 0;
-        for(int i = 1 ; i<=nums.length;i++){
-            sum+=i;
-            r+=nums[i-1];
+        for (int i = 1; i <= nums.length; i++) {
+            sum += i;
+            r += nums[i - 1];
         }
-        return  sum - r;
+        return sum - r;
+    }
+
+    /**
+     * 341. 扁平化嵌套列表迭代器
+     */
+    interface NestedInteger {
+
+        // @return true if this NestedInteger holds a single integer, rather than a nested list.
+        public boolean isInteger();
+
+        // @return the single integer that this NestedInteger holds, if it holds a single integer
+        // Return null if this NestedInteger holds a nested list
+        public Integer getInteger();
+
+        // @return the nested list that this NestedInteger holds, if it holds a nested list
+        // Return empty list if this NestedInteger holds a single integer
+        public List<NestedInteger> getList();
+    }
+    class NestedIterator implements Iterator<Integer> {
+        List<Integer> list;
+        List<NestedInteger> nestedList;
+
+        Iterator<Integer> me;
+
+        public NestedIterator(List<NestedInteger> nestedList) {
+            this.list = new ArrayList<>();
+            this.nestedList = new ArrayList<>();
+            buildNestedIterator(nestedList);
+            this.me = list.iterator();
+        }
+
+        private void buildNestedIterator(List<NestedInteger> nestedList) {
+            nestedList.forEach(nestedInteger -> {
+                if (nestedInteger.isInteger()) {
+                    list.add(nestedInteger.getInteger());
+                } else {
+                    buildNestedIterator(nestedInteger.getList());
+                }
+            });
+        }
+
+        @Override
+        public Integer next() {
+            return me.next();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return me.hasNext();
+        }
     }
 
     public static void main(String[] args) {
