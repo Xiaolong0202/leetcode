@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class Solution {
@@ -6100,6 +6099,7 @@ public class Solution {
         // Return empty list if this NestedInteger holds a single integer
         public List<NestedInteger> getList();
     }
+
     class NestedIterator implements Iterator<Integer> {
         List<Integer> list;
         List<NestedInteger> nestedList;
@@ -6134,10 +6134,40 @@ public class Solution {
         }
     }
 
+
+    /**
+     * 218. 天际线问题
+     *
+     * @param
+     * @return
+     */
+//    public List<List<Integer>> getSkyline(int[][] buildings) {
+
+//    }
+
+    /**
+     * 324. 摆动排序 II
+     *
+     * @param nums
+     */
+    public void wiggleSort(int[] nums) {
+        int[] dest = new int[nums.length];
+        System.arraycopy(nums, 0, dest, 0, nums.length);
+        Arrays.sort(dest);
+        int index = nums.length - 1;
+        int mid = nums.length + 1 >> 1;
+        mid--;
+        for (int i = 0; i < nums.length; i += 2, mid--) {
+            nums[i] = dest[mid];
+        }
+        for (int i = 1; i < nums.length; i += 2, index--) {
+            nums[i] = dest[index];
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("new Solution().calculate() = " + new Solution().calculate("1-1+1"));
     }
-
 
 }
 
