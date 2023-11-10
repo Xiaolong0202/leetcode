@@ -6162,6 +6162,57 @@ public class Solution {
         }
     }
 
+    /**
+     *  排序
+     * @param nums
+     * @return
+     */
+    public int[] sortArray(int[] nums) {
+        digui(nums,0,nums.length-1);
+        return nums;
+    }
+    void quickSort(int[] nums,int l,int r){
+        if(l>=r)return;
+        int i=l-1;
+        int j=r+1;
+        int partition = nums[l+r>>1];
+        while(i<j){
+            do i++;while(nums[i]<partition);
+            do j--;while(nums[j]>partition);
+            if(i<j){
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        quickSort(nums,l,j);
+        quickSort(nums,j+1,r);
+    }
+    void digui(int[] nums,int l,int r){
+        if(l>=r)return;
+        int mid = l + r  >>1;
+        digui(nums,l,mid);
+        digui(nums,mid+1,r);
+        int i = l;
+        int j = mid + 1;
+        int index = 0;
+        int[] arr = new int[r-l+2];
+        while(i<=mid&&j<=r){
+            if(nums[i]<nums[j]){
+                arr[index++] = nums[i++];
+            }else{
+                arr[index++] = nums[j++];
+            }
+        }
+        while(i<=mid){
+            arr[index++] = nums[i++];
+        }
+        while(j<=r){
+            arr[index++] = nums[j++];
+        }
+        System.arraycopy(arr,0,nums,l,index);
+    }
+
 
     public static void main(String[] args) {
         System.out.println("new Solution().calculate() = " + new Solution().calculate("1-1+1"));
