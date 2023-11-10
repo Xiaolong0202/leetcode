@@ -2726,29 +2726,26 @@ public class Solution {
      * @return
      */
     public int findKthLargest(int[] nums, int k) {
-        return quickSortfindKthLargest(nums, 0, nums.length - 1, k);
+        return findKthLargest(nums, 0, nums.length - 1, k);
     }
 
-    public int quickSortfindKthLargest(int[] nums, int start, int end, int k) {
-        if (start >= end) return nums[k];
-        int l = start - 1;
-        int r = end + 1;
-        int p = nums[l + r >> 1];
-        while (l < r) {
-            do {
-                l++;
-            } while (nums[l] < p);
-            do {
-                r--;
-            } while (nums[r] > p);
-            if (l < r) {
-                int temp = nums[l];
-                nums[l] = nums[r];
-                nums[r] = temp;
+
+    public int findKthLargest(int[] nums, int l, int r, int k) {
+        if (l == r) return nums[k];
+        int p = nums[l+r>>1];
+        int i = l - 1;
+        int j = r + 1;
+        while (i < j) {
+            do i++; while (p > nums[i]);
+            do j--; while (p < nums[j]);
+            if (i < j) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
             }
         }
-        if (k <= r) return quickSortfindKthLargest(nums, start, r, k);
-        else return quickSortfindKthLargest(nums, r + 1, end, k);
+        if (k <= j) return findKthLargest(nums, l, j, k);
+        else return findKthLargest(nums, j+1, r, k);
     }
 
     /**
@@ -6164,6 +6161,7 @@ public class Solution {
             nums[i] = dest[index];
         }
     }
+
 
     public static void main(String[] args) {
         System.out.println("new Solution().calculate() = " + new Solution().calculate("1-1+1"));
