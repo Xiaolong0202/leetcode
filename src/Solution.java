@@ -2732,7 +2732,7 @@ public class Solution {
 
     public int findKthLargest(int[] nums, int l, int r, int k) {
         if (l == r) return nums[k];
-        int p = nums[l+r>>1];
+        int p = nums[l + r >> 1];
         int i = l - 1;
         int j = r + 1;
         while (i < j) {
@@ -2745,7 +2745,7 @@ public class Solution {
             }
         }
         if (k <= j) return findKthLargest(nums, l, j, k);
-        else return findKthLargest(nums, j+1, r, k);
+        else return findKthLargest(nums, j + 1, r, k);
     }
 
     /**
@@ -6148,69 +6148,109 @@ public class Solution {
      * @param nums
      */
     public void wiggleSort(int[] nums) {
-        int[] dest = new int[nums.length];
-        System.arraycopy(nums, 0, dest, 0, nums.length);
-        Arrays.sort(dest);
-        int index = nums.length - 1;
-        int mid = nums.length + 1 >> 1;
-        mid--;
-        for (int i = 0; i < nums.length; i += 2, mid--) {
-            nums[i] = dest[mid];
+        wiggleSelect(nums, 0, nums.length - 1, nums.length >> 1);
+        int x = nums[nums.length >> 1];
+        int l = 0;
+        int r = nums.length-1;
+        int index = 0;
+        while (index<=r){
+            if (nums[index]<x){
+                int temp = nums[l];
+                nums[l] = nums[index];
+                nums[index] = temp;
+                index++;
+                l++;
+            }else if (nums[index]>x){
+                int temp = nums[r];
+                nums[r] = nums[index];
+                nums[index] = temp;
+                r--;
+            }else {
+                index++;
+            }
         }
+        int[] clone = nums.clone();
+        index = clone.length - 1;
         for (int i = 1; i < nums.length; i += 2, index--) {
-            nums[i] = dest[index];
+            nums[i] = clone[index];
+        }
+        for (int i = 0; i < nums.length; i += 2, index--) {
+            nums[i] = clone[index];
         }
     }
 
-    /**
-     *  排序
-     * @param nums
-     * @return
-     */
-    public int[] sortArray(int[] nums) {
-        digui(nums,0,nums.length-1);
-        return nums;
-    }
-    void quickSort(int[] nums,int l,int r){
-        if(l>=r)return;
-        int i=l-1;
-        int j=r+1;
-        int partition = nums[l+r>>1];
-        while(i<j){
-            do i++;while(nums[i]<partition);
-            do j--;while(nums[j]>partition);
-            if(i<j){
+    void wiggleSelect(int[] nums, int l, int r, int k) {
+        if (l >= r) return;
+        int i = l - 1;
+        int j = r + 1;
+        int p = nums[l + r >> 1];
+        while (i < j) {
+            do i++; while (nums[i] < p);
+            do j--; while (nums[j] > p);
+            if (i < j) {
                 int temp = nums[i];
                 nums[i] = nums[j];
                 nums[j] = temp;
             }
         }
-        quickSort(nums,l,j);
-        quickSort(nums,j+1,r);
+        if (k <= j) wiggleSelect(nums, l, j, k);
+        else wiggleSelect(nums, j + 1, r, k);
     }
-    void digui(int[] nums,int l,int r){
-        if(l>=r)return;
-        int mid = l + r  >>1;
-        digui(nums,l,mid);
-        digui(nums,mid+1,r);
+}
+
+
+    /**
+     * 排序
+     *
+     * @param nums
+     * @return
+     */
+    public int[] sortArray(int[] nums) {
+        digui(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    void quickSort(int[] nums, int l, int r) {
+        if (l >= r) return;
+        int i = l - 1;
+        int j = r + 1;
+        int partition = nums[l + r >> 1];
+        while (i < j) {
+            do i++; while (nums[i] < partition);
+            do j--; while (nums[j] > partition);
+            if (i < j) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        quickSort(nums, l, j);
+        quickSort(nums, j + 1, r);
+    }
+
+    void digui(int[] nums, int l, int r) {
+        if (l >= r) return;
+        int mid = l + r >> 1;
+        digui(nums, l, mid);
+        digui(nums, mid + 1, r);
         int i = l;
         int j = mid + 1;
         int index = 0;
-        int[] arr = new int[r-l+2];
-        while(i<=mid&&j<=r){
-            if(nums[i]<nums[j]){
+        int[] arr = new int[r - l + 2];
+        while (i <= mid && j <= r) {
+            if (nums[i] < nums[j]) {
                 arr[index++] = nums[i++];
-            }else{
+            } else {
                 arr[index++] = nums[j++];
             }
         }
-        while(i<=mid){
+        while (i <= mid) {
             arr[index++] = nums[i++];
         }
-        while(j<=r){
+        while (j <= r) {
             arr[index++] = nums[j++];
         }
-        System.arraycopy(arr,0,nums,l,index);
+        System.arraycopy(arr, 0, nums, l, index);
     }
 
 
