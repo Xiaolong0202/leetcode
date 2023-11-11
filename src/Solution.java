@@ -6164,7 +6164,7 @@ public class Solution {
             }
             int cur = queue.peek();
             if (cur != pre) {
-                res.add(List.of(index,cur));
+                res.add(List.of(index, cur));
                 pre = cur;
             }
         }
@@ -6281,30 +6281,44 @@ public class Solution {
         System.arraycopy(arr, 0, nums, l, index);
     }
 
+    /**
+     *  380. O(1) 时间插入、删除和获取随机元素
+     */
+    class RandomizedSet {
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] nums = new int[10000];
+        int index = -1;//当前最后一个数的位置
+
+        Random random = new Random();
+
+        public RandomizedSet() {
+        }
+
+        public boolean insert(int val) {
+            if (map.containsKey(val)) return false;
+            index++;
+            nums[index] = val;
+            map.put(val, index);
+            return true;
+        }
+
+        public boolean remove(int val) {
+            if (!map.containsKey(val)) return false;
+            int i = map.remove(val);
+            if (i != index) {
+                map.put(nums[index],i);
+            }
+            nums[i] = nums[index--];
+            return true;
+        }
+
+        public int getRandom() {
+            return nums[random.nextInt(index + 1)];
+        }
+    }
 
     public static void main(String[] args) {
-        int[] nums = new int[]{2, 3, 1, 2, 2};
-        int x = 1;
-        int l = 0;
-        int r = nums.length - 1;
-        int index = 0;
-        while (index <= r) {
-            if (nums[index] < x) {
-                int temp = nums[l];
-                nums[l] = nums[index];
-                nums[index] = temp;
-                index++;
-                l++;
-            } else if (nums[index] > x) {
-                int temp = nums[r];
-                nums[r] = nums[index];
-                nums[index] = temp;
-                r--;
-            } else {
-                index++;
-            }
-        }
-        System.out.println();
+
     }
 
 }
