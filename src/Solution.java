@@ -6138,9 +6138,38 @@ public class Solution {
      * @param
      * @return
      */
-//    public List<List<Integer>> getSkyline(int[][] buildings) {
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<int[]> list = new ArrayList<>();
+        for (int[] building : buildings) {
+            list.add(new int[]{building[0], building[2]});
+            list.add(new int[]{building[1], -building[2]});
+        }
 
-//    }
+        list.sort((arr1, arr2) -> {
+            if (arr1[0] != arr2[0]) return Integer.compare(arr1[0], arr2[0]);
+            else return Integer.compare(arr2[1], arr1[1]);//如果同一x值则height高的优先
+        });
+        //存放高度由大到小
+        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
+        List<List<Integer>> res = new ArrayList<>();
+        int pre = 0;
+        queue.add(0);
+        for (int[] arr : list) {
+            int index = arr[0];
+            int height = arr[1];
+            if (height > 0) {
+                queue.add(height);
+            } else {
+                queue.remove(-height);
+            }
+            int cur = queue.peek();
+            if (cur != pre) {
+                res.add(List.of(index,cur));
+                pre = cur;
+            }
+        }
+        return res;
+    }
 
     /**
      * 324. 摆动排序 II
@@ -6151,21 +6180,21 @@ public class Solution {
         wiggleSelect(nums, 0, nums.length - 1, nums.length >> 1);
         int x = nums[nums.length >> 1];
         int l = 0;
-        int r = nums.length-1;
+        int r = nums.length - 1;
         int index = 0;
-        while (index<=r){
-            if (nums[index]<x){
+        while (index <= r) {
+            if (nums[index] < x) {
                 int temp = nums[l];
                 nums[l] = nums[index];
                 nums[index] = temp;
                 index++;
                 l++;
-            }else if (nums[index]>x){
+            } else if (nums[index] > x) {
                 int temp = nums[r];
                 nums[r] = nums[index];
                 nums[index] = temp;
                 r--;
-            }else {
+            } else {
                 index++;
             }
         }
@@ -6196,7 +6225,6 @@ public class Solution {
         if (k <= j) wiggleSelect(nums, l, j, k);
         else wiggleSelect(nums, j + 1, r, k);
     }
-}
 
 
     /**
@@ -6255,7 +6283,28 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        System.out.println("new Solution().calculate() = " + new Solution().calculate("1-1+1"));
+        int[] nums = new int[]{2, 3, 1, 2, 2};
+        int x = 1;
+        int l = 0;
+        int r = nums.length - 1;
+        int index = 0;
+        while (index <= r) {
+            if (nums[index] < x) {
+                int temp = nums[l];
+                nums[l] = nums[index];
+                nums[index] = temp;
+                index++;
+                l++;
+            } else if (nums[index] > x) {
+                int temp = nums[r];
+                nums[r] = nums[index];
+                nums[index] = temp;
+                r--;
+            } else {
+                index++;
+            }
+        }
+        System.out.println();
     }
 
 }
