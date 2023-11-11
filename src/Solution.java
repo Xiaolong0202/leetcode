@@ -6282,7 +6282,7 @@ public class Solution {
     }
 
     /**
-     *  380. O(1) 时间插入、删除和获取随机元素
+     * 380. O(1) 时间插入、删除和获取随机元素
      */
     class RandomizedSet {
         Map<Integer, Integer> map = new HashMap<>();
@@ -6306,7 +6306,7 @@ public class Solution {
             if (!map.containsKey(val)) return false;
             int i = map.remove(val);
             if (i != index) {
-                map.put(nums[index],i);
+                map.put(nums[index], i);
             }
             nums[i] = nums[index--];
             return true;
@@ -6315,6 +6315,21 @@ public class Solution {
         public int getRandom() {
             return nums[random.nextInt(index + 1)];
         }
+    }
+
+    /**
+     * 371. 两整数之和
+     * @param a
+     * @param b
+     * @return
+     */
+    public int getSum(int a, int b) {
+        while (b != 0) {
+            int carry = (a & b) << 1;
+            a = a ^ b;
+            b = carry;
+        }
+        return a;
     }
 
     public static void main(String[] args) {
