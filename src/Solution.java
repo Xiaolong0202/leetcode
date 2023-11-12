@@ -6439,8 +6439,51 @@ public class Solution {
         return false;
     }
 
+
+    /**
+     *  329. 矩阵中的最长递增路径
+     * @param matrix
+     * @return
+     */
+    public int longestIncreasingPath(int[][] matrix) {
+        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                List<Integer> list = map.computeIfAbsent(matrix[i][j], k -> new ArrayList<>());
+                list.add(i);
+                list.add(j);
+            }
+        }
+        int res = 0;
+        int[][] dp = new int[matrix.length][matrix[0].length];
+        int[] arr1 = new int[]{0, 0, -1, 1};
+        int[] arr2 = new int[]{-1, 1, 0, 0};
+        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+            int k = entry.getKey();
+            List<Integer> list = entry.getValue();
+            for (int i = 0; i < list.size(); i++) {
+                int x = list.get(i++);
+                int y = list.get(i);
+                dp[x][y]++;
+                res = Math.max(res, dp[x][y]);
+                for (int j = 0; j < arr1.length; j++) {
+                    int nextX = x + arr1[j];
+                    int nextY = y + arr2[j];
+                    if (nextX >= 0 && nextY >= 0 && nextX < matrix.length && nextY < matrix[0].length && matrix[nextX][nextY] > k) {
+                        dp[nextX][nextY] = Math.max(dp[x][y], dp[nextX][nextY]);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
-        new Solution().increasingTriplet(new int[]{6, 7, 1, 2});
+        new Solution().longestIncreasingPath(new int[][]{
+                new int[]{9,9,4},
+                new int[]{6,6,8},
+                new int[]{2,1,1}
+        });
     }
 
 }
