@@ -6413,8 +6413,34 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 334. 递增的三元子序列
+     *
+     * @param nums
+     * @return
+     */
+    public boolean increasingTriplet(int[] nums) {
+        int first = 0;
+        int second = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (second != -1) {
+                if (nums[i] > nums[second]) {
+                    return true;
+                }
+            }
+            if (nums[i] < nums[first]) {
+                first = i;
+            }
+            if (nums[i] > nums[first] && (second == -1 || nums[i] < nums[second])) {
+                // 当i大于first 并且 (Second=-1或 i < second )重新赋值给second
+                second = i;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        new Solution().longestSubstring("aaabb",3);
+        new Solution().increasingTriplet(new int[]{6, 7, 1, 2});
     }
 
 }
