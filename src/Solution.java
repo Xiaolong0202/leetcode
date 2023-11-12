@@ -6343,7 +6343,7 @@ public class Solution {
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
         int allLength = n * n;
-        for (int i = n - 1; i < allLength - 1 ; i += n) {
+        for (int i = n - 1; i < allLength - 1; i += n) {
             int l1 = 0;
             int r1 = i;
             int l2 = i + 1;
@@ -6371,15 +6371,50 @@ public class Solution {
         }
         return getKthSmallestV(k - 1, matrix);
     }
+
     public int getKthSmallestV(int i, int[][] matrix) {
         return matrix[i / matrix.length][i % matrix.length];
     }
+
     public void insertKthSmallestV(int i, int insertValue, int[][] matrix) {
         matrix[i / matrix.length][i % matrix.length] = insertValue;
     }
 
-    public static void main(String[] args) {
 
+    /**
+     * 395. 至少有 K 个重复字符的最长子串
+     *
+     * @param s
+     * @param k
+     * @return
+     */
+    public int longestSubstring(String s, int k) {
+        int res = 0;
+        char[] charArray = s.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            int[] cnt = new int[26];
+            int left = 0;//表示当前范围内有但是数目没有达到k的字母数
+            for (int j = i; j < charArray.length; j++) {
+                int preCount = cnt[charArray[j] - 'a'];//没加之前的
+                int currentCount = ++cnt[charArray[j] - 'a'];//加了之后的
+                if (preCount == 0) left++;//是新加入范围的字母,left+1
+                //加一之后如果数目大于等于k
+                if (currentCount >= k) {
+                    if (preCount < k) {
+                        left--;//如果之前的值小于k是通过+1之后才大于等于k的left-1
+                    }
+                    if (left == 0) {
+                        //如果该范围内的left为0则成立
+                        res = Math.max(res, j - i + 1);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        new Solution().longestSubstring("aaabb",3);
     }
 
 }
