@@ -6441,7 +6441,8 @@ public class Solution {
 
 
     /**
-     *  329. 矩阵中的最长递增路径
+     * 329. 矩阵中的最长递增路径
+     *
      * @param matrix
      * @return
      */
@@ -6478,12 +6479,46 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 295. 数据流的中位数
+     */
+    class MedianFinder {
+        PriorityQueue<Integer> maxQue = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
+        PriorityQueue<Integer> minQue = new PriorityQueue<>(Integer::compare);
+
+        public MedianFinder() {
+
+        }
+
+        public void addNum(int num) {
+            if (maxQue.isEmpty() || num <= maxQue.peek()) {
+                maxQue.add(num);
+                if (maxQue.size() - 1 > minQue.size()) {
+                    minQue.add(maxQue.poll());
+                }
+            } else {
+                minQue.add(num);
+                if (minQue.size() > maxQue.size()) {
+                    maxQue.add(minQue.poll());
+                }
+            }
+        }
+
+        public double findMedian() {
+            if (maxQue.size() > minQue.size()) {
+                return maxQue.peek();
+            } else {
+                return (double) (maxQue.peek() + minQue.peek()) / 2;
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        new Solution().longestIncreasingPath(new int[][]{
-                new int[]{9,9,4},
-                new int[]{6,6,8},
-                new int[]{2,1,1}
-        });
+        MedianFinder medianFinder = new Solution().new MedianFinder();
+        for (int i = 0; i < 21; i++) {
+            medianFinder.addNum(new Random().nextInt(50));
+        }
+        System.out.println();
     }
 
 }
