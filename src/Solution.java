@@ -6319,6 +6319,7 @@ public class Solution {
 
     /**
      * 371. 两整数之和
+     *
      * @param a
      * @param b
      * @return
@@ -6330,6 +6331,51 @@ public class Solution {
             b = carry;
         }
         return a;
+    }
+
+    /**
+     * 378. 有序矩阵中第 K 小的元素
+     *
+     * @param matrix
+     * @param k
+     * @return
+     */
+    public int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int allLength = n * n;
+        for (int i = n - 1; i < allLength - 1 ; i += n) {
+            int l1 = 0;
+            int r1 = i;
+            int l2 = i + 1;
+            int r2 = i + n;
+            int p = l1;
+            int q = l2;
+            //处理类似于归并排序的步骤
+            int[] arr = new int[r2 + 2];
+            int arrIndex = 0;
+            while (p <= r1 && q <= r2) {
+                int value1 = getKthSmallestV(p, matrix);
+                int value2 = getKthSmallestV(q, matrix);
+                if (value1 <= value2) {
+                    arr[arrIndex++] = value1;
+                    p++;
+                } else {
+                    arr[arrIndex++] = value2;
+                    q++;
+                }
+            }
+
+            for (int j = 0; j < arrIndex; j++) {
+                insertKthSmallestV(j, arr[j], matrix);
+            }
+        }
+        return getKthSmallestV(k - 1, matrix);
+    }
+    public int getKthSmallestV(int i, int[][] matrix) {
+        return matrix[i / matrix.length][i % matrix.length];
+    }
+    public void insertKthSmallestV(int i, int insertValue, int[][] matrix) {
+        matrix[i / matrix.length][i % matrix.length] = insertValue;
     }
 
     public static void main(String[] args) {
