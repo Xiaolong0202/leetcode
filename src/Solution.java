@@ -6578,20 +6578,20 @@ public class Solution {
         return res;
     }
 
-    void countSmallerDiGui(int[] nums, int l, int r,  int[] indexArr, int[] count) {
+    void countSmallerDiGui(int[] nums, int l, int r, int[] indexArr, int[] count) {
         if (l >= r) return;
         int mid = l + r >> 1;
         int i = l;
         int j = mid + 1;
-        countSmallerDiGui(nums, mid + 1, r,  indexArr,count);
-        countSmallerDiGui(nums, l, mid, indexArr,count);
+        countSmallerDiGui(nums, mid + 1, r, indexArr, count);
+        countSmallerDiGui(nums, l, mid, indexArr, count);
         int[] temp = new int[r - l + 2];
         int[] tempIndexArr = new int[r - l + 2];
         int index = 0;
         int m = 0;//用于统计当前统计的区间的右侧的区间的
         while (i <= mid && j <= r) {
             if (nums[i] <= nums[j]) {
-                count[indexArr[i]]+=m;
+                count[indexArr[i]] += m;
                 tempIndexArr[index] = indexArr[i];
                 temp[index++] = nums[i++];
             } else {
@@ -6601,7 +6601,7 @@ public class Solution {
             }
         }
         while (i <= mid) {
-            count[indexArr[i]]+=m;
+            count[indexArr[i]] += m;
             tempIndexArr[index] = indexArr[i];
             temp[index++] = nums[i++];
         }
@@ -6615,26 +6615,68 @@ public class Solution {
     }
 
     /**
-     *  263. 丑数
+     * 263. 丑数
+     *
      * @param n
      * @return
      */
     public boolean isUgly(int n) {
-        if(n<=0)return false;
-        while(n%2==0){
-            n/=2;
+        if (n <= 0) return false;
+        while (n % 2 == 0) {
+            n /= 2;
         }
-        while(n%5==0){
-            n/=5;
+        while (n % 5 == 0) {
+            n /= 5;
         }
-        while(n%3==0){
-            n/=3;
+        while (n % 3 == 0) {
+            n /= 3;
         }
-        return n==1;
+        return n == 1;
+    }
+
+    /**
+     * 264. 丑数 II
+     *
+     * @param n
+     * @return
+     */
+    public int nthUglyNumber(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        int p2 = 1, p3 = 1, p5 = 1;
+        for (int i = 2; i <= n; i++) {
+            int num2 = dp[p2] * 2, num3 = dp[p3] * 3, num5 = dp[p5] * 5;
+            dp[i] = Math.min(Math.min(num2, num3), num5);
+            if (num2 == dp[i]) {
+                p2++;
+            }
+            if (num3 == dp[i]) {
+                p3++;
+            }
+            if (num5 == dp[i]) {
+                p5++;
+            }
+        }
+        return dp[n];
+//        PriorityQueue<Long> queue = new PriorityQueue<>(Long::compareTo);
+//        queue.add(1L);
+//        long i = 0;
+//        int index = 0;
+//        while (index++ < n) {
+//            long preI = i;
+//            do i = queue.poll(); while (preI == i);
+//            System.out.println(queue.size());
+//            if (queue.size() > n - index+200) {
+//                queue.add(i * 2);
+//                queue.add(i * 3);
+//                queue.add(i * 5);
+//            }
+//        }
+//        return (int) i;
     }
 
     public static void main(String[] args) {
-        new Solution().countSmaller(new int[]{5, 2, 5, 1});
+        new Solution().nthUglyNumber(1600);
     }
 
 }
