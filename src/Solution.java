@@ -1,3 +1,4 @@
+import javax.swing.text.TabExpander;
 import java.util.*;
 
 
@@ -6516,6 +6517,7 @@ public class Solution {
 
     /**
      * LCR 170. 交易逆序对的总数
+     *
      * @param record
      * @return
      */
@@ -6525,6 +6527,7 @@ public class Solution {
 //         pairCount;
 //        return pairHashSet.size();
     }
+
     int reversePairsDiGui(int[] nums, int l, int r) {
         if (l >= r) return 0;
         int mid = l + r >> 1;
@@ -6555,12 +6558,64 @@ public class Solution {
         return res;
     }
 
-    public static void main(String[] args) {
-        MedianFinder medianFinder = new Solution().new MedianFinder();
-        for (int i = 0; i < 21; i++) {
-            medianFinder.addNum(new Random().nextInt(50));
+    /**
+     * 315. 计算右侧小于当前元素的个数
+     *
+     * @param nums
+     * @return
+     */
+    public List<Integer> countSmaller(int[] nums) {
+        int[] indexArr = new int[nums.length];
+        int[] count = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            indexArr[i] = i;
         }
-        System.out.println();
+        countSmallerDiGui(nums, 0, nums.length - 1, indexArr, count);
+        List<Integer> res = new ArrayList<>();
+        for (int i : count) {
+            res.add(i);
+        }
+        return res;
+    }
+
+    void countSmallerDiGui(int[] nums, int l, int r,  int[] indexArr, int[] count) {
+        if (l >= r) return;
+        int mid = l + r >> 1;
+        int i = l;
+        int j = mid + 1;
+        countSmallerDiGui(nums, mid + 1, r,  indexArr,count);
+        countSmallerDiGui(nums, l, mid, indexArr,count);
+        int[] temp = new int[r - l + 2];
+        int[] tempIndexArr = new int[r - l + 2];
+        int index = 0;
+        int m = 0;//用于统计当前统计的区间的右侧的区间的
+        while (i <= mid && j <= r) {
+            if (nums[i] <= nums[j]) {
+                count[indexArr[i]]+=m;
+                tempIndexArr[index] = indexArr[i];
+                temp[index++] = nums[i++];
+            } else {
+                m++;
+                tempIndexArr[index] = indexArr[j];
+                temp[index++] = nums[j++];
+            }
+        }
+        while (i <= mid) {
+            count[indexArr[i]]+=m;
+            tempIndexArr[index] = indexArr[i];
+            temp[index++] = nums[i++];
+        }
+        while (j <= r) {
+            m++;
+            tempIndexArr[index] = indexArr[j];
+            temp[index++] = nums[j++];
+        }
+        System.arraycopy(tempIndexArr, 0, indexArr, l, index);
+        System.arraycopy(temp, 0, nums, l, index);
+    }
+
+    public static void main(String[] args) {
+        new Solution().countSmaller(new int[]{5, 2, 5, 1});
     }
 
 }
