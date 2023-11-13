@@ -6675,8 +6675,38 @@ public class Solution {
 //        return (int) i;
     }
 
+    /**
+     * 1201. 丑数 III
+     *
+     * @param n
+     * @param a
+     * @param b
+     * @param c
+     * @return
+     */
+    public int nthUglyNumber(int n, int a, int b, int c) {
+        int l = 1, r = Integer.MAX_VALUE;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (check(mid, n, a, b, c)) r = mid;
+            else l = mid + 1;
+        }
+        return r;
+    }
+    boolean check(int mid, int n, int a, int b, int c) {
+        long ab = lcm(a, b), ac = lcm(a, c), bc = lcm(b, c), abc = lcm(lcm(a, b), c);
+        long cnt = (long)mid / a + mid / b + mid / c - mid / ac - mid / bc - mid /ab + mid / abc;
+        return cnt >= n;
+    }
+    //辗转相除法求最小公约数, a%b 如果 结果不为0 则 用b%(刚刚得到的结果)
+    long gcd(long a, long b) {return b == 0 ? a : gcd(b, a % b);}
+    //通过最小公约数求出最小公倍数
+    long lcm(long a, long b) {return a / gcd(a, b) * b;}
+
+
+
     public static void main(String[] args) {
-        new Solution().nthUglyNumber(1600);
+//        new Solution().nthUglyNumber(4,2,3,4);
     }
 
 }
