@@ -6513,6 +6513,48 @@ public class Solution {
         }
     }
 
+
+    /**
+     * LCR 170. 交易逆序对的总数
+     * @param record
+     * @return
+     */
+    public int reversePairs(int[] record) {
+        return reversePairsDiGui(record, 0, record.length - 1);
+        // System.out.println(Arrays.toString(record));
+//         pairCount;
+//        return pairHashSet.size();
+    }
+    int reversePairsDiGui(int[] nums, int l, int r) {
+        if (l >= r) return 0;
+        int mid = l + r >> 1;
+        int res = reversePairsDiGui(nums, l, mid) + reversePairsDiGui(nums, mid + 1, r);
+
+        int i = l;
+        int j = mid + 1;
+        int[] arr = new int[r - l + 2];
+        int index = 0;
+        int m = 0;
+        while (i <= mid && j <= r) {
+            if (nums[i] <= nums[j]) {
+                res += m;
+                arr[index++] = nums[i++];
+            } else {
+                m++;
+                arr[index++] = nums[j++];
+            }
+        }
+        while (i <= mid) {
+            res += m;
+            arr[index++] = nums[i++];
+        }
+        while (j <= r) {
+            arr[index++] = nums[j++];
+        }
+        System.arraycopy(arr, 0, nums, l, index);
+        return res;
+    }
+
     public static void main(String[] args) {
         MedianFinder medianFinder = new Solution().new MedianFinder();
         for (int i = 0; i < 21; i++) {
