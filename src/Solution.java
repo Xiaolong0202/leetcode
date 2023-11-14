@@ -333,21 +333,35 @@ public class Solution {
         return node;
     }
 
+    /**
+     * 53. 最大子数组和
+     * @param nums
+     * @return
+     */
     public int maxSubArray(int[] nums) {
-        int n = nums.length;
-        if (n == 1) return nums[0];
-        int dp;
-        dp = nums[0];
-        int reslut = dp;
-        for (int i = 1; i < nums.length; i++) {
-            if (dp + nums[i] > nums[i]) {
-                dp = dp + nums[i];
-            } else {
-                dp = nums[i];
-            }
-            reslut = Math.max(reslut, dp);
+        int r = 0;
+        int res = Integer.MIN_VALUE;
+        int currentSum = 0;
+        while(r<nums.length){
+            currentSum = Math.max(currentSum+nums[r],nums[r]);
+            res = Math.max(res,currentSum);
+            r++;
         }
-        return reslut;
+        return res;
+//        int n = nums.length;
+//        if (n == 1) return nums[0];
+//        int dp;
+//        dp = nums[0];
+//        int reslut = dp;
+//        for (int i = 1; i < nums.length; i++) {
+//            if (dp + nums[i] > nums[i]) {
+//                dp = dp + nums[i];
+//            } else {
+//                dp = nums[i];
+//            }
+//            reslut = Math.max(reslut, dp);
+//        }
+//        return reslut;
     }
 
     //大家解设1
