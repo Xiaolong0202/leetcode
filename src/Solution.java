@@ -6718,6 +6718,33 @@ public class Solution {
     long lcm(long a, long b) {return a / gcd(a, b) * b;}
 
 
+    /**
+     *  82. 删除排序链表中的重复元素 II
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode pre = new ListNode(-101);
+        pre.next = head;
+        ListNode res = pre;
+        while(head != null){
+            if(head.next!=null&&head.val == head.next.val){
+                ListNode p = head;
+                ListNode q = head.next;
+                while(q!=null&&p.val == q.val){
+                    p = q;
+                    q = q.next;
+                }
+                head = q;
+                pre.next = head;
+            }else{
+                pre = head;
+                head = head.next;
+            }
+        }
+        return res.next;
+    }
+
 
     public static void main(String[] args) {
 //        new Solution().nthUglyNumber(4,2,3,4);
