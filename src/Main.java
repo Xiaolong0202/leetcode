@@ -16,31 +16,32 @@ public class Main {
             System.out.println(a + b);
         }
     }
-    static void sumABTWO()throws Exception{
+
+    static void sumABTWO() throws Exception {
         StreamTokenizer in = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
         in.nextToken();
-        int n = (int)in.nval;
-        while(n-->0){
+        int n = (int) in.nval;
+        while (n-- > 0) {
             in.nextToken();
             int a = (int) in.nval;
             in.nextToken();
             int b = (int) in.nval;
-            System.out.println(a+b);
+            System.out.println(a + b);
         }
     }
 
-    static void sumAB3() throws Exception{
+    static void sumAB3() throws Exception {
         PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
         StreamTokenizer in = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
-        while(in.nextToken()!=-1){
-            int a = (int)in.nval;
+        while (in.nextToken() != -1) {
+            int a = (int) in.nval;
             in.nextToken();
-            int b = (int)in.nval;
-            if(a==0&&b==0){
+            int b = (int) in.nval;
+            if (a == 0 && b == 0) {
                 out.flush();
                 return;
-            }else{
-                out.println(a+b);
+            } else {
+                out.println(a + b);
             }
         }
     }
@@ -49,6 +50,6 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-        sumAB();
+
     }
 }

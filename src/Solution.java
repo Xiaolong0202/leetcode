@@ -47,19 +47,28 @@ public class Solution {
         }
     }
 
-    //len/2
+    /**
+     * 48. 旋转图像
+     *
+     * @param matrix
+     */
     public void rotate(int[][] matrix) {
-        int len = matrix.length;
-        for (int i = 0; i < len / 2; i++) {
-            for (int j = i; j < len - 1 - 2 * i + i; j++) {
-                int temp = matrix[i][j];
+        for (int i = 0; i < matrix.length / 2; i++) {
+            int n = matrix.length - i * 2;
+            for (int j = i; j < i + n - 1; j++) {
+                int maxY = i + n - 1;
+                int num = matrix[i][j];
+                int temp1 = matrix[j][maxY];//右侧
+                matrix[j][maxY] = num;
+                int temp2 = matrix[maxY][maxY - j + i];//下册
+                matrix[maxY][maxY - j + i] = temp1;
+                int temp3 = matrix[maxY - j + i][i];//左侧
+                matrix[maxY - j + i][i] = temp2;
 
-                matrix[i][j] = matrix[len - 1 - j][i];
-                matrix[len - 1 - j][i] = matrix[len - 1 - i][len - 1 - j];
-                matrix[len - 1 - i][len - 1 - j] = matrix[j][len - 1 - i];
-                matrix[j][len - 1 - i] = temp;
-
+                matrix[i][j] = temp3;
+//                System.out.printf("%d,%d  %d,%d  %d,%d  %d,%d|", i, j, j, maxY, maxY, maxY - j + i, maxY - j + i, i);
             }
+//            System.out.println();
         }
     }
 
@@ -335,6 +344,7 @@ public class Solution {
 
     /**
      * 53. 最大子数组和
+     *
      * @param nums
      * @return
      */
@@ -342,9 +352,9 @@ public class Solution {
         int r = 0;
         int res = Integer.MIN_VALUE;
         int currentSum = 0;
-        while(r<nums.length){
-            currentSum = Math.max(currentSum+nums[r],nums[r]);
-            res = Math.max(res,currentSum);
+        while (r < nums.length) {
+            currentSum = Math.max(currentSum + nums[r], nums[r]);
+            res = Math.max(res, currentSum);
             r++;
         }
         return res;
@@ -6707,19 +6717,27 @@ public class Solution {
         }
         return r;
     }
+
     boolean check(int mid, int n, int a, int b, int c) {
         long ab = lcm(a, b), ac = lcm(a, c), bc = lcm(b, c), abc = lcm(lcm(a, b), c);
-        long cnt = (long)mid / a + mid / b + mid / c - mid / ac - mid / bc - mid /ab + mid / abc;
+        long cnt = (long) mid / a + mid / b + mid / c - mid / ac - mid / bc - mid / ab + mid / abc;
         return cnt >= n;
     }
+
     //辗转相除法求最小公约数, a%b 如果 结果不为0 则 用b%(刚刚得到的结果)
-    long gcd(long a, long b) {return b == 0 ? a : gcd(b, a % b);}
+    long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
     //通过最小公约数求出最小公倍数
-    long lcm(long a, long b) {return a / gcd(a, b) * b;}
+    long lcm(long a, long b) {
+        return a / gcd(a, b) * b;
+    }
 
 
     /**
-     *  82. 删除排序链表中的重复元素 II
+     * 82. 删除排序链表中的重复元素 II
+     *
      * @param head
      * @return
      */
@@ -6727,17 +6745,17 @@ public class Solution {
         ListNode pre = new ListNode(-101);
         pre.next = head;
         ListNode res = pre;
-        while(head != null){
-            if(head.next!=null&&head.val == head.next.val){
+        while (head != null) {
+            if (head.next != null && head.val == head.next.val) {
                 ListNode p = head;
                 ListNode q = head.next;
-                while(q!=null&&p.val == q.val){
+                while (q != null && p.val == q.val) {
                     p = q;
                     q = q.next;
                 }
                 head = q;
                 pre.next = head;
-            }else{
+            } else {
                 pre = head;
                 head = head.next;
             }
@@ -6747,42 +6765,44 @@ public class Solution {
 
     /**
      * 4. 寻找两个正序数组的中位数
+     *
      * @param nums1
      * @param nums2
      * @return
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int left = nums1.length + nums2.length + 1>>1;
-        int right = nums1.length + nums2.length + 2>>1;
-        return (findMedianSortedArrays(nums1,nums2,0,nums1.length-1,0,nums2.length-1,left)+ findMedianSortedArrays(nums1,nums2,0,nums1.length-1,0,nums2.length-1,right))*0.5;
+        int left = nums1.length + nums2.length + 1 >> 1;
+        int right = nums1.length + nums2.length + 2 >> 1;
+        return (findMedianSortedArrays(nums1, nums2, 0, nums1.length - 1, 0, nums2.length - 1, left) + findMedianSortedArrays(nums1, nums2, 0, nums1.length - 1, 0, nums2.length - 1, right)) * 0.5;
     }
 
-    public int findMedianSortedArrays(int[] nums1, int[] nums2,int start1,int end1,int start2,int end2,int k) {
+    public int findMedianSortedArrays(int[] nums1, int[] nums2, int start1, int end1, int start2, int end2, int k) {
         //一次移除k/2个数
-        int len1 = end1- start1+1;
-        int len2 = end2 - start2+1;
-        if(len1>len2){
+        int len1 = end1 - start1 + 1;
+        int len2 = end2 - start2 + 1;
+        if (len1 > len2) {
             //保证len1小于len2
-            return findMedianSortedArrays(nums2,nums1,start2,end2,start1,end1,k);
+            return findMedianSortedArrays(nums2, nums1, start2, end2, start1, end1, k);
         }
 
-        if(len1==0)return nums2[start2+k-1];//nums1已经被排除完了
-        if(k==1)return Math.min(nums1[start1],nums2[start2]);//排除到只剩一个了
+        if (len1 == 0) return nums2[start2 + k - 1];//nums1已经被排除完了
+        if (k == 1) return Math.min(nums1[start1], nums2[start2]);//排除到只剩一个了
 
-        int i = start1 + Math.min(len1,k/2)-1;
-        int j = start2 + Math.min(len2,k/2)-1;
+        int i = start1 + Math.min(len1, k / 2) - 1;
+        int j = start2 + Math.min(len2, k / 2) - 1;
 
 
-        if(nums1[i]>nums2[j]){
-            return findMedianSortedArrays(nums1,nums2,start1,end1,j+1,end2,k-(j-start2+1));
-        }else{
-            return findMedianSortedArrays(nums1,nums2,i+1,end1,start2,end2,k-(i-start1+1));
+        if (nums1[i] > nums2[j]) {
+            return findMedianSortedArrays(nums1, nums2, start1, end1, j + 1, end2, k - (j - start2 + 1));
+        } else {
+            return findMedianSortedArrays(nums1, nums2, i + 1, end1, start2, end2, k - (i - start1 + 1));
         }
     }
 
 
     public static void main(String[] args) {
 //        new Solution().nthUglyNumber(4,2,3,4);
+        new Solution().rotate(new int[][]{new int[4], new int[4], new int[4], new int[4]});
     }
 
 }
