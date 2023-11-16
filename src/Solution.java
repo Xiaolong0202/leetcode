@@ -666,23 +666,27 @@ public class Solution {
         return listList;
     }
 
-    //喂饼干
+    /**
+     * 455. 分发饼干
+     *
+     * @param g
+     * @param s
+     * @return
+     */
     public int findContentChildren(int[] g, int[] s) {
         Arrays.sort(g);
         Arrays.sort(s);
         int i = 0;
         int j = 0;
-        int count = 0;
+        int res = 0;
         while (i < g.length && j < s.length) {
             if (g[i] <= s[j]) {
-                count++;
+                res++;
                 i++;
-                j++;
-            } else {
-                j++;
             }
+            j++;
         }
-        return count;
+        return res;
     }
 
     //摆动数组
