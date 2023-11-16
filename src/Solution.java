@@ -713,25 +713,27 @@ public class Solution {
         return count;
     }
 
-    //快速幂
-    //快速幂
+    /**
+     *  50. Pow(x, n)
+     * @param x
+     * @param n
+     * @return
+     */
     public double myPow(double x, int n) {
-        long a = n;
-        if (n < 0) {
-            return 1 / quickPow(x, -a);
+        long i = n;
+        if(i<0){
+            i=-i;
+            x=1/x;
         }
-        return quickPow(x, a);
-    }
-
-    //快速幂
-    public double quickPow(double x, long n) {
-        double result = 1;
-        while (n != 0) {
-            if ((n & 1) != 0) result *= x;
-            x *= x;
-            n >>= 1;
+        double res = 1;
+        while(i>0){
+            if((i&1)==1){
+                res*=x;
+            }
+            x*=x;
+            i>>=1;
         }
-        return result;
+        return res;
     }
 
     public boolean canJump(int[] nums) {
@@ -6802,6 +6804,9 @@ public class Solution {
             return findMedianSortedArrays(nums1, nums2, i + 1, end1, start2, end2, k - (i - start1 + 1));
         }
     }
+
+
+
 
 
     public static void main(String[] args) {
