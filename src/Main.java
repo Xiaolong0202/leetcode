@@ -1,4 +1,7 @@
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @Author LiuXiaolong
@@ -46,10 +49,31 @@ public class Main {
         }
     }
 
+    /**
+     * 110. 平衡二叉树
+     *
+     * @param root
+     * @return
+     */
+    boolean isBalancedRes = true;
+
+    public boolean isBalanced(TreeNode root) {
+        he(root);
+        return isBalancedRes;
+    }
+
+    public int he(TreeNode root) {
+        if (root == null) return 0;
+        int l = he(root.left);
+        int r = he(root.right);
+        if (Math.abs(l - r) > 1) isBalancedRes = false;
+        return Math.max(l, r) + 1;
+    }
 
 
-
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws IOException, ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = simpleDateFormat.parse("2023-12-11");
+        System.out.println(parse);
     }
 }
