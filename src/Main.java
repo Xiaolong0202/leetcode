@@ -70,6 +70,27 @@ public class Main {
         return Math.max(l, r) + 1;
     }
 
+    /**
+     * 129. 求根节点到叶节点数字之和
+     *
+     * @param root
+     * @return
+     */
+    public int sumNumbers(TreeNode root) {
+        return sumNumbers(root, 0);
+    }
+
+    public int sumNumbers(TreeNode node, int curSum) {
+        if (node == null) {
+            return 0;
+        }
+        int num = curSum * 10 + node.val;
+        if (node.left == null && node.right == null) {
+            return num;
+        }
+        return sumNumbers(node.left, num) + sumNumbers(node.right, num);
+    }
+
 
     public static void main(String[] args) throws IOException, ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
