@@ -714,24 +714,25 @@ public class Solution {
     }
 
     /**
-     *  50. Pow(x, n)
+     * 50. Pow(x, n)
+     *
      * @param x
      * @param n
      * @return
      */
     public double myPow(double x, int n) {
         long i = n;
-        if(i<0){
-            i=-i;
-            x=1/x;
+        if (i < 0) {
+            i = -i;
+            x = 1 / x;
         }
         double res = 1;
-        while(i>0){
-            if((i&1)==1){
-                res*=x;
+        while (i > 0) {
+            if ((i & 1) == 1) {
+                res *= x;
             }
-            x*=x;
-            i>>=1;
+            x *= x;
+            i >>= 1;
         }
         return res;
     }
@@ -2878,51 +2879,24 @@ public class Solution {
      */
     class LRUCache {
 
-        class Node {
-            Integer val;
-            Integer key;
-            Node next;
-            Node pre;
-
-            public Node(Integer key, Integer val) {
-                this.val = val;
-                this.key = key;
-            }
-//            void show() {
-//                Node temp = this;
-//                while (temp != null) {
-//
-//                    System.out.print(" key: " + temp.key + " ");
-//                    System.out.print("val: " + temp.val + " ->");
-//
-//                    temp = temp.next;
-//                }
-//                System.out.println();
-//            }
-        }
-
-        HashMap<Integer, Node> map = new HashMap<>();
+        Node head = new Node();
+        Node tail = new Node();
         int capacity;
-        int count = 0;
-        Node head;
-        Node tail;
+
+        Map<Integer, Node> map = new HashMap<>();
 
         public LRUCache(int capacity) {
-            this.capacity = capacity;
-            head = new Node(null, null);
-            tail = new Node(null, null);
             head.next = tail;
             tail.pre = head;
+            this.capacity = capacity;
         }
 
         public int get(int key) {
-            Node node = map.get(key);
-            if (node == null) {
-                return -1;
+            if (map.containsKey(key)) {
+                putFirst(map.get(key));
+                return map.get(key).val;
             } else {
-                removeNode(node);
-                addToHead(node);
-                return node.val;
+                return -1;
             }
         }
 
@@ -2930,36 +2904,62 @@ public class Solution {
             if (map.containsKey(key)) {
                 Node node = map.get(key);
                 node.val = value;
-                removeNode(node);
-                addToHead(node);
+                putFirst(node);
             } else {
-                if (count >= capacity) {
-                    Node delelteNode = tail.pre;
-                    removeNode(delelteNode);
-                    map.remove(delelteNode.key);
-                } else {
-                    count++;
+                Node node = new Node();
+                node.val = value;
+                node.key = key;
+                map.put(key, node);
+                if (map.size() > capacity) {
+                    removeLast();
                 }
-                Node addNode = new Node(key, value);
-                addToHead(addNode);
-                map.put(key, addNode);
+                putFirst(node);
             }
         }
 
-        void addToHead(Node node) {
-            node.pre = head;
-            node.next = head.next;
-            head.next = node;
-            node.next.pre = node;
-        }
-
-        void removeNode(Node node) {
+        /**
+         * 将该结点放至链表头
+         *
+         * @param node
+         */
+        void putFirst(Node node) {
             Node pre = node.pre;
             Node next = node.next;
-            next.pre = pre;
+            if (pre != null) pre.next = next;
+            if (next != null) next.pre = pre;
+
+            Node headNext = head.next;
+            head.next = node;
+            node.next = headNext;
+
+            node.pre = head;
+            if (headNext != null) headNext.pre = node;
+        }
+
+        /**
+         * 将双向链表中的最后一个结点删掉并且，删除map中的数据
+         */
+        void removeLast() {
+            Node node = tail.pre;
+            if (node == head) {
+                return;
+            }
+            Node pre = node.pre;
+            Node next = node.next;
             pre.next = next;
+            if (next != null) next.pre = pre;
+
+            map.remove(node.key);
+        }
+
+        static class Node {
+            Node pre;
+            Node next;
+            Integer val;
+            Integer key;
         }
     }
+
 
     /**
      * 647. 回文子串
@@ -6805,9 +6805,53 @@ public class Solution {
         }
     }
 
+    /**
+     * k个一组翻转链表
+     *
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) return null;
+        int len = 0;
+        ListNode node = head;
+        while (node != null) {
+            node = node.next;
+            len++;
+        }
+
+        node = head;
+        head = new ListNode();
 
 
+        ListNode tail = node;
+        ListNode resPre = head;
 
+        int count = k;
+
+        while (node != null) {
+            ListNode temp = node.next;
+
+            node.next = head.next;
+            head.next = node;
+
+            node = temp;
+
+            count--;
+            if (count == 0) {
+                len -= k;
+                if (len < k) {
+                    tail.next = node;
+                    break;
+                }
+                count = k;
+                head = tail;
+                tail = node;
+            }
+        }
+        return resPre.next;
+    }
 
     public static void main(String[] args) {
 //        new Solution().nthUglyNumber(4,2,3,4);
