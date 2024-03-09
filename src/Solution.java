@@ -25,8 +25,11 @@ public class Solution {
         HashMap<Integer, Object> map = new HashMap<Integer, Object>();
         for (int i = 0; i < len; i++) {
             int a = nums[i];
-            if (map.containsKey(a)) map.remove(a);
-            else map.put(a, null);
+            if (map.containsKey(a)) {
+                map.remove(a);
+            } else {
+                map.put(a, null);
+            }
         }
         for (int key : map.keySet()) {
             return key;
@@ -35,11 +38,15 @@ public class Solution {
     }
 
     public void moveZeroes(int[] nums) {
-        if (nums == null || nums.length == 0) return;
+        if (nums == null || nums.length == 0) {
+            return;
+        }
         int index = 0;
         //一次遍历，把非零的都往前挪
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != 0) nums[index++] = nums[i];
+            if (nums[i] != 0) {
+                nums[index++] = nums[i];
+            }
         }
         //后面的都是0,
         while (index < nums.length) {
@@ -73,7 +80,9 @@ public class Solution {
     }
 
     public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) return false;
+        if (s.length() != t.length()) {
+            return false;
+        }
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
         for (int i = 0; i < s.length(); i++) {
             char c1 = s.charAt(i);
@@ -83,7 +92,9 @@ public class Solution {
         }
 
         for (Integer i : map.values()) {
-            if (i != 0) return false;
+            if (i != 0) {
+                return false;
+            }
         }
         return true;
     }
@@ -92,12 +103,16 @@ public class Solution {
         s = s.trim();
         boolean isfu = false;
         char[] num = s.toCharArray();
-        if (num.length == 0) return 0;
+        if (num.length == 0) {
+            return 0;
+        }
         int i = 0;
         int res = 0;
 
         if (num[i] == '-' || num[i] == '+') {
-            if (num[i] == '-') isfu = true;
+            if (num[i] == '-') {
+                isfu = true;
+            }
             i++;
         }
 
@@ -107,8 +122,11 @@ public class Solution {
                 int temp = res;
                 res = res * 10 + c - '0';
                 if (res / 10 != temp) {
-                    if (isfu) return Integer.MIN_VALUE;
-                    else return Integer.MAX_VALUE;
+                    if (isfu) {
+                        return Integer.MIN_VALUE;
+                    } else {
+                        return Integer.MAX_VALUE;
+                    }
                 }
             } else {
                 break;
@@ -134,7 +152,9 @@ public class Solution {
                 j--;
                 continue;
             }
-            if (c[i] != c[j]) return false;
+            if (c[i] != c[j]) {
+                return false;
+            }
             i++;
             j--;
         }
@@ -187,7 +207,9 @@ public class Solution {
     }
 
     public String countAndSay(int n) {
-        if (n == 1) return "1";
+        if (n == 1) {
+            return "1";
+        }
         char[] pre = countAndSay(n - 1).toCharArray();
         StringBuilder sb = new StringBuilder();
         int i = 0;
@@ -236,7 +258,9 @@ public class Solution {
     }
 
     public boolean isPalindrome(ListNode head) {
-        if (head == null || head.next == null) return true;
+        if (head == null || head.next == null) {
+            return true;
+        }
         ListNode fast = head.next;
         ListNode slow = head;
         while (fast.next != null) {
@@ -244,7 +268,9 @@ public class Solution {
             fast = fast.next;
             if (fast.next == null) break;
             fast = fast.next;
-            if (fast.next == null) break;
+            if (fast.next == null) {
+                break;
+            }
         }
         slow = slow.next;
         ListNode newNode = reverseList(slow);
@@ -281,7 +307,9 @@ public class Solution {
 
 
     public int maxDepth(TreeNode root) {
-        if (root == null) return 0;
+        if (root == null) {
+            return 0;
+        }
         return Math.max(maxDepth(root.left) + 1, maxDepth(root.right) + 1);
     }
 
@@ -290,7 +318,9 @@ public class Solution {
     }
 
     public boolean isValidBST(TreeNode root, long minval, long maxval) {
-        if (root == null) return true;
+        if (root == null) {
+            return true;
+        }
         if (root.val >= maxval || root.val <= minval) return false;
         return isValidBST(root.right, root.val, maxval) && isValidBST(root.left, minval, root.val);
     }
@@ -486,7 +516,9 @@ public class Solution {
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-                if (obstacleGrid[i - 1][j - 1] == 1) dp[i][j] = 0;
+                if (obstacleGrid[i - 1][j - 1] == 1) {
+                    dp[i][j] = 0;
+                }
             }
         }
         return dp[m][n];
@@ -500,8 +532,12 @@ public class Solution {
 
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
-                if (i == 1) dp[0][j] = Integer.MAX_VALUE;
-                if (j == 1) dp[i][0] = Integer.MAX_VALUE;
+                if (i == 1) {
+                    dp[0][j] = Integer.MAX_VALUE;
+                }
+                if (j == 1) {
+                    dp[i][0] = Integer.MAX_VALUE;
+                }
                 dp[i][j] = grid[i - 1][j - 1] + Math.min(dp[i - 1][j], dp[i][j - 1]);
                 if (i == 1 && j == 1) dp[1][1] = grid[0][0];
                 System.out.print(dp[i][j] + " ");
@@ -6851,6 +6887,37 @@ public class Solution {
             }
         }
         return resPre.next;
+    }
+
+    /**
+     * 363. 矩形区域不超过 K 的最大数值和
+     * @param matrix
+     * @param k
+     * @return
+     */
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        int[][] qianzhui = new int[matrix.length + 1][matrix[0].length + 1];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                qianzhui[i + 1][j + 1] = qianzhui[i + 1][j] + qianzhui[i][j + 1] - qianzhui[i][j] + matrix[i][j];
+            }
+        }
+
+        int res = 0;
+        for (int i = 1; i <= matrix.length; i++) {
+            for (int j = 1; j <= matrix[0].length; j++) {
+
+                for (int l = 0; l <= matrix.length - i; l++) {
+                    for (int m = 0; m <= matrix[0].length - j; m++) {
+                        int s = qianzhui[l + i][m + j] - qianzhui[l + i][m] - qianzhui[l][m + j] + qianzhui[l][m];
+                        if (s<=k) {
+                            res = Math.max(res, s);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     public static void main(String[] args) {
